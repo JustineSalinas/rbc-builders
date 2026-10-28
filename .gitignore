@@ -36,6 +36,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+# raw source images (processed versions live in public/images)
+/Pictures
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
