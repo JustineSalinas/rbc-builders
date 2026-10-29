@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Archivo } from "next/font/google";
 import SmoothScroll from "@/components/SmoothScroll";
 import ChatBot from "@/components/ChatBot";
+import CustomCursor from "@/components/CustomCursor";
 import "./globals.css";
 
 const inter = Inter({
@@ -45,6 +46,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="min-h-full flex flex-col bg-background text-foreground">
         <SmoothScroll>{children}</SmoothScroll>
         <ChatBot />
+        <CustomCursor />
       </body>
     </html>
   );
