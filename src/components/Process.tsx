@@ -63,9 +63,9 @@ export default function Process() {
 
     const trigger = ScrollTrigger.create({
       trigger: track,
-      start: "top 80%",
-      end: "bottom 30%",
-      scrub: 0.5,
+      start: "top 85%",
+      end: "bottom 20%",
+      scrub: 0.7,
       onUpdate: (self) => {
         const p = self.progress;
         setProgress(p);

@@ -32,9 +32,7 @@ function House({ step }: { step: number }) {
     ref.current.scale.setScalar(next);
   };
 
-  useFrame((_, delta) => {
-    if (group.current) group.current.rotation.y += delta * 0.09;
-
+  useFrame(() => {
     show(pin, step === 0);
     show(blueprint, step >= 1 && step <= 3);
     show(foundation, step >= 4);
@@ -44,7 +42,7 @@ function House({ step }: { step: number }) {
   });
 
   return (
-    <group ref={group} scale={1.55} position={[0, -0.78, 0]}>
+    <group ref={group} scale={1.3} position={[0, -0.78, 0]} rotation={[0, Math.PI / 6, 0]}>
       {/* ground pad — flat rectangle, sized just past the house footprint */}
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.01, 0]} receiveShadow>
         <planeGeometry args={[3.0, 2.8]} />
@@ -169,7 +167,7 @@ export default function ConstructionScene({ step }: { step: number }) {
       shadows
       dpr={[1, 2]}
       gl={{ antialias: true }}
-      camera={{ position: [3.3, 1.7, 3.7], fov: 24 }}
+      camera={{ position: [3.6, 2.0, 4.0], fov: 28 }}
     >
       <color attach="background" args={["#141413"]} />
       <ambientLight intensity={0.4} />
@@ -185,11 +183,11 @@ export default function ConstructionScene({ step }: { step: number }) {
       />
       <directionalLight position={[-3, 2, -3]} intensity={0.25} color="#ff8a4c" />
 
-      <Float speed={1.1} rotationIntensity={0} floatIntensity={0.08}>
+      <Float speed={1} rotationIntensity={0} floatIntensity={0.05}>
         <House step={step} />
       </Float>
 
-      <ContactShadows position={[0, -0.79, 0]} opacity={0.5} scale={5} blur={2.2} far={2} />
+      <ContactShadows position={[0, -0.79, 0]} opacity={0.5} scale={4.4} blur={2.2} far={2} />
       <Environment preset="city" environmentIntensity={0.45} />
     </Canvas>
   );
