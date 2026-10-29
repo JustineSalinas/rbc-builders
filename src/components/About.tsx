@@ -22,8 +22,8 @@ export default function About() {
       >
         <div data-reveal className="relative aspect-[4/3] w-full overflow-hidden">
           <Image
-            src="/images/project-6.jpg"
-            alt="A completed RBC Builders residence, photographed on site"
+            src="/images/project-1.jpg"
+            alt="A contemporary two-storey RBC Builders residence with warm wood accents and landscaped entry"
             fill
             sizes="(max-width: 1024px) 100vw, 50vw"
             className="object-cover object-center"
