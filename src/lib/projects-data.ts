@@ -24,6 +24,21 @@ export const PROJECTS: Project[] = [
       "A contemporary two-storey family home with a street-facing gate, landscaped entry, and a two-car carport.",
   },
   {
+    src: "/images/project-6.jpg",
+    title: "As-Built Residence",
+    category: "Exteriors",
+    location: "Pampanga",
+    description:
+      "A completed RBC Builders project, photographed on site. Two-tone stone and render facade with a rooftop terrace above the carport.",
+  },
+  {
+    src: "/images/project-5.jpg",
+    title: "Angled Roof Residence",
+    category: "Exteriors",
+    location: "Pampanga",
+    description: "Dramatic single-pitch roofline in stone and timber slatting, with a stacked-stone perimeter wall.",
+  },
+  {
     src: "/images/project-9.jpg",
     title: "Stacked Stone Residence",
     category: "Exteriors",
@@ -35,18 +50,11 @@ export const PROJECTS: Project[] = [
       "Angular roofline with vertical wood-slat cladding and a stacked-stone accent wall at the entry.",
   },
   {
-    src: "/images/project-3.jpg",
-    title: "Modern Family Home",
+    src: "/images/project-7.jpg",
+    title: "Rooftop Terrace Residence",
     category: "Exteriors",
     location: "Pampanga",
-    description: "Clean-lined facade with a cantilevered upper floor and full-height glazing.",
-  },
-  {
-    src: "/images/project-4.jpg",
-    title: "Interior Concept",
-    category: "Interiors",
-    location: "Pampanga",
-    description: "Open living and dining layout finished in warm wood tones and soft neutral upholstery.",
+    description: "Stone-clad facade with a covered rooftop terrace and a warm timber entry portico.",
   },
   {
     src: "/images/project-8.jpg",
@@ -54,13 +62,6 @@ export const PROJECTS: Project[] = [
     category: "Interiors",
     location: "Pampanga",
     description: "Top-down cutaway of the kitchen, dining, and living areas showing the full open-plan flow.",
-  },
-  {
-    src: "/images/project-5.jpg",
-    title: "Contemporary Facade",
-    category: "Exteriors",
-    location: "Pampanga",
-    description: "Night render highlighting the home's cove lighting and layered roof overhangs.",
   },
   {
     src: "/images/project-10.jpg",
@@ -73,13 +74,6 @@ export const PROJECTS: Project[] = [
     description: "Perforated screen facade over the upper floor for shade and privacy, wrapped in greenery.",
   },
   {
-    src: "/images/project-6.jpg",
-    title: "Residential Elevation",
-    category: "Exteriors",
-    location: "Pampanga",
-    description: "Design study exploring massing and roof geometry for a mid-sized family residence.",
-  },
-  {
     src: "/images/project-11.jpg",
     title: "Gated Residence",
     category: "Exteriors",
@@ -88,13 +82,6 @@ export const PROJECTS: Project[] = [
     bedrooms: "2 bedrooms",
     storeys: "2 storeys",
     description: "Street-facing elevation with a slatted steel gate, stone cladding, and covered carport.",
-  },
-  {
-    src: "/images/project-7.jpg",
-    title: "Minimalist Build",
-    category: "Exteriors",
-    location: "Pampanga",
-    description: "Pared-back exterior render emphasizing clean massing and material contrast.",
   },
   {
     src: "/images/project-12.jpg",
