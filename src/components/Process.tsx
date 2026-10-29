@@ -63,9 +63,9 @@ export default function Process() {
 
     const trigger = ScrollTrigger.create({
       trigger: track,
-      start: "top 70%",
-      end: "bottom 40%",
-      scrub: 0.4,
+      start: "top 80%",
+      end: "bottom 30%",
+      scrub: 0.5,
       onUpdate: (self) => {
         const p = self.progress;
         setProgress(p);
@@ -95,7 +95,7 @@ export default function Process() {
           <div className="hidden lg:block">
             <div className="sticky top-28 bg-background border border-border p-6">
               <div className="aspect-square w-full">
-                <ConstructionScene progress={progress} />
+                <ConstructionScene step={activeStep} />
               </div>
 
               <div className="mt-2 pt-6 border-t border-border">
