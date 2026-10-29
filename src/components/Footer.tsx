@@ -132,6 +132,7 @@ export default function Footer() {
             href="tel:+639772873075"
             data-reveal
             data-reveal-delay="0.08"
+            data-cursor-label="Call"
             className="group inline-flex flex-wrap items-center gap-x-5 font-display text-4xl sm:text-6xl md:text-7xl leading-[1.05]"
           >
             Let&apos;s build it right.

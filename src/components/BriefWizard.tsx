@@ -28,7 +28,7 @@ const LOCATIONS = ["San Fernando", "Tarlac", "Angeles City", "Olongapo", "Balang
 const TIERS = ["Bare Finish", "Standard Finish", "Premium Finish", "Luxury Finish", "Not sure yet"];
 const TIMELINES = ["ASAP", "1–3 months", "3–6 months", "Just exploring"];
 
-const STEP_COUNT = 4;
+const STEP_COUNT = 5;
 
 function ChipGroup({
   options,
@@ -71,6 +71,7 @@ export default function BriefWizard() {
     !!data.location,
     !!data.finishTier,
     !!data.timeline,
+    !!(data.name && data.phone && data.email),
   ][step];
 
   const submit = async () => {

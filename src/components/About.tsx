@@ -2,12 +2,13 @@
 
 import Image from "next/image";
 import { useReveal } from "@/lib/useReveal";
+import { COMPANY_STATS } from "@/lib/company-stats";
 
 const STATS = [
-  { value: "12K+", label: "Followers & Community" },
-  { value: "5", label: "Provinces Served" },
-  { value: "240+", label: "SQM Avg. Floor Area" },
-  { value: "4", label: "Finish Tiers Available" },
+  { value: COMPANY_STATS.facebookCommunity.value, label: "Followers & Community" },
+  { value: COMPANY_STATS.provincesServed.value, label: COMPANY_STATS.provincesServed.label },
+  { value: COMPANY_STATS.avgFloorAreaPerProject.value, label: COMPANY_STATS.avgFloorAreaPerProject.label },
+  { value: COMPANY_STATS.finishTiers.value, label: "Finish Tiers Available" },
 ];
 
 export default function About() {

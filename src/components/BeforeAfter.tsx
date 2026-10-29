@@ -19,6 +19,23 @@ export default function BeforeAfter() {
     setPos(Math.min(100, Math.max(0, pct)));
   };
 
+  const onHandleKeyDown = (e: React.KeyboardEvent) => {
+    const step = e.shiftKey ? 10 : 4;
+    if (e.key === "ArrowLeft") {
+      e.preventDefault();
+      setPos((p) => Math.max(0, p - step));
+    } else if (e.key === "ArrowRight") {
+      e.preventDefault();
+      setPos((p) => Math.min(100, p + step));
+    } else if (e.key === "Home") {
+      e.preventDefault();
+      setPos(0);
+    } else if (e.key === "End") {
+      e.preventDefault();
+      setPos(100);
+    }
+  };
+
   return (
     <section ref={sectionRef} className="py-28 sm:py-36 px-4 sm:px-6 bg-surface">
       <div className="mx-auto max-w-5xl">
@@ -35,6 +52,7 @@ export default function BeforeAfter() {
         <div
           data-reveal
           data-reveal-delay="0.12"
+          data-cursor-label="Drag"
           ref={containerRef}
           onMouseMove={(e) => dragging.current && updatePos(e.clientX)}
           onMouseDown={(e) => {
@@ -73,7 +91,17 @@ export default function BeforeAfter() {
 
           {/* drag handle */}
           <div className="absolute top-0 bottom-0 w-px bg-accent/80" style={{ left: `${pos}%` }}>
-            <div className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 flex h-11 w-11 items-center justify-center rounded-full bg-accent text-background shadow-lg">
+            <div
+              role="slider"
+              tabIndex={0}
+              aria-label="Before and after comparison position"
+              aria-valuemin={0}
+              aria-valuemax={100}
+              aria-valuenow={Math.round(pos)}
+              aria-valuetext={`${Math.round(pos)}% before, ${100 - Math.round(pos)}% after`}
+              onKeyDown={onHandleKeyDown}
+              className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 flex h-11 w-11 items-center justify-center rounded-full bg-accent text-background shadow-lg cursor-ew-resize focus:outline-none focus-visible:ring-2 focus-visible:ring-foreground focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
+            >
               <MoveHorizontal size={18} />
             </div>
           </div>

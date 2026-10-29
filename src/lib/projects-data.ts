@@ -14,7 +14,7 @@ export type Project = {
 export const PROJECTS: Project[] = [
   {
     src: "/images/project-1.jpg",
-    title: "2-Storey, 3BR Residence",
+    title: "Garden Gate Residence",
     category: "Exteriors",
     location: "Pampanga",
     floorArea: "240 sqm",
@@ -25,7 +25,7 @@ export const PROJECTS: Project[] = [
   },
   {
     src: "/images/project-9.jpg",
-    title: "2-Storey, 3BR Residence",
+    title: "Stacked Stone Residence",
     category: "Exteriors",
     location: "Pampanga",
     floorArea: "230 sqm",
@@ -64,7 +64,7 @@ export const PROJECTS: Project[] = [
   },
   {
     src: "/images/project-10.jpg",
-    title: "2-Storey, 3BR Residence",
+    title: "Perforated Screen Residence",
     category: "Exteriors",
     location: "Pampanga",
     floorArea: "240 sqm",

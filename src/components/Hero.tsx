@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
+import { COMPANY_STATS } from "@/lib/company-stats";
 
 const SLIDES = [
   { src: "/images/hero.jpg", caption: "Every detail engineered for long-term quality, not just a good render." },
@@ -13,10 +14,10 @@ const SLIDES = [
 ];
 
 const STATS = [
-  { label: "Floor Area Delivered", value: "16,000+", unit: "sqm" },
-  { label: "Provinces Served", value: "05", unit: "regions" },
-  { label: "Finish Tiers", value: "04", unit: "options" },
-  { label: "Avg. Turnover", value: "10", unit: "months" },
+  COMPANY_STATS.totalFloorAreaDelivered,
+  COMPANY_STATS.provincesServed,
+  COMPANY_STATS.finishTiers,
+  COMPANY_STATS.avgTurnover,
 ];
 
 export default function Hero() {
@@ -150,6 +151,7 @@ export default function Hero() {
         <div className="lg:col-span-8" style={{ perspective: "1600px" }}>
           <div
             ref={panelRef}
+            data-cursor-label="Explore"
             className="relative aspect-[4/5] sm:aspect-[16/11] w-full overflow-hidden will-change-transform"
           >
             <div ref={imageWrapRef} className="absolute inset-0 scale-[1.04]">

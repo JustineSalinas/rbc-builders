@@ -108,6 +108,7 @@ export default function Projects() {
             <button
               key={project.src}
               onClick={() => setActive(project)}
+              data-cursor-label="View"
               className="group relative shrink-0 w-[78vw] sm:w-[48vw] md:w-[32vw] aspect-[4/3] snap-start overflow-hidden text-left"
             >
               <Image

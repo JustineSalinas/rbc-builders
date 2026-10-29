@@ -127,9 +127,9 @@ export default function ChatBot() {
                   <Sparkles size={12} />
                 </span>
                 <div className="flex items-center gap-1.5 rounded-2xl rounded-bl-sm bg-surface border border-border px-4 py-3.5">
-                  <span className="h-1.5 w-1.5 rounded-full bg-muted animate-bounce [animation-delay:-0.3s]" />
-                  <span className="h-1.5 w-1.5 rounded-full bg-muted animate-bounce [animation-delay:-0.15s]" />
-                  <span className="h-1.5 w-1.5 rounded-full bg-muted animate-bounce" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-muted animate-type-pulse [animation-delay:0s]" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-muted animate-type-pulse [animation-delay:0.15s]" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-muted animate-type-pulse [animation-delay:0.3s]" />
                 </div>
               </div>
             )}

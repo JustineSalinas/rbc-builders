@@ -72,6 +72,21 @@ html.lenis body {
   animation: marquee 30s linear infinite;
 }
 
+@keyframes type-pulse {
+  0%, 60%, 100% {
+    opacity: 0.35;
+    transform: scale(0.82);
+  }
+  30% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-type-pulse {
+  animation: type-pulse 1.2s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+
 .text-outline {
   -webkit-text-stroke: 1px var(--muted);
   color: transparent;
