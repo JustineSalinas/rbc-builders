@@ -1,6 +1,6 @@
 "use client";
 
-import { Check, Crown } from "lucide-react";
+import { Check } from "lucide-react";
 import { useReveal } from "@/lib/useReveal";
 
 const TIERS = [
@@ -85,29 +85,29 @@ export default function Pricing() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-6 lg:items-start">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 lg:items-start">
           {TIERS.map((tier, i) => (
             <div
               key={tier.name}
               data-reveal
               data-reveal-delay={0.1 + i * 0.08}
-              className={`group flex flex-col bg-background transition-all duration-300 ${
-                tier.featured
-                  ? "lg:-translate-y-4 ring-1 ring-accent shadow-[0_30px_70px_-25px_rgba(255,90,31,0.45)]"
-                  : "ring-1 ring-border hover:ring-foreground/20"
+              className={`relative flex flex-col bg-background border-t border-b border-r border-border first:border-l lg:first:border-l ${
+                tier.featured ? "lg:-translate-y-3" : ""
               }`}
             >
-              {tier.featured ? (
-                <div className="flex items-center justify-center gap-1.5 bg-accent text-background text-[11px] font-semibold uppercase tracking-[0.15em] py-2.5">
-                  <Crown size={12} strokeWidth={2.5} />
-                  Most Chosen
-                </div>
-              ) : (
-                <div className="h-2.5" />
+              {tier.featured && (
+                <div className="absolute inset-x-0 -top-px h-px bg-accent" />
               )}
 
-              <div className="flex flex-col flex-1 p-7 sm:p-8">
-                <h3 className="font-display text-xl mb-5">{tier.name}</h3>
+              <div className="flex flex-col flex-1 p-8 sm:p-9">
+                <div className="flex items-baseline justify-between mb-6">
+                  <h3 className="font-display text-xl">{tier.name}</h3>
+                  {tier.featured && (
+                    <span className="text-[10px] uppercase tracking-[0.15em] text-accent">
+                      Most Chosen
+                    </span>
+                  )}
+                </div>
 
                 <div className="mb-1 flex items-start gap-1">
                   <span className="text-accent text-lg mt-1.5">₱</span>
@@ -115,25 +115,21 @@ export default function Pricing() {
                     {tier.price}
                   </span>
                 </div>
-                <p className="text-xs text-muted mb-7">
+                <p className="text-xs text-muted mb-8">
                   {tier.priceTo ? `up to ₱${tier.priceTo}` : "and up"} &middot; {tier.unit}
                 </p>
 
-                <div className="h-px bg-border mb-7" />
-
-                <ul className="flex flex-col gap-3.5 mb-8 flex-1">
+                <ul className="flex flex-col gap-4 mb-9 flex-1">
                   {tier.features.map((f) => (
                     <li
                       key={f}
-                      className="flex items-start gap-2.5 text-sm text-foreground/70 leading-snug"
+                      className="flex items-start gap-2.5 text-sm text-foreground/65 leading-snug"
                     >
-                      <span
-                        className={`mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full ${
-                          tier.featured ? "bg-accent/20 text-accent" : "bg-surface text-muted"
-                        }`}
-                      >
-                        <Check size={10} strokeWidth={3} />
-                      </span>
+                      <Check
+                        size={13}
+                        strokeWidth={2.5}
+                        className={`mt-0.5 shrink-0 ${tier.featured ? "text-accent" : "text-foreground/30"}`}
+                      />
                       {f}
                     </li>
                   ))}
@@ -141,10 +137,10 @@ export default function Pricing() {
 
                 <a
                   href="#contact"
-                  className={`text-center py-3.5 text-sm font-semibold uppercase tracking-wide transition-colors ${
+                  className={`text-center py-3.5 text-xs font-medium uppercase tracking-[0.15em] transition-colors ${
                     tier.featured
                       ? "bg-accent text-background hover:bg-foreground"
-                      : "border border-border text-foreground/80 group-hover:border-accent group-hover:text-accent"
+                      : "border border-border text-foreground/70 hover:border-accent hover:text-accent"
                   }`}
                 >
                   Get a Quote

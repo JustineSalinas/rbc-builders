@@ -167,7 +167,7 @@ export default function ConstructionScene({ step }: { step: number }) {
       shadows
       dpr={[1, 2]}
       gl={{ antialias: true }}
-      camera={{ position: [3.6, 2.0, 4.0], fov: 28 }}
+      camera={{ position: [4.1, 2.35, 4.6], fov: 32 }}
     >
       <color attach="background" args={["#141413"]} />
       <ambientLight intensity={0.4} />
