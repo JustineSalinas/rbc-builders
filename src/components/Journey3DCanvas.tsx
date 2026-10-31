@@ -14,14 +14,23 @@ export interface Journey3DHandle {
 
 interface Journey3DCanvasProps {
   initialProgress?: number;
+  progress?: number;
   onInit?: (handle: Journey3DHandle) => void;
 }
 
 export default function Journey3DCanvas({
   initialProgress = 0,
+  progress,
   onInit,
 }: Journey3DCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const engineRef = useRef<Journey3DHandle | null>(null);
+
+  useEffect(() => {
+    if (progress !== undefined && engineRef.current) {
+      engineRef.current.setProgress(progress);
+    }
+  }, [progress]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -48,7 +57,7 @@ export default function Journey3DCanvas({
     renderer.shadowMap.enabled = false;
 
     const PAPER = new THREE.Color("#ebe5da");
-    const DUSK = new THREE.Color("#181e2b");
+    const DUSK = new THREE.Color("#2a3344");
     const bgColor = new THREE.Color().copy(PAPER);
     const scene = new THREE.Scene();
     scene.background = bgColor;
@@ -556,9 +565,9 @@ export default function Journey3DCanvas({
         if (scene.fog) scene.fog.color.copy(bgColor);
         hemi.color.copy(hemiDay.sky).lerp(hemiDusk.sky, d);
         hemi.groundColor.copy(hemiDay.gnd).lerp(hemiDusk.gnd, d);
-        hemi.intensity = lerp(1.6, 0.55, d);
-        sun.intensity = lerp(2.2, 0.25, d);
-        sun.color.set("#fff3e0").lerp(new THREE.Color("#ff9f5a"), d);
+        hemi.intensity = lerp(1.6, 0.95, d);
+        sun.intensity = lerp(2.2, 0.75, d);
+        sun.color.set("#fff3e0").lerp(new THREE.Color("#ffba75"), d);
         M.glass.emissiveIntensity = 0.8 * on;
         M.water.emissiveIntensity = 0.95 * on;
         warmA.intensity = 70 * on;
@@ -718,12 +727,19 @@ export default function Journey3DCanvas({
 
     raf = requestAnimationFrame(frame);
 
-    // Expose engine handle to parent component
-    onInit?.({
+    // Expose engine handle to parent component and internal ref
+    const handle: Journey3DHandle = {
       setProgress: (p: number) => {
         target = clamp(p, 0, 7);
       },
-    });
+    };
+    engineRef.current = handle;
+    onInit?.(handle);
+
+    // If progress prop was provided initially, apply it immediately
+    if (progress !== undefined) {
+      target = clamp(progress, 0, 7);
+    }
 
     return () => {
       running = false;
@@ -734,7 +750,7 @@ export default function Journey3DCanvas({
       io.disconnect();
       renderer.dispose();
     };
-  }, [initialProgress, onInit]);
+  }, [initialProgress, progress, onInit]);
 
   return (
     <canvas

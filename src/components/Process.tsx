@@ -1,16 +1,29 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useCallback } from "react";
 import dynamic from "next/dynamic";
-import { ArrowRight, Compass, HardHat, FileCheck, Landmark, Hammer, Paintbrush, Key, CheckCircle2, ArrowDown } from "lucide-react";
+import {
+  Compass,
+  HardHat,
+  FileCheck,
+  Landmark,
+  Hammer,
+  Paintbrush,
+  Key,
+  CheckCircle2,
+  ArrowRight,
+  ArrowLeft,
+  Calendar,
+  UserCheck,
+  Sparkles,
+} from "lucide-react";
 import { useReveal } from "@/lib/useReveal";
-import type { Journey3DHandle } from "./Journey3DCanvas";
 
 // Dynamically load the 3D Journey Canvas with ssr: false
 const Journey3DCanvas = dynamic(() => import("./Journey3DCanvas"), {
   ssr: false,
   loading: () => (
-    <div className="w-full h-full min-h-[380px] flex flex-col items-center justify-center bg-[#ebe5da] text-muted text-xs font-mono gap-3 p-8">
+    <div className="w-full h-full min-h-[460px] flex flex-col items-center justify-center bg-[#ebe5da] text-muted text-xs font-mono gap-3 p-8">
       <div className="h-8 w-8 rounded-full border-2 border-accent border-t-transparent animate-spin" />
       <span>Loading 3D Architectural Journey...</span>
     </div>
@@ -25,6 +38,7 @@ interface StepData {
   tagline: string;
   body: string;
   icon: typeof Compass;
+  leadRole: string;
   deliverables: string[];
 }
 
@@ -35,26 +49,28 @@ const JOURNEY_STEPS: StepData[] = [
     name: "Consultation",
     duration: "Weeks 1–2",
     tagline: "Understanding your vision, lifestyle, and design inspirations.",
-    body: "We begin by understanding your goals, lifestyle, and aesthetic inspirations, setting the tone for a personalized, transparent design-build process in Central Luzon.",
+    body: "We begin by understanding your family's spatial needs, daily routines, and aesthetic inspirations, establishing a transparent architectural framework tailored to your lot in Central Luzon.",
     icon: Compass,
+    leadRole: "Principal PRC Architect & Design Director",
     deliverables: [
       "Client lifestyle & spatial requirements brief",
       "Lot orientation & topography feasibility report",
-      "Target floor area & budget parameter alignment",
+      "Target floor area & preliminary budget parameters",
     ],
   },
   {
     num: "02",
-    phaseCode: "Sheet 02 · Site Visit & Schematic Design",
+    phaseCode: "Sheet 02 · Site Visit & Schematic",
     name: "Site visit & schematic design",
     duration: "Weeks 3–4",
     tagline: "Lot boundary verification, prevailing winds, and solar exposure study.",
-    body: "We assess the site’s orientation, views, and surroundings in Pampanga, then create initial layout options tailored to your lot dimensions and family preferences.",
+    body: "We conduct physical on-site surveys in Pampanga to evaluate elevation grades, natural cross-ventilation, and solar exposure, followed by initial conceptual floor plans and spatial volume sketches.",
     icon: Paintbrush,
+    leadRole: "PRC Geodetic Surveyor & Architectural Designer",
     deliverables: [
       "Boundary relocation & elevation grade survey",
       "Solar path & natural cross-ventilation assessment",
-      "Preliminary architectural schematic floor plan sketches",
+      "Preliminary architectural schematic floor plan options",
     ],
   },
   {
@@ -63,8 +79,9 @@ const JOURNEY_STEPS: StepData[] = [
     name: "Design development",
     duration: "Weeks 5–7",
     tagline: "Refining spatial volumes, material textures, and photorealistic 3D elevations.",
-    body: "We refine the layout into a full design package: modern facade, double-height living atrium, travertine portal tower, and photorealistic 3D concept visualizations for your approval.",
+    body: "We develop the approved schematic into an authentic architectural package: modern tropical facade, double-height living atrium, hand-laid travertine portal tower, and photorealistic 3D concept visualizations.",
     icon: Landmark,
+    leadRole: "Senior 3D Visualizer & Materials Specialist",
     deliverables: [
       "Full 3D exterior daytime & nighttime architectural renders",
       "Curated tactile material specification palette boards",
@@ -77,11 +94,12 @@ const JOURNEY_STEPS: StepData[] = [
     name: "Plans & permits",
     duration: "Weeks 8–11",
     tagline: "Signed and sealed blueprints, full municipal approvals, and bank BOQ.",
-    body: "Signed and sealed architectural, structural, electrical, and sanitary blueprints by licensed PRC professionals, fully submitted and approved for all municipal building permits.",
+    body: "Signed and sealed architectural, structural, electrical, and sanitary blueprints by licensed PRC professionals, fully submitted and approved for all municipal building permits with zero delays.",
     icon: FileCheck,
+    leadRole: "PRC Licensed Civil & MEP Professional Engineers",
     deliverables: [
       "Seismic structural calculations signed by licensed Civil Engineers",
-      "Complete technical MEP working blueprints",
+      "Complete technical MEP working construction blueprints",
       "Official municipal Building Permit release & clearances",
     ],
   },
@@ -91,8 +109,9 @@ const JOURNEY_STEPS: StepData[] = [
     name: "Groundbreaking",
     duration: "Months 3–4",
     tagline: "The first faithful step on site, with the family who dared to dream.",
-    body: "Site clearing, layout staking, and heavy excavation. We pour reinforced concrete footings, tie beams, and slab-on-grade with certified ready-mix concrete tested for compressive strength.",
+    body: "Site clearing, layout staking, and heavy excavation. We pour reinforced concrete footings, tie beams, and slab-on-grade with certified ready-mix concrete rigorously tested for compressive strength.",
     icon: HardHat,
+    leadRole: "Project Engineer & Structural Site Supervisor",
     deliverables: [
       "Groundbreaking ceremony & site mobilization",
       "Excavation & soil treatment termite barrier",
@@ -105,8 +124,9 @@ const JOURNEY_STEPS: StepData[] = [
     name: "Construction",
     duration: "Months 5–8",
     tagline: "Structural integrity first. Transparency always. Progress reports at every stage.",
-    body: "Structural concrete framing rises, followed by natural travertine stone cladding, acoustic timber louver screens, floor-to-ceiling glass fenestration, and the iconic cantilever box.",
+    body: "Structural concrete framing rises, followed by hand-laid travertine stone cladding, acoustic timber louver screens, floor-to-ceiling glass fenestration, and the signature cantilevered upper box.",
     icon: Hammer,
+    leadRole: "Construction Manager & Quality Assurance Lead",
     deliverables: [
       "Reinforced concrete columns, beams & 2F transfer slab",
       "Hand-laid travertine stone portal tower & continuous timber soffits",
@@ -121,6 +141,7 @@ const JOURNEY_STEPS: StepData[] = [
     tagline: "A dream built for a family. A home standing proud.",
     body: "Twilight falls on your finished residence. Architectural cove lighting illuminates, the reflection pool turns turquoise, and we hand over the keys with full warranties and municipal occupancy.",
     icon: Key,
+    leadRole: "Turnover Director & Client Concierge",
     deliverables: [
       "Zero-defect multi-point quality assurance punch listing",
       "Official 15-Year Structural Warranty certificate",
@@ -131,384 +152,289 @@ const JOURNEY_STEPS: StepData[] = [
 
 export default function Process() {
   const sectionRef = useReveal<HTMLElement>();
-  const pinTrackRef = useRef<HTMLDivElement | null>(null);
-  const journeyEngineRef = useRef<Journey3DHandle | null>(null);
-
-  // Direct DOM refs to avoid 100+ React re-renders per second during scroll
-  const phaseLabelRef = useRef<HTMLSpanElement | null>(null);
-  const stepCounterRef = useRef<HTMLSpanElement | null>(null);
-  const stepProgressBarRef = useRef<HTMLDivElement | null>(null);
-  const stepProgressTextRef = useRef<HTMLSpanElement | null>(null);
-  const stampRef = useRef<HTMLDivElement | null>(null);
-  const finaleRef = useRef<HTMLDivElement | null>(null);
-  const scrollGuidanceRef = useRef<HTMLSpanElement | null>(null);
-
-  // Active step state: only updates when crossing step thresholds (at most 7 times total!)
   const [activeStepIndex, setActiveStepIndex] = useState<number>(0);
-  const currentStepIdxRef = useRef<number>(0);
 
-  // Pinned In-Place Scroll Timing Engine (Locks screen while building villa through steps 01-07)
-  useEffect(() => {
-    let ticking = false;
-
-    const onScroll = () => {
-      if (!pinTrackRef.current) return;
-      const rect = pinTrackRef.current.getBoundingClientRect();
-      const viewportHeight = window.innerHeight;
-      const totalScrollableDistance = rect.height - viewportHeight;
-
-      if (totalScrollableDistance <= 0) return;
-
-      const scrolledPast = -rect.top;
-      const rawProgress = Math.min(Math.max(scrolledPast / totalScrollableDistance, 0), 1);
-
-      // Continuous 3D journey progress (0.0 to 7.0)
-      const p3D = rawProgress * 7.0;
-
-      // 1. Direct WebGL Engine Update (Zero React re-render!)
-      journeyEngineRef.current?.setProgress(p3D);
-
-      const activeIdx = Math.min(Math.floor(p3D), 6);
-
-      // 2. Direct DOM Overlay Updates (Zero React re-render!)
-      if (phaseLabelRef.current) {
-        phaseLabelRef.current.textContent = JOURNEY_STEPS[activeIdx].phaseCode;
-      }
-      if (stepProgressBarRef.current) {
-        stepProgressBarRef.current.style.width = `${Math.round(rawProgress * 100)}%`;
-      }
-      if (stepProgressTextRef.current) {
-        stepProgressTextRef.current.textContent = `${Math.round(rawProgress * 100)}% Complete`;
-      }
-      if (stepCounterRef.current) {
-        stepCounterRef.current.textContent = `Step 0${activeIdx + 1} / 07 · ${JOURNEY_STEPS[activeIdx].name}`;
-      }
-
-      // Stamp overlay (Step 04)
-      if (stampRef.current) {
-        const showStamp = p3D >= 3.25 && p3D <= 4.85;
-        stampRef.current.style.opacity = showStamp ? "1" : "0";
-        stampRef.current.style.transform = showStamp
-          ? "scale(1) rotate(-12deg)"
-          : "scale(0.85) rotate(-20deg)";
-        stampRef.current.style.pointerEvents = showStamp ? "auto" : "none";
-      }
-
-      // Finale overlay (Step 07)
-      if (finaleRef.current) {
-        const showFinale = p3D >= 6.45;
-        finaleRef.current.style.opacity = showFinale ? "1" : "0";
-        finaleRef.current.style.transform = showFinale
-          ? "translateY(0)"
-          : "translateY(12px)";
-      }
-
-      // Scroll guidance text
-      if (scrollGuidanceRef.current) {
-        scrollGuidanceRef.current.textContent =
-          rawProgress < 0.95
-            ? "Scroll down to build villa in place ↓"
-            : "Residence standing proud! Scroll down to continue ↓";
-      }
-
-      // 3. React State ONLY updates when crossing step boundary (maximum 7 times total!)
-      if (activeIdx !== currentStepIdxRef.current) {
-        currentStepIdxRef.current = activeIdx;
-        setActiveStepIndex(activeIdx);
-      }
-    };
-
-    const handleScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          onScroll();
-          ticking = false;
-        });
-        ticking = true;
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    window.addEventListener("resize", handleScroll);
-    handleScroll();
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("resize", handleScroll);
-    };
-  }, []);
-
-  // Jump to specific step by smoothly scrolling the pinned track
-  const jumpToStep = useCallback((stepIndex: number) => {
-    if (!pinTrackRef.current) return;
-    const rect = pinTrackRef.current.getBoundingClientRect();
-    const trackTop = window.scrollY + rect.top;
-    const viewportHeight = window.innerHeight;
-    const totalScrollableDistance = rect.height - viewportHeight;
-
-    // Sweet-spot target scroll percentage for each of the 7 steps
-    const stepFractions = [0.06, 0.21, 0.36, 0.51, 0.65, 0.79, 0.94];
-    const targetScrollY = trackTop + stepFractions[stepIndex] * totalScrollableDistance;
-
-    window.scrollTo({
-      top: targetScrollY,
-      behavior: "smooth",
-    });
-  }, []);
-
-  const activeStep = JOURNEY_STEPS[activeStepIndex] || JOURNEY_STEPS[0];
+  const activeStep = JOURNEY_STEPS[activeStepIndex];
   const StepIcon = activeStep.icon;
+
+  const nextStep = useCallback(() => {
+    setActiveStepIndex((prev) => (prev < JOURNEY_STEPS.length - 1 ? prev + 1 : 0));
+  }, []);
+
+  const prevStep = useCallback(() => {
+    setActiveStepIndex((prev) => (prev > 0 ? prev - 1 : JOURNEY_STEPS.length - 1));
+  }, []);
 
   return (
     <section
       ref={sectionRef}
       id="journey"
-      className="bg-background relative border-t border-border"
+      className="bg-background relative py-16 sm:py-24 border-t border-border"
     >
       {/* Anchor aliases for backward compatibility */}
       <div id="process" className="sr-only" />
       <div id="methodology" className="sr-only" />
 
-      {/* ============================================================== */}
-      {/* PINNED IN-PLACE SCROLL TRACK CONTAINER (Locks for 460vh)       */}
-      {/* Stops user first: scrolling in place completes the house 01-07 */}
-      {/* Once 100% complete at Step 07, it naturally scrolls down       */}
-      {/* ============================================================== */}
-      <div ref={pinTrackRef} className="relative h-[460vh]">
-        {/* Sticky Viewport Stage: Pinned on Screen with navbar safe top padding */}
-        <div className="sticky top-0 h-screen w-full flex flex-col justify-between overflow-hidden bg-background px-3 sm:px-8 pt-20 sm:pt-22 lg:pt-24 pb-3 sm:pb-4 z-20">
-          <div className="mx-auto max-w-7xl w-full flex flex-col h-full justify-between">
-            {/* Top Bar: Section Title, Progress Track & 01-07 Steps Pill Bar */}
-            <div>
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2 sm:mb-2.5">
-                <div>
-                  <div className="inline-flex items-center gap-2 px-3 py-0.5 rounded-full bg-accent/10 border border-accent/30 text-accent text-[9px] uppercase tracking-[0.22em] font-medium font-mono">
-                    <Compass size={11} />
-                    <span>Our journey with you</span>
-                  </div>
-                  <h2 className="font-serif text-xl sm:text-2xl lg:text-3xl font-light text-foreground tracking-tight leading-tight mt-0.5">
-                    From our first meeting to{" "}
-                    <em className="font-serif italic font-normal text-accent">
-                      a home standing proud.
-                    </em>
-                  </h2>
-                </div>
-
-                {/* Progress Percentage Indicator */}
-                <div className="flex items-center gap-2.5 bg-surface px-3 py-1.5 rounded-2xl border border-border shadow-2xs">
-                  <div className="flex flex-col text-right">
-                    <span className="text-[9px] uppercase tracking-wider text-muted font-mono">
-                      Journey Completion
-                    </span>
-                    <span
-                      ref={stepProgressTextRef}
-                      className="font-mono text-xs font-semibold text-accent"
-                    >
-                      0% Complete
-                    </span>
-                  </div>
-                  <div className="w-16 h-2 bg-border/80 rounded-full overflow-hidden">
-                    <div
-                      ref={stepProgressBarRef}
-                      className="h-full bg-accent transition-all duration-150 rounded-full"
-                      style={{ width: "0%" }}
-                    />
-                  </div>
-                </div>
-              </div>
-
-              {/* 01 till 07 Step Selection Pills Bar */}
-              <div className="grid grid-cols-7 gap-1 sm:gap-2">
-                {JOURNEY_STEPS.map((step, idx) => {
-                  const isActive = activeStepIndex === idx;
-                  return (
-                    <button
-                      key={step.num}
-                      type="button"
-                      onClick={() => jumpToStep(idx)}
-                      className={`text-left p-1.5 sm:p-2 rounded-xl border transition-all duration-300 relative cursor-pointer flex flex-col justify-between ${
-                        isActive
-                          ? "bg-surface border-accent shadow-sm ring-1 ring-accent"
-                          : "bg-surface/50 border-border hover:border-accent/40"
-                      }`}
-                    >
-                      <div className="flex items-center gap-1">
-                        <span className="font-mono text-[11px] sm:text-xs uppercase tracking-widest text-accent font-bold">
-                          {step.num}
-                        </span>
-                        <span className="text-[8.5px] sm:text-[9.5px] uppercase tracking-wider text-foreground font-medium hidden md:inline truncate">
-                          {step.name}
-                        </span>
-                      </div>
-
-                      <div className="w-full bg-border/60 h-1 rounded-full mt-1 overflow-hidden">
-                        <div
-                          className={`h-full transition-all duration-300 ${
-                            isActive ? "bg-accent" : "bg-transparent"
-                          }`}
-                        />
-                      </div>
-                    </button>
-                  );
-                })}
-              </div>
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        {/* ============================================================== */}
+        {/* SECTION HEADER                                                */}
+        {/* ============================================================== */}
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-10 sm:mb-12">
+          <div className="max-w-2xl">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/10 border border-accent/25 text-accent text-[10px] uppercase tracking-[0.2em] font-mono font-medium mb-3">
+              <Compass size={12} />
+              <span>Our journey with you</span>
             </div>
+            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-light text-foreground tracking-tight leading-tight">
+              From our first meeting to{" "}
+              <em className="font-serif italic font-normal text-accent">
+                a home standing proud.
+              </em>
+            </h2>
+            <p className="text-sm sm:text-base text-foreground/75 font-light leading-relaxed mt-3">
+              A transparent 7-phase design-build process refined across Central Luzon. Watch each milestone unfold from initial blueprint to finished residence.
+            </p>
+          </div>
 
-            {/* Center Row: Side-by-Side 3D Journey Canvas + Live Step Dossier */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 sm:gap-4 flex-1 min-h-0 w-full my-1.5 sm:my-2 items-stretch">
-              {/* Left Column (7 cols): 3D Architectural Villa Model Stage */}
-              <div className="lg:col-span-7 xl:col-span-7 relative w-full h-[280px] sm:h-[340px] lg:h-full rounded-2xl sm:rounded-3xl bg-[#ebe5da] border border-border shadow-xl overflow-hidden flex flex-col">
-                <Journey3DCanvas
-                  onInit={(engine) => {
-                    journeyEngineRef.current = engine;
-                  }}
-                />
-
-                {/* Top-Left Sheet Phase Indicator */}
-                <div className="absolute top-3 left-3 pointer-events-none z-10 flex flex-col gap-1 max-w-[260px] sm:max-w-xs">
-                  <div className="flex items-center gap-1.5 bg-white/95 backdrop-blur-xs px-2.5 py-1 rounded-full border border-black/5 shadow-xs">
-                    <span className="h-2 w-2 rounded-full bg-accent animate-pulse" />
-                    <span
-                      ref={phaseLabelRef}
-                      className="text-[9.5px] uppercase tracking-wider font-mono text-accent font-bold truncate"
-                    >
-                      Sheet 01 · Consultation
-                    </span>
-                  </div>
-                </div>
-
-                {/* Official Signed & Sealed Architectural Stamp (Step 04) */}
-                <div
-                  ref={stampRef}
-                  style={{ opacity: 0, transform: "scale(0.85) rotate(-20deg)" }}
-                  className="absolute right-4 bottom-6 sm:right-6 sm:bottom-8 z-20 pointer-events-none select-none transition-all duration-300 ease-out"
-                >
-                  <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full border-4 border-double border-[#9b2f24] text-[#9b2f24] flex flex-col items-center justify-center text-center p-2 bg-radial from-[#9b2f24]/10 to-transparent shadow-lg shadow-[#9b2f24]/10 backdrop-blur-2xs">
-                    <span className="text-[6.5px] uppercase tracking-[0.2em] font-mono font-bold">
-                      Signed &amp; Sealed
-                    </span>
-                    <span className="font-serif text-xs font-semibold tracking-wide my-0.5">
-                      PRC Licensed
-                    </span>
-                    <span className="text-[6px] uppercase tracking-[0.16em] font-mono font-bold">
-                      RBC Builders &middot; 2026
-                    </span>
-                    <span className="text-[5.5px] text-[#9b2f24]/80 tracking-widest mt-0.5">
-                      San Fernando, Pampanga
-                    </span>
-                  </div>
-                </div>
-
-                {/* Finale Landing Banner (Step 07 Turnover) */}
-                <div
-                  ref={finaleRef}
-                  style={{ opacity: 0, transform: "translateY(12px)" }}
-                  className="absolute inset-x-0 bottom-6 sm:bottom-8 z-20 pointer-events-none flex flex-col items-center justify-center text-center px-4 transition-all duration-700 ease-out"
-                >
-                  <span className="font-serif italic text-lg sm:text-2xl text-amber-200 drop-shadow-md">
-                    This is RBC Builders.
-                  </span>
-                  <span className="text-[10px] sm:text-xs uppercase tracking-[0.25em] text-white/95 font-mono mt-1 drop-shadow-sm">
-                    A dream built for a family. A home standing proud.
-                  </span>
-                </div>
-
-                {/* Scroll Guidance Indicator */}
-                <div className="absolute bottom-3 left-3 pointer-events-none z-10 hidden sm:flex items-center gap-2 text-muted text-[9.5px] font-mono bg-white/85 px-3 py-1 rounded-full border border-border backdrop-blur-xs">
-                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-ping" />
-                  <span ref={scrollGuidanceRef}>
-                    Scroll down to build villa in place ↓
-                  </span>
-                </div>
-              </div>
-
-              {/* Right Column (5 cols): Live Step Dossier (Beside the Mansion as you scroll) */}
-              <div className="lg:col-span-5 xl:col-span-5 relative w-full h-full rounded-2xl sm:rounded-3xl bg-surface/95 backdrop-blur-md border border-border shadow-xl p-3.5 sm:p-5 flex flex-col justify-between overflow-y-auto lg:overflow-hidden min-h-0">
-                {/* Header: Step Number, Duration & Title */}
-                <div>
-                  <div className="flex items-center justify-between gap-2 mb-1">
-                    <div className="flex items-center gap-1.5">
-                      <span className="text-[9.5px] uppercase tracking-widest font-mono font-bold px-2 py-0.5 rounded-md bg-accent/15 text-accent border border-accent/30">
-                        Phase {activeStep.num}
-                      </span>
-                      <span className="text-[10px] uppercase tracking-wider font-mono text-muted">
-                        Stage {activeStepIndex + 1} of 07
-                      </span>
-                    </div>
-
-                    <span className="text-[9.5px] uppercase tracking-wider font-mono px-2 py-0.5 rounded-full bg-accent/10 border border-accent/25 text-accent font-medium">
-                      {activeStep.duration}
-                    </span>
-                  </div>
-
-                  <div className="flex items-center gap-2 mt-1">
-                    <StepIcon size={20} className="text-accent shrink-0" />
-                    <h3 className="font-serif text-xl sm:text-2xl text-foreground font-normal tracking-tight">
-                      {activeStep.name}
-                    </h3>
-                  </div>
-
-                  <p className="font-serif italic text-xs sm:text-sm text-accent/90 font-light mt-1">
-                    &ldquo;{activeStep.tagline}&rdquo;
-                  </p>
-
-                  <p className="text-xs text-foreground/75 font-light leading-relaxed mt-2 line-clamp-3">
-                    {activeStep.body}
-                  </p>
-                </div>
-
-                {/* Deliverables Checklist for Active Step */}
-                <div className="my-2 p-2.5 sm:p-3 rounded-xl bg-background/80 border border-border/80 flex-1 min-h-0 flex flex-col justify-center">
-                  <span className="text-[8.5px] uppercase tracking-widest font-mono text-accent font-semibold mb-2 block">
-                    Verified Engineering &amp; Design Deliverables:
-                  </span>
-                  <div className="space-y-1.5">
-                    {activeStep.deliverables.map((item, dIdx) => (
-                      <div key={dIdx} className="flex items-start gap-2 text-[11px] text-foreground/85">
-                        <CheckCircle2
-                          size={13}
-                          className="shrink-0 mt-0.5 text-accent"
-                        />
-                        <span className="leading-snug font-light">{item}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Direct Step Actions */}
-                <div className="flex items-center gap-2 pt-1 border-t border-border/60">
-                  <a
-                    href="#contact"
-                    className="flex-1 btn btn--accent rounded-full py-2 text-[10px] uppercase tracking-[0.16em] shadow-xs flex items-center justify-center gap-1.5 font-medium"
-                  >
-                    <span>Start Project Consultation</span>
-                    <ArrowRight size={11} />
-                  </a>
-
-                  <a
-                    href="#pricing"
-                    className="inline-flex items-center gap-1 px-3 py-2 rounded-full text-[10px] uppercase tracking-[0.16em] border border-border text-foreground hover:border-accent hover:text-accent bg-background transition-all cursor-pointer font-medium"
-                  >
-                    <span>View Pricing</span>
-                    <ArrowDown size={10} className="text-accent" />
-                  </a>
-                </div>
-              </div>
+          {/* Progress Indicator */}
+          <div className="flex items-center gap-3 bg-surface px-4 py-2 rounded-2xl border border-border shadow-2xs self-start sm:self-auto">
+            <div className="flex flex-col text-right">
+              <span className="text-[9px] uppercase tracking-wider text-muted font-mono">
+                Stage {activeStepIndex + 1} of 07
+              </span>
+              <span className="font-mono text-xs font-semibold text-accent">
+                {Math.round(((activeStepIndex + 1) / 7) * 100)}% Complete
+              </span>
             </div>
-
-            {/* Bottom Bar: Live Status & Municipal Footnote */}
-            <div className="flex items-center justify-between text-[10px] text-muted font-mono pt-1">
-              <span
-                ref={stepCounterRef}
-                className="text-accent font-semibold uppercase tracking-wider"
-              >
-                Step 01 / 07 &middot; Consultation
-              </span>
-              <span className="hidden sm:inline">
-                San Fernando, Pampanga &middot; PRC Licensed Design-Build Practice
-              </span>
+            <div className="w-16 h-2 bg-border/80 rounded-full overflow-hidden">
+              <div
+                className="h-full bg-accent transition-all duration-300 rounded-full"
+                style={{ width: `${Math.round(((activeStepIndex + 1) / 7) * 100)}%` }}
+              />
             </div>
           </div>
+        </div>
+
+        {/* ============================================================== */}
+        {/* 01 TILL 07 INTERACTIVE STAGE SELECTOR PILLS                    */}
+        {/* ============================================================== */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2 mb-8">
+          {JOURNEY_STEPS.map((step, idx) => {
+            const isActive = activeStepIndex === idx;
+            return (
+              <button
+                key={step.num}
+                type="button"
+                onClick={() => setActiveStepIndex(idx)}
+                className={`text-left p-3 rounded-2xl border transition-all duration-300 relative cursor-pointer flex flex-col justify-between ${
+                  isActive
+                    ? "bg-surface border-accent shadow-md ring-2 ring-accent/30"
+                    : "bg-surface/50 border-border hover:border-accent/40 hover:bg-surface"
+                }`}
+              >
+                <div className="flex items-center justify-between gap-1 mb-1.5">
+                  <span className="font-mono text-xs uppercase tracking-widest text-accent font-bold">
+                    {step.num}
+                  </span>
+                  <span className="text-[8.5px] uppercase font-mono text-muted/80">
+                    {step.duration.split(" ")[0]}
+                  </span>
+                </div>
+
+                <span className="text-[11px] sm:text-xs text-foreground font-medium truncate block">
+                  {step.name}
+                </span>
+
+                <div className="w-full bg-border/60 h-1 rounded-full mt-2.5 overflow-hidden">
+                  <div
+                    className={`h-full transition-all duration-300 ${
+                      isActive ? "bg-accent" : "bg-transparent"
+                    }`}
+                  />
+                </div>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* ============================================================== */}
+        {/* MAIN STAGE: 3D MODEL STAGE (LEFT) + STEP DOSSIER (RIGHT)       */}
+        {/* Generous un-cramped height, no squashing, no rigid h-screen     */}
+        {/* ============================================================== */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-stretch">
+          {/* Left Column (7 cols): Spacious 3D Architectural Villa Model Stage */}
+          <div className="lg:col-span-7 xl:col-span-7 relative w-full h-[420px] sm:h-[480px] lg:h-[560px] rounded-3xl bg-[#ebe5da] border border-border shadow-xl overflow-hidden flex flex-col">
+            <Journey3DCanvas progress={activeStepIndex} />
+
+            {/* Top-Left Sheet Phase Indicator */}
+            <div className="absolute top-4 left-4 pointer-events-none z-10 flex flex-col gap-1.5 max-w-[280px]">
+              <div className="flex items-center gap-2 bg-white/95 backdrop-blur-xs px-3 py-1.5 rounded-full border border-black/5 shadow-xs">
+                <span className="h-2 w-2 rounded-full bg-accent animate-pulse" />
+                <span className="text-[10px] uppercase tracking-wider font-mono text-accent font-bold truncate">
+                  {activeStep.phaseCode}
+                </span>
+              </div>
+            </div>
+
+            {/* Signed & Sealed Architectural Stamp (Step 04) */}
+            {activeStepIndex === 3 && (
+              <div className="absolute right-6 bottom-8 z-20 pointer-events-none select-none transition-all duration-500 ease-out animate-in fade-in zoom-in-90">
+                <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-full border-4 border-double border-[#9b2f24] text-[#9b2f24] flex flex-col items-center justify-center text-center p-2 bg-radial from-[#9b2f24]/10 to-transparent shadow-xl backdrop-blur-2xs rotate-[-12deg]">
+                  <span className="text-[7px] uppercase tracking-[0.2em] font-mono font-bold">
+                    Signed &amp; Sealed
+                  </span>
+                  <span className="font-serif text-xs font-bold tracking-wide my-0.5">
+                    PRC Licensed
+                  </span>
+                  <span className="text-[6.5px] uppercase tracking-[0.16em] font-mono font-bold">
+                    RBC Builders &middot; 2026
+                  </span>
+                  <span className="text-[6px] text-[#9b2f24]/80 tracking-widest mt-0.5">
+                    San Fernando, Pampanga
+                  </span>
+                </div>
+              </div>
+            )}
+
+            {/* Finale Landing Banner (Step 07 Turnover) */}
+            {activeStepIndex === 6 && (
+              <div className="absolute inset-x-0 bottom-8 z-20 pointer-events-none flex flex-col items-center justify-center text-center px-4 transition-all duration-700 ease-out animate-in fade-in slide-in-from-bottom-3">
+                <span className="font-serif italic text-xl sm:text-2xl text-amber-200 drop-shadow-md">
+                  This is RBC Builders.
+                </span>
+                <span className="text-[10.5px] sm:text-xs uppercase tracking-[0.22em] text-white/95 font-mono mt-1 drop-shadow-sm">
+                  A dream built for a family. A home standing proud.
+                </span>
+              </div>
+            )}
+
+            {/* Bottom-Left Interaction Hint */}
+            <div className="absolute bottom-4 left-4 pointer-events-none z-10 hidden sm:flex items-center gap-2 text-muted text-[10px] font-mono bg-white/90 px-3.5 py-1.5 rounded-full border border-border backdrop-blur-xs shadow-2xs">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-ping" />
+              <span>Interactive 3D &middot; Hover to Parallax</span>
+            </div>
+
+            {/* Bottom-Right Stage Navigation Arrows */}
+            <div className="absolute bottom-4 right-4 z-20 flex items-center gap-1.5 bg-white/90 p-1 rounded-full border border-border shadow-xs backdrop-blur-xs">
+              <button
+                type="button"
+                onClick={prevStep}
+                aria-label="Previous Stage"
+                className="p-2 rounded-full hover:bg-accent/15 text-foreground hover:text-accent transition-colors cursor-pointer"
+              >
+                <ArrowLeft size={14} />
+              </button>
+              <span className="text-[10px] font-mono text-muted px-1.5">
+                {activeStep.num} / 07
+              </span>
+              <button
+                type="button"
+                onClick={nextStep}
+                aria-label="Next Stage"
+                className="p-2 rounded-full hover:bg-accent/15 text-foreground hover:text-accent transition-colors cursor-pointer"
+              >
+                <ArrowRight size={14} />
+              </button>
+            </div>
+          </div>
+
+          {/* Right Column (5 cols): Spacious, Uncramped Live Step Dossier */}
+          <div className="lg:col-span-5 xl:col-span-5 relative w-full rounded-3xl bg-surface border border-border shadow-xl p-6 sm:p-8 lg:p-9 flex flex-col justify-between">
+            {/* Top Phase Header */}
+            <div>
+              <div className="flex items-center justify-between gap-2 mb-3">
+                <div className="flex items-center gap-2">
+                  <span className="text-[10px] uppercase tracking-widest font-mono font-bold px-2.5 py-0.5 rounded-md bg-accent/15 text-accent border border-accent/30">
+                    Phase {activeStep.num}
+                  </span>
+                  <span className="text-[10.5px] uppercase tracking-wider font-mono text-muted">
+                    Stage {activeStepIndex + 1} of 07
+                  </span>
+                </div>
+
+                <div className="flex items-center gap-1 text-[10px] uppercase tracking-wider font-mono px-3 py-1 rounded-full bg-accent/10 border border-accent/25 text-accent font-medium">
+                  <Calendar size={11} />
+                  <span>{activeStep.duration}</span>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2.5 mt-2">
+                <StepIcon size={22} className="text-accent shrink-0" />
+                <h3 className="font-serif text-2xl sm:text-3xl text-foreground font-normal tracking-tight">
+                  {activeStep.name}
+                </h3>
+              </div>
+
+              <p className="font-serif italic text-sm text-accent/90 font-light mt-2">
+                &ldquo;{activeStep.tagline}&rdquo;
+              </p>
+
+              <p className="text-xs sm:text-sm text-foreground/75 font-light leading-relaxed mt-3">
+                {activeStep.body}
+              </p>
+            </div>
+
+            {/* Deliverables Checklist (Generous, clean, NO blank grey voids!) */}
+            <div className="my-6 p-4 sm:p-5 rounded-2xl bg-background/80 border border-border/80">
+              <span className="text-[9.5px] uppercase tracking-widest font-mono text-accent font-semibold mb-3 block">
+                Verified Engineering &amp; Design Deliverables:
+              </span>
+              <div className="space-y-2.5">
+                {activeStep.deliverables.map((item, dIdx) => (
+                  <div key={dIdx} className="flex items-start gap-2.5 text-xs text-foreground/85">
+                    <CheckCircle2
+                      size={15}
+                      className="shrink-0 mt-0.5 text-accent"
+                    />
+                    <span className="leading-snug font-light">{item}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Professional Oversight */}
+            <div className="pb-5 mb-5 border-b border-border/60 flex items-center gap-2 text-xs text-muted font-mono">
+              <UserCheck size={14} className="text-accent shrink-0" />
+              <span>
+                <strong>Supervised by:</strong> {activeStep.leadRole}
+              </span>
+            </div>
+
+            {/* Step Action Buttons */}
+            <div className="flex flex-col sm:flex-row items-center gap-3">
+              <a
+                href="#contact"
+                className="w-full sm:flex-1 btn btn--accent rounded-full py-2.5 text-[11px] uppercase tracking-[0.16em] shadow-xs flex items-center justify-center gap-2 font-medium"
+              >
+                <span>Start Project Consultation</span>
+                <ArrowRight size={13} />
+              </a>
+
+              <button
+                type="button"
+                onClick={nextStep}
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-full text-[11px] uppercase tracking-[0.16em] border border-border text-foreground hover:border-accent hover:text-accent bg-background transition-all cursor-pointer font-medium"
+              >
+                <span>
+                  {activeStepIndex === 6 ? "Review Stage 01" : `Next: Stage 0${activeStepIndex + 2}`}
+                </span>
+                <ArrowRight size={12} className="text-accent" />
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* ============================================================== */}
+        {/* BOTTOM TIMELINE MILESTONE TRACKER                             */}
+        {/* ============================================================== */}
+        <div className="mt-12 pt-6 border-t border-border/60 flex flex-col sm:flex-row sm:items-center justify-between text-xs text-muted font-mono gap-3">
+          <div className="flex items-center gap-2">
+            <Sparkles size={14} className="text-accent" />
+            <span>
+              100% On-Time Turnkey Delivery Guarantee Across Central Luzon
+            </span>
+          </div>
+          <span>San Fernando, Pampanga &middot; PRC Licensed Design-Build Practice</span>
         </div>
       </div>
     </section>
