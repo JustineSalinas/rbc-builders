@@ -41,7 +41,7 @@ export default function About() {
         {/* Section Header */}
         <div data-reveal className="max-w-3xl mb-16 sm:mb-24">
           <p className="text-[11px] uppercase tracking-[0.25em] text-accent font-medium mb-3">
-            The Practice · Architectural Design + Construction
+            About The Firm · Architecture &amp; Construction
           </p>
           <h2 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-light text-foreground leading-[1.1] tracking-tight">
             A singular responsibility from architectural conception to structural reality.

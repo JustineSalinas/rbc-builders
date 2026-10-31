@@ -122,16 +122,18 @@ export default function Pricing() {
     floorArea < 180 ? "7–9" : floorArea < 300 ? "9–11" : "11–14";
 
   return (
-    <section ref={sectionRef} id="specifications" className="py-28 sm:py-36 px-4 sm:px-8 bg-background relative border-t border-border">
+    <section ref={sectionRef} id="pricing" className="py-28 sm:py-36 px-4 sm:px-8 bg-background relative border-t border-border">
+      {/* Anchor alias for backwards compatibility */}
+      <div id="specifications" className="sr-only" />
       <div className="mx-auto max-w-7xl">
         {/* Section Header */}
         <div data-reveal className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-16 sm:mb-20">
           <div>
             <p className="text-[11px] uppercase tracking-[0.25em] text-accent font-medium mb-3">
-              Investment Framework
+              Pricing &amp; Build Rates
             </p>
             <h2 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-light text-foreground tracking-tight leading-[1.1]">
-              Architectural Specifications &amp; Build Standards
+              Construction Rates &amp; Build Standards
             </h2>
           </div>
           <p className="text-sm sm:text-base text-foreground/70 font-light max-w-md leading-relaxed">

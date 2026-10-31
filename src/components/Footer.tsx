@@ -6,11 +6,11 @@ import { ArrowUp } from "lucide-react";
 import { useReveal } from "@/lib/useReveal";
 
 const EXPLORE_LINKS = [
-  { href: "#about", label: "The Practice" },
-  { href: "#services", label: "Disciplines" },
-  { href: "#projects", label: "Selected Works" },
-  { href: "#specifications", label: "Specifications & Cost" },
-  { href: "#methodology", label: "Design-Build Methodology" },
+  { href: "#about", label: "About RBC Builders" },
+  { href: "#services", label: "Our Services" },
+  { href: "#projects", label: "Featured Projects" },
+  { href: "#pricing", label: "Pricing & Rates" },
+  { href: "#process", label: "Construction Process" },
   { href: "#contact", label: "Commission An Estate" },
 ];
 

@@ -117,16 +117,18 @@ export default function Process() {
   const [activeStep, setActiveStep] = useState(0);
 
   return (
-    <section ref={sectionRef} id="methodology" className="py-28 sm:py-36 px-4 sm:px-8 bg-surface relative border-t border-border">
+    <section ref={sectionRef} id="process" className="py-28 sm:py-36 px-4 sm:px-8 bg-surface relative border-t border-border">
+      {/* Anchor alias for backwards compatibility */}
+      <div id="methodology" className="sr-only" />
       <div className="mx-auto max-w-7xl">
         {/* Header */}
         <div data-reveal className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-16 sm:mb-20">
           <div>
             <p className="text-[11px] uppercase tracking-[0.25em] text-accent font-medium mb-3">
-              The Design-Build Methodology
+              Our Construction Process
             </p>
             <h2 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-light text-foreground tracking-tight leading-[1.1]">
-              Seven Phases. Uncompromising Rigor.
+              Seven Phases. Turnkey Design-Build Process.
             </h2>
           </div>
           <p className="text-sm sm:text-base text-foreground/70 font-light max-w-md leading-relaxed">

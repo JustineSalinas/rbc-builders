@@ -82,10 +82,10 @@ export default function Services() {
         <div data-reveal className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-16 sm:mb-20">
           <div>
             <p className="text-[11px] uppercase tracking-[0.25em] text-accent font-medium mb-3">
-              Capabilities Matrix
+              Services &amp; Capabilities
             </p>
             <h2 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-light text-foreground tracking-tight leading-[1.1]">
-              Four Disciplines. One Accountable Master Builder.
+              Four Core Services. One Accountable Master Builder.
             </h2>
           </div>
           <p className="text-sm sm:text-base text-foreground/70 font-light max-w-md leading-relaxed">
