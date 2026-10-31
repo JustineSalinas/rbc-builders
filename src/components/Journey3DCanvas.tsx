@@ -579,18 +579,18 @@ export default function Journey3DCanvas({
       },
     });
 
-    // ── Intimate Close-Up Camera Spline Path (House always prominent and visible!) ──
+    // ── Spacious Cinematic Camera Spline Path (Villa fully framed, classy & zoomed out) ──
     const V = (x: number, y: number, z: number) => new THREE.Vector3(x, y, z);
     const camPath = new THREE.CatmullRomCurve3(
       [
-        V(9.5, 12.5, 12.5),  // 0: Blueprint drafting axonometric view (close & crisp!)
-        V(11.0, 11.0, 13.5), // 1: Sweeping around site stakes & sun arc
-        V(12.5, 9.0, 12.5),  // 2: Massing volumes rising
-        V(11.8, 7.8, 12.0),  // 3: Technical elevation with stamp
-        V(11.0, 8.5, 12.5),  // 4: Excavation & concrete footings
-        V(10.8, 6.2, 11.8),  // 5: Construction of columns, travertine portal & louvers
-        V(10.2, 3.8, 11.2),  // 6: Dusk eye level looking up at villa standing proud!
-        V(10.2, 3.8, 11.2),  // 7: Clamped at final beauty angle
+        V(14.0, 22.0, 20.0), // 0: Blueprint drafting axonometric view (full drafting board visible)
+        V(19.0, 18.0, 22.0), // 1: Sweeping around site survey stakes & sun arc
+        V(20.0, 15.0, 24.0), // 2: Alabaster massing volumes rising
+        V(18.0, 13.0, 24.0), // 3: Technical elevation with PRC stamp
+        V(17.0, 13.0, 22.0), // 4: Excavation trenches & foundation rebar cages
+        V(18.0, 11.0, 25.0), // 5: Construction of columns, travertine portal & louvers
+        V(16.5, 8.5, 25.0),  // 6: Dusk beauty angle looking at villa standing proud
+        V(16.5, 8.5, 25.0),  // 7: Clamped at final beauty angle
       ],
       false,
       "centripetal"
@@ -598,14 +598,14 @@ export default function Journey3DCanvas({
 
     const lookPath = new THREE.CatmullRomCurve3(
       [
-        V(0, 0.4, 0),        // 0: Center of blueprint
-        V(0, 0.8, 0.5),      // 1: Center of site
-        V(0, 1.8, 0.8),      // 2: Massing center
-        V(0, 2.0, 0.8),      // 3: Elevation center
-        V(0, 1.2, 0.5),      // 4: Footing center
-        V(0, 2.2, 0.8),      // 5: Travertine portal center
-        V(0.2, 2.4, 0.8),    // 6: Completed villa facade
-        V(0.2, 2.4, 0.8),    // 7: Completed villa facade
+        V(0.5, 0.2, 0.0),   // 0: Center of blueprint
+        V(0.5, 0.8, 0.5),   // 1: Center of site
+        V(0.5, 2.0, 0.5),   // 2: Massing center
+        V(0.5, 2.2, 0.5),   // 3: Elevation center
+        V(0.5, 1.2, 0.5),   // 4: Footing center
+        V(0.5, 2.5, 0.5),   // 5: Travertine portal center
+        V(0.5, 2.8, 0.5),   // 6: Completed villa facade center
+        V(0.5, 2.8, 0.5),   // 7: Completed villa facade center
       ],
       false,
       "centripetal"
