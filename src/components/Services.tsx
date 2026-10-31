@@ -26,9 +26,9 @@ const DISCIPLINES = [
     icon: HardHat,
     tag: "Build Phase",
     title: "Turnkey General Contracting (Labor & Materials)",
-    subtitle: "End-to-end site mobilization, structural execution, and bespoke interior fit-out.",
+    subtitle: "End-to-end site mobilization, structural execution, and turnkey interior fit-out.",
     description:
-      "We provide our own dedicated construction crews, licensed project engineers, and vetted material supply chains. Whether building to Bare Shell or Bespoke Luxury specifications, our workmanship adheres strictly to the National Structural Code of the Philippines.",
+      "We provide our own dedicated construction crews, licensed project engineers, and vetted material supply chains. Whether building to Bare Shell or Luxury specifications, our workmanship adheres strictly to the National Structural Code of the Philippines.",
     deliverables: [
       "Soil bearing verification, site clearing & excavation",
       "Reinforced concrete substructure & structural framing",
@@ -85,7 +85,7 @@ export default function Services() {
               Services &amp; Capabilities
             </p>
             <h2 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-light text-foreground tracking-tight leading-[1.1]">
-              Four Core Services. One Accountable Master Builder.
+              Four Core Services. One Accountable Builder.
             </h2>
           </div>
           <p className="text-sm sm:text-base text-muted font-light max-w-md leading-relaxed">

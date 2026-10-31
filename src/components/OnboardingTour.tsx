@@ -15,10 +15,10 @@ type TourStep = {
 const TOUR_STEPS: TourStep[] = [
   {
     id: "top",
-    badge: "01 / 10 · Executive Positioning",
-    title: "Architecture with Permanence",
+    badge: "01 / 10 · Firm Introduction",
+    title: "Welcome to RBC Builders",
     getDescription: (name) =>
-      `Welcome to RBC Builders, ${name}. Here is our master architectural positioning and PRC-accredited credentials across Central Luzon. Explore our signature residential slideshow and key built metrics.`,
+      `Welcome to RBC Builders, ${name}. Here is our design-build overview and PRC-accredited credentials across Central Luzon. Explore our signature residential projects and key built metrics.`,
     actionHint: "Inspect the slideshow controls and built square meters delivered.",
   },
   {
@@ -48,7 +48,7 @@ const TOUR_STEPS: TourStep[] = [
   {
     id: "transformation",
     badge: "05 / 10 · Site Transformation",
-    title: "Groundwork to Turnkey Permanence",
+    title: "Groundwork to Completed Home",
     getDescription: (name) =>
       `Witness our construction integrity, ${name}. Use the interactive before-and-after slider to compare raw structural groundwork with the completed residence handover.`,
     actionHint: "Drag the slider left and right or use your keyboard arrow keys.",
@@ -71,18 +71,18 @@ const TOUR_STEPS: TourStep[] = [
   },
   {
     id: "testimonials",
-    badge: "08 / 10 · Homeowner Endorsements",
-    title: "Reputation Built on Concrete",
+    badge: "08 / 10 · Client Feedback",
+    title: "Homeowner Endorsements",
     getDescription: (name) =>
-      `Read authentic testimonials from estate owners and fellow professionals who built their homes with RBC Builders, ${name}.`,
+      `Read authentic reviews from homeowners and professionals who built their homes with RBC Builders, ${name}.`,
     actionHint: "Browse the endorsement carousel and review our 15-year structural warranty badge.",
   },
   {
     id: "contact",
-    badge: "09 / 10 · Commission An Estate",
-    title: "Private Consultation & Brief",
+    badge: "09 / 10 · Start Your Project",
+    title: "Consultation & Project Brief",
     getDescription: (name) =>
-      `Ready to build your bespoke residence, ${name}? Complete our 5-step interactive project brief or connect directly with our chief architects via direct phone and official email.`,
+      `Ready to build your home, ${name}? Complete our 5-step interactive project brief or connect directly with our team via direct phone and official email.`,
     actionHint: "Use the guided brief wizard or submit a direct inquiry form.",
   },
   {

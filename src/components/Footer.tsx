@@ -12,7 +12,7 @@ const EXPLORE_LINKS = [
   { href: "#pricing", label: "Pricing & Rates" },
   { href: "#process", label: "Construction Process" },
   { href: "#testimonials", label: "Client Endorsements" },
-  { href: "#contact", label: "Commission An Estate" },
+  { href: "#contact", label: "Start Your Project" },
 ];
 
 const DISCIPLINES = [
@@ -124,16 +124,16 @@ export default function Footer() {
               <div className="inline-flex items-center gap-2 px-3.5 py-1 mb-4 border border-accent/40 rounded-full bg-white/85 shadow-sm backdrop-blur-sm">
                 <span className="h-1.5 w-1.5 rounded-full bg-accent animate-pulse" />
                 <span className="text-[10px] uppercase tracking-[0.24em] text-accent font-medium font-mono">
-                  Central Luzon Master Practice &middot; San Fernando, Pampanga
+                  Design &amp; Build Contractor &middot; San Fernando, Pampanga
                 </span>
               </div>
 
               <h2 id="estate-finale-title" className="font-serif text-3xl sm:text-5xl lg:text-6xl font-light text-[#151413] tracking-tight leading-[1.08]">
-                Every landmark residence begins with a conversation.
+                Every custom home begins with a conversation.
               </h2>
 
               <p className="text-sm sm:text-base text-[#5c564e] font-light mt-4 max-w-2xl leading-relaxed">
-                Schedule a private design-build consultation with our principal architects and structural engineers. We provide full feasibility reviews, custom schematics, and transparent cost models.
+                Schedule a design-build consultation with our licensed architects and engineers. We provide full site feasibility reviews, custom architectural plans, and transparent cost estimates.
               </p>
 
               {/* Direct Consultation Actions */}
@@ -142,7 +142,7 @@ export default function Footer() {
                   href="#contact"
                   className="btn btn--accent shadow-md rounded-full px-7 py-3.5 text-xs uppercase tracking-[0.18em]"
                 >
-                  <span>Commission an Estate</span>
+                  <span>Start Your Project</span>
                   <ArrowRight size={14} />
                 </a>
 

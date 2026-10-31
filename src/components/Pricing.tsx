@@ -77,12 +77,12 @@ const FINISH_GRADES: FinishGrade[] = [
   },
   {
     id: "luxury",
-    name: "Bespoke Luxury Specification",
+    name: "Luxury Specification",
     minRate: 29000,
     maxRate: null,
     rateDisplay: "₱29,000+",
     image: "/images/finish-luxury.jpg",
-    tagline: "Museum-grade finishes, custom architectural joinery, and automated illumination.",
+    tagline: "High-end imported finishes, custom architectural woodwork, and cove illumination.",
     specifications: {
       ceiling: "Multi-tier floating cove ceilings, acoustic timber battens",
       windows: "Thermal-break powder-coated floor-to-ceiling sliding fenestration",

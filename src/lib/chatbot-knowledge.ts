@@ -22,20 +22,20 @@ export const INTENTS: Intent[] = [
     id: "pricing",
     keywords: ["price", "pricing", "cost", "rate", "budget", "finish tier", "per sqm", "square meter", "estimate", "calculator"],
     reply:
-      "We build under four transparent architectural specification grades: Bare Shell (₱18k–₱20k/m²), Standard Craft (₱20k–₱25k/m²), Premium Architectural (₱25k–₱29k/m²), and Bespoke Luxury (₱29k+/m²). Each specification includes structural concrete, labor, materials, permits, and complete finish packages.",
-    followUps: ["What is included in Bespoke Luxury?", "How do I request a site inspection?"],
+      "We build under four clear construction specification grades: Bare Shell (₱18k–₱20k/m²), Standard (₱20k–₱25k/m²), Premium Architectural (₱25k–₱29k/m²), and Luxury (₱29k+/m²). Each grade includes structural concrete, labor, materials, permits, and complete finish packages.",
+    followUps: ["What is included in the Luxury tier?", "How do I request a site inspection?"],
   },
   {
     id: "luxury-detail",
-    keywords: ["luxury", "luxury finish", "bespoke", "what is included in luxury", "highest tier"],
+    keywords: ["luxury", "luxury finish", "highest tier", "what is included in luxury"],
     reply:
-      "Our Bespoke Luxury grade (₱29,000+/m²) features heavy-gauge powder-coated architectural aluminum windows, imported large-format porcelain slabs, solid hardwood doors with European architectural hardware, multi-tier cove lighting, acoustic wood slatting, and premium designer sanitary fixtures.",
+      "Our Luxury grade (₱29,000+/m²) features heavy-gauge powder-coated architectural aluminum windows, imported large-format porcelain slabs, solid hardwood doors, multi-tier cove lighting, acoustic wood slatting, and premium designer sanitary fixtures.",
   },
   {
     id: "services",
     keywords: ["service", "offer", "what do you do", "design", "build", "construction", "disciplines"],
     reply:
-      "RBC Builders offers end-to-end design-build services: bespoke architectural planning and 3D visualization, complete general contracting (labor & materials), government building permit acquisition, and accredited bank loan financing facilitation.",
+      "RBC Builders offers turnkey design-build services: custom architectural planning and 3D visualization, complete general contracting (labor & materials), government building permit processing, and bank loan assistance.",
     followUps: ["Do you handle building permits?", "How does bank loan assistance work?"],
   },
   {
@@ -82,7 +82,7 @@ export const INTENTS: Intent[] = [
 ];
 
 export const FALLBACK_REPLY =
-  "For bespoke requirements, structural feasibility reviews, or private site consultations, please contact our team directly at 0977 287 3075 or email rbcbuilders70@gmail.com.";
+  "For project inquiries, site inspections, or structural consultations, please contact our team directly at 0977 287 3075 or email rbcbuilders70@gmail.com.";
 
 export function matchIntent(input: string): Intent | null {
   const text = input.toLowerCase();

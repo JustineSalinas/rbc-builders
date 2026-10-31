@@ -57,7 +57,7 @@ const FINISH_TIERS = [
   "Bare Shell (₱18k–₱20k/m²)",
   "Standard Architectural (₱20k–₱25k/m²)",
   "Premium Architectural (₱25k–₱29k/m²)",
-  "Bespoke Luxury (₱29k+/m²)",
+  "Luxury Specification (₱29k+/m²)",
   "Seeking Architect Recommendation",
 ];
 
@@ -97,7 +97,7 @@ export default function BriefWizard() {
         method: "POST",
         headers: { "Content-Type": "application/json", Accept: "application/json" },
         body: JSON.stringify({
-          _subject: `New Estate Commission Inquiry: ${data.name} (${data.projectScope})`,
+          _subject: `New Project Inquiry: ${data.name} (${data.projectScope})`,
           "Project Scope": data.projectScope,
           Location: data.location,
           "Floor Area": data.floorArea,

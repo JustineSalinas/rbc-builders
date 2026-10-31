@@ -8,7 +8,7 @@ const PILLARS = [
   {
     icon: Layers,
     title: "Unified Design-Build Accountability",
-    desc: "No friction between separate architects and general contractors. From initial structural blueprints to the final interior coat, a single master builder is responsible for your investment.",
+    desc: "No friction between separate architects and general contractors. From initial structural blueprints to the final interior coat, a single accountable builder is responsible for your investment.",
   },
   {
     icon: Scale,
@@ -22,8 +22,8 @@ const PILLARS = [
   },
   {
     icon: Sparkles,
-    title: "Bespoke Material Finishes",
-    desc: "From Bare Shell to Bespoke Luxury finishes, our sourced materials — imported porcelain slabs, analok architectural windows, solid hardwood millwork — are guaranteed authentic.",
+    title: "High-Quality Material Finishes",
+    desc: "From Bare Shell to Luxury specification grades, our sourced materials — imported porcelain slabs, analok architectural windows, and solid hardwood millwork — are guaranteed authentic.",
   },
 ];
 
@@ -97,7 +97,7 @@ export default function About() {
                 Most home building projects stumble over the historic disconnect between creative designers and general contractors. An independent architect drafts a vision without direct accountability for construction costs; the builder inherits plans they must interpret; and the homeowner absorbs the expensive fallout of variation orders and delayed permits.
               </p>
               <p className="text-base sm:text-lg text-foreground/80 font-light leading-relaxed">
-                RBC Builders operates on the integrated <strong className="text-foreground font-medium">Design-Build</strong> doctrine. Our architects, civil engineers, master carpenters, and permit officers work side by side under one roof. We draft with structural awareness, build with architectural reverence, and stand behind our work for decades to come.
+                RBC Builders operates on an integrated <strong className="text-foreground font-medium">Design-Build</strong> methodology. Our architects, civil engineers, project supervisors, and permit officers work side by side under one roof. We draft with structural awareness, build with precision, and stand behind our work for decades to come.
               </p>
             </div>
 

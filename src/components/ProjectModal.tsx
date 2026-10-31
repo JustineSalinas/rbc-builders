@@ -150,7 +150,7 @@ export default function ProjectModal({
               onClick={onClose}
               className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-3 text-xs uppercase tracking-[0.2em] font-medium bg-accent text-white hover:bg-accent-dim transition-colors shadow-sm"
             >
-              <span>Commission an Estate Like This</span>
+              <span>Build a Home Like This</span>
               <ArrowRight size={13} />
             </a>
           </div>

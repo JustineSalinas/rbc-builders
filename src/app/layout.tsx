@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://rbcbuilders.ph"),
   title: "RBC Builders | Architectural Design & Luxury Construction · Pampanga",
   description:
-    "Premier design-build architectural and general construction firm based in San Fernando, Pampanga. Engineering bespoke luxury residences, government permits, labor, materials, and turnkey execution across Central Luzon.",
+    "Design-build architectural and general construction firm based in San Fernando, Pampanga. Custom residential construction, building permits, labor, materials, and turnkey execution across Central Luzon.",
   keywords: [
     "RBC Builders",
     "luxury architecture Pampanga",
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "RBC Builders | Architecture & Luxury Construction",
     description:
-      "Architecture with permanence. Built with precision. Turnkey design-build construction services across Central Luzon.",
+      "Turnkey design-build architectural and general construction services across Pampanga and Central Luzon.",
     images: ["/images/hero.jpg"],
   },
 };

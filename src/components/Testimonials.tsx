@@ -15,7 +15,7 @@ const CASE_STUDIES = [
   },
   {
     quote:
-      "As a civil engineer by profession, I rigorously inspected their rebar tie spacing, ready-mix concrete compression tests, and roof truss welding. RBC Builders builds with uncompromising structural honesty. The finish quality on our second floor terrace is exceptional.",
+      "As a civil engineer by profession, I rigorously inspected their rebar tie spacing, ready-mix concrete compression tests, and roof truss welding. RBC Builders builds with strict engineering standards and real attention to detail. The finish quality on our second floor terrace is exceptional.",
     client: "Engr. Martin Gutierrez",
     project: "Modern Cantilever Villa · 320 m²",
     location: "Angeles City, Pampanga",
@@ -73,11 +73,11 @@ export default function Testimonials() {
               Homeowner Endorsements
             </p>
             <h2 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-light text-foreground tracking-tight leading-[1.1]">
-              Reputation Built on Concrete Reality
+              Trusted by Homeowners Across Central Luzon
             </h2>
           </div>
           <p className="text-sm sm:text-base text-foreground/70 font-light max-w-md leading-relaxed">
-            Read how estate owners, medical professionals, and engineers across Central Luzon experienced our turnkey design-build standard.
+            Read how families and professionals across Pampanga and Central Luzon experienced our turnkey design-build standard.
           </p>
         </div>
 

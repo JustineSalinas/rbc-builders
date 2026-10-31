@@ -29,7 +29,7 @@ export default function BeforeAfter() {
               Site Transformation
             </p>
             <h2 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-light text-foreground tracking-tight leading-[1.1]">
-              From Structural Groundwork to Turnkey Permanence
+              From Groundwork to Completed Handover
             </h2>
           </div>
           <div className="flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-muted">

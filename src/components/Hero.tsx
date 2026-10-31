@@ -103,7 +103,7 @@ export default function Hero() {
 
             {/* Core Narrative Paragraph */}
             <p className="hero-reveal text-sm sm:text-[15px] text-foreground/75 leading-relaxed font-light mb-8 max-w-lg">
-              Headquartered in the City of San Fernando, Pampanga, RBC Builders unifies bespoke architectural planning, seismic structural calculations, LGU municipal permitting, and turnkey master construction across Central Luzon.
+              Headquartered in the City of San Fernando, Pampanga, RBC Builders unifies architectural planning, structural engineering, building permits, and turnkey general construction across Central Luzon.
             </p>
 
             {/* Call to Actions */}
@@ -112,7 +112,7 @@ export default function Hero() {
                 href="#contact"
                 className="btn btn--accent shadow-md rounded-full px-7"
               >
-                <span>Commission an Estate</span>
+                <span>Start Your Project</span>
                 <ArrowRight size={14} />
               </a>
 
