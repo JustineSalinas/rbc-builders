@@ -1,17 +1,17 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import dynamic from "next/dynamic";
-import { ArrowRight, Calculator, ShieldCheck, Sparkles, ArrowDown, ChevronDown, ChevronUp, Layers, Compass, RotateCw } from "lucide-react";
+import { ArrowRight, Calculator, ShieldCheck, Sparkles, ArrowDown, ChevronDown, ChevronUp, Layers, Compass } from "lucide-react";
 import { useReveal } from "@/lib/useReveal";
 
-// Dynamically load 3D Canvas with ssr: false to prevent hydration/canvas issues
+// Dynamically load 3D Canvas with ssr: false
 const Mansion3DScene = dynamic(() => import("./Mansion3DScene"), {
   ssr: false,
   loading: () => (
     <div className="w-full h-full min-h-[380px] flex flex-col items-center justify-center bg-gradient-to-b from-[#f9f7f2] to-[#f2ede4] text-muted text-xs font-mono gap-3 p-8">
       <div className="h-8 w-8 rounded-full border-2 border-accent border-t-transparent animate-spin" />
-      <span>Loading 3D Architectural Mansion Engine...</span>
+      <span>Initializing 3D Architectural Mansion Engine...</span>
     </div>
   ),
 });
@@ -153,43 +153,71 @@ const LOCATIONS = [
 
 export default function Pricing() {
   const sectionRef = useReveal<HTMLElement>();
-  const stageSectionRef = useRef<HTMLDivElement | null>(null);
+  const pinTrackRef = useRef<HTMLDivElement | null>(null);
 
-  const [currentStage, setCurrentStage] = useState<number>(3); // Default to Premium (Stage 3)
+  // Continuous 3D build progress (0.0 = nothing/ground site, 1.0 = Bare Shell, 2.0 = Standard, 3.0 = Premium, 4.0 = Luxury)
+  const [buildProgress, setBuildProgress] = useState<number>(3.0);
+  const [currentTierIndex, setCurrentTierIndex] = useState<number>(2); // 0 to 3
+  const [scrollPercent, setScrollPercent] = useState<number>(0.75); // 0.0 to 1.0
   const [floorArea, setFloorArea] = useState<number>(240);
   const [selectedLocation, setSelectedLocation] = useState<string>(LOCATIONS[0]);
   const [showMatrix, setShowMatrix] = useState<boolean>(false);
-  const [isUserScrubbing, setIsUserScrubbing] = useState<boolean>(false);
 
-  const activeTier = FINISH_GRADES[currentStage - 1] || FINISH_GRADES[2];
+  const activeTier = FINISH_GRADES[currentTierIndex] || FINISH_GRADES[2];
 
-  // Scroll observer to advance mansion stages smoothly as user scrolls past the stage section
+  // Pinned In-Place Scroll Timing Engine:
+  // When the user scrolls into the section, it locks in place for the full build evolution
   useEffect(() => {
     let ticking = false;
 
     const onScroll = () => {
-      if (isUserScrubbing) return;
-      if (!stageSectionRef.current) return;
+      if (!pinTrackRef.current) return;
 
-      const rect = stageSectionRef.current.getBoundingClientRect();
+      const rect = pinTrackRef.current.getBoundingClientRect();
       const viewportHeight = window.innerHeight;
+      const totalScrollableDistance = rect.height - viewportHeight;
 
-      // When the section is in the middle of viewport
-      if (rect.top <= viewportHeight * 0.65 && rect.bottom >= viewportHeight * 0.35) {
-        const totalScrollable = rect.height;
-        const currentScrolled = viewportHeight * 0.65 - rect.top;
-        const progress = Math.min(Math.max(currentScrolled / totalScrollable, 0), 1);
+      if (totalScrollableDistance <= 0) return;
 
-        let targetStage = 1;
-        if (progress > 0.72) targetStage = 4;
-        else if (progress > 0.45) targetStage = 3;
-        else if (progress > 0.18) targetStage = 2;
-        else targetStage = 1;
+      // How much the top of the track has scrolled past the top of the viewport
+      const scrolledPast = -rect.top;
+      const rawProgress = Math.min(Math.max(scrolledPast / totalScrollableDistance, 0), 1);
+      setScrollPercent(rawProgress);
 
-        if (targetStage !== currentStage) {
-          setCurrentStage(targetStage);
-        }
+      // EXACT TIMING PHYSICS:
+      // 0.00 - 0.12 : Empty Ground & Foundation Excavation (3D progress 0.0 -> 0.3)
+      // 0.12 - 0.36 : 01 BARE SHELL Structural Skeleton (3D progress 0.3 -> 1.0)
+      // 0.36 - 0.62 : 02 STANDARD Enclosure Walls & Windows (3D progress 1.0 -> 2.0)
+      // 0.62 - 0.85 : 03 PREMIUM Timber Slats, Bronze & Stone (3D progress 2.0 -> 3.0)
+      // 0.85 - 1.00 : 04 LUXURY Cantilever, Marble, Pool & Glow (3D progress 3.0 -> 4.0)
+      // > 1.00 : Section releases and page scrolls down naturally!
+      let mapped3DProgress = 0;
+      let activeIdx = 0;
+
+      if (rawProgress < 0.12) {
+        // From nothing to foundation slab
+        mapped3DProgress = (rawProgress / 0.12) * 0.35;
+        activeIdx = 0;
+      } else if (rawProgress < 0.36) {
+        // Stage 01: Bare Shell
+        mapped3DProgress = 0.35 + ((rawProgress - 0.12) / 0.24) * 0.65; // reaches 1.0
+        activeIdx = 0;
+      } else if (rawProgress < 0.62) {
+        // Stage 02: Standard
+        mapped3DProgress = 1.0 + ((rawProgress - 0.36) / 0.26) * 1.0; // reaches 2.0
+        activeIdx = 1;
+      } else if (rawProgress < 0.85) {
+        // Stage 03: Premium
+        mapped3DProgress = 2.0 + ((rawProgress - 0.62) / 0.23) * 1.0; // reaches 3.0
+        activeIdx = 2;
+      } else {
+        // Stage 04: Luxury
+        mapped3DProgress = 3.0 + ((rawProgress - 0.85) / 0.15) * 1.0; // reaches 4.0
+        activeIdx = 3;
       }
+
+      setBuildProgress(mapped3DProgress);
+      setCurrentTierIndex(activeIdx);
     };
 
     const handleScroll = () => {
@@ -203,8 +231,28 @@ export default function Pricing() {
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
+    // Initial calculation on load
+    handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [currentStage, isUserScrubbing]);
+  }, []);
+
+  // Manual jump by clicking any of the 01-04 tabs
+  const jumpToStage = useCallback((tierIndex: number) => {
+    if (!pinTrackRef.current) return;
+    const rect = pinTrackRef.current.getBoundingClientRect();
+    const trackTop = window.scrollY + rect.top;
+    const viewportHeight = window.innerHeight;
+    const totalScrollableDistance = rect.height - viewportHeight;
+
+    // Percentages mapped to stage sweet-spots
+    const targetPercentages = [0.22, 0.48, 0.74, 0.94];
+    const targetScrollY = trackTop + targetPercentages[tierIndex] * totalScrollableDistance;
+
+    window.scrollTo({
+      top: targetScrollY,
+      behavior: "smooth",
+    });
+  }, []);
 
   // Investment calculation
   const minEstimatedCost = floorArea * activeTier.minRate;
@@ -220,314 +268,264 @@ export default function Pricing() {
     floorArea < 180 ? "7–9" : floorArea < 300 ? "9–11" : "11–14";
 
   return (
-    <section ref={sectionRef} id="pricing" className="py-24 sm:py-32 px-4 sm:px-8 bg-background relative border-t border-border">
-      {/* Anchor alias for backwards compatibility */}
+    <section ref={sectionRef} id="pricing" className="bg-background relative border-t border-border">
+      {/* Anchor alias */}
       <div id="specifications" className="sr-only" />
-      <div className="mx-auto max-w-7xl">
-        {/* Section Header */}
-        <div data-reveal className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-12 sm:mb-16">
-          <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 mb-3 rounded-full bg-accent/10 border border-accent/30 text-accent text-[10px] uppercase tracking-[0.24em] font-medium font-mono">
-              <Compass size={12} />
-              <span>3D Construction Evolution &middot; 01 till 04</span>
-            </div>
-            <h2 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-light text-foreground tracking-tight leading-[1.1]">
-              The Real Mansion Assembly
-            </h2>
-          </div>
-          <p className="text-sm sm:text-base text-foreground/70 font-light max-w-md leading-relaxed">
-            Watch a luxury modern villa structure take shape from raw reinforced concrete into an architectural masterpiece. Scroll or select 01 through 04 below to inspect real-time construction specifications.
-          </p>
-        </div>
 
-        {/* 1. Interactive 01 till 04 Grade Stepper Navigation */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-8">
-          {FINISH_GRADES.map((grade) => {
-            const isSelected = currentStage === grade.stageNum;
-            return (
-              <button
-                key={grade.id}
-                type="button"
-                onClick={() => {
-                  setIsUserScrubbing(true);
-                  setCurrentStage(grade.stageNum);
-                  setTimeout(() => setIsUserScrubbing(false), 800);
-                }}
-                className={`text-left p-4 sm:p-5 rounded-2xl border transition-all duration-300 relative cursor-pointer flex flex-col justify-between ${
-                  isSelected
-                    ? "bg-surface border-accent shadow-xl shadow-accent/10 ring-2 ring-accent"
-                    : "bg-surface/60 border-border hover:border-accent/40 hover:bg-surface"
-                }`}
-              >
-                {/* Popular Badge */}
-                {grade.popular && (
-                  <span className="absolute top-3 right-3 hidden sm:inline-flex items-center gap-1 text-[8px] uppercase tracking-[0.16em] bg-accent text-white px-2 py-0.5 font-semibold rounded-full shadow-xs">
-                    <Sparkles size={8} />
-                    <span>Popular</span>
-                  </span>
-                )}
-
+      {/* ============================================================== */}
+      {/* PINNED IN-PLACE SCROLL TRACK CONTAINER (Locks for 380vh)       */}
+      {/* Builds mansion from nothing -> foundation -> finished mansion   */}
+      {/* Once 100% complete, it naturally scrolls down to next sections */}
+      {/* ============================================================== */}
+      <div ref={pinTrackRef} className="relative h-[380vh]">
+        {/* Sticky Viewport Stage: Pinned on Screen */}
+        <div className="sticky top-0 h-screen w-full flex flex-col justify-between overflow-hidden bg-background px-4 sm:px-8 py-5 z-20">
+          <div className="mx-auto max-w-7xl w-full flex flex-col h-full justify-between">
+            {/* Top Bar: Section Title, Progress Track & 01-04 Buttons */}
+            <div>
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
                 <div>
-                  <div className="flex items-center gap-2 mb-1.5">
-                    <span className="font-mono text-xs uppercase tracking-widest text-accent font-bold">
-                      {grade.number}
-                    </span>
-                    <span className="h-1 w-1 rounded-full bg-border" />
-                    <span className="text-[9.5px] uppercase tracking-wider text-muted font-medium truncate">
-                      {grade.subtitle}
-                    </span>
+                  <div className="inline-flex items-center gap-2 px-3 py-0.5 rounded-full bg-accent/10 border border-accent/30 text-accent text-[9.5px] uppercase tracking-[0.22em] font-medium font-mono">
+                    <Compass size={11} />
+                    <span>In-Place Architectural Build Progression</span>
                   </div>
-
-                  <h3 className="font-serif text-lg sm:text-xl text-foreground font-normal mb-1">
-                    {grade.name}
-                  </h3>
-
-                  <div className="font-serif text-base sm:text-lg text-accent font-medium">
-                    {grade.rateDisplay}
-                    <span className="text-[10px] font-sans text-muted font-light ml-1">/ m²</span>
-                  </div>
+                  <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-light text-foreground tracking-tight leading-tight mt-1">
+                    Watch the Mansion Form As You Scroll
+                  </h2>
                 </div>
 
-                <div className="pt-3 border-t border-border/60 flex items-center justify-between text-xs mt-3">
-                  <span className={`text-[10px] uppercase tracking-[0.16em] font-medium transition-colors ${
-                    isSelected ? "text-accent font-semibold" : "text-muted"
-                  }`}>
-                    {isSelected ? "Active Stage ✓" : "Select Stage"}
-                  </span>
-                  <div className={`h-2 w-2 rounded-full transition-all ${
-                    isSelected ? "bg-accent scale-125 animate-pulse" : "bg-border"
-                  }`} />
+                {/* Progress Percentage Indicator */}
+                <div className="flex items-center gap-3 bg-surface px-4 py-2 rounded-2xl border border-border shadow-xs">
+                  <div className="flex flex-col text-right">
+                    <span className="text-[9.5px] uppercase tracking-wider text-muted font-mono">
+                      Mansion Formation
+                    </span>
+                    <span className="font-mono text-xs font-semibold text-accent">
+                      {Math.round(scrollPercent * 100)}% Complete
+                    </span>
+                  </div>
+                  {/* Circular / Bar progress */}
+                  <div className="w-16 h-2 bg-border/80 rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-accent transition-all duration-150 rounded-full"
+                      style={{ width: `${Math.round(scrollPercent * 100)}%` }}
+                    />
+                  </div>
                 </div>
-              </button>
-            );
-          })}
-        </div>
+              </div>
 
-        {/* 2. Interactive Real Mansion 3D Studio Showcase (Forms 01 till 04) */}
-        <div
-          ref={stageSectionRef}
-          data-reveal
-          className="p-6 sm:p-8 lg:p-10 rounded-3xl bg-surface border border-accent/30 shadow-2xl mb-14 overflow-hidden relative"
-        >
-          {/* Top Stage Bar: Stage Indicator & 3D Interactive Notice */}
-          <div className="flex flex-wrap items-center justify-between gap-4 pb-6 mb-6 border-b border-border/80">
-            <div className="flex items-center gap-3">
-              <span className="h-2.5 w-2.5 rounded-full bg-accent animate-pulse" />
-              <span className="font-mono text-xs uppercase tracking-[0.2em] text-foreground font-semibold">
-                BUILD STAGE {activeTier.number} &middot; {activeTier.name.toUpperCase()} SPECIFICATION
-              </span>
-              <span className="text-xs text-muted hidden sm:inline">&middot; {activeTier.subtitle}</span>
+              {/* 01 till 04 Stage Selection Bar */}
+              <div className="grid grid-cols-4 gap-2 sm:gap-3">
+                {FINISH_GRADES.map((grade, idx) => {
+                  const isActive = currentTierIndex === idx;
+                  return (
+                    <button
+                      key={grade.id}
+                      type="button"
+                      onClick={() => jumpToStage(idx)}
+                      className={`text-left p-2.5 sm:p-3.5 rounded-xl border transition-all duration-300 relative cursor-pointer flex flex-col justify-between ${
+                        isActive
+                          ? "bg-surface border-accent shadow-md ring-1 ring-accent"
+                          : "bg-surface/50 border-border hover:border-accent/40"
+                      }`}
+                    >
+                      {grade.popular && (
+                        <span className="absolute -top-1.5 right-2 hidden md:inline-flex items-center gap-0.5 text-[7.5px] uppercase tracking-widest bg-accent text-white px-2 py-0.2 font-semibold rounded-full shadow-xs">
+                          <Sparkles size={7} />
+                          <span>Popular</span>
+                        </span>
+                      )}
+
+                      <div className="flex items-center gap-1.5">
+                        <span className="font-mono text-xs uppercase tracking-widest text-accent font-bold">
+                          {grade.number}
+                        </span>
+                        <span className="text-[9.5px] uppercase tracking-wider text-foreground font-medium hidden sm:inline truncate">
+                          {grade.name}
+                        </span>
+                      </div>
+
+                      <div className="font-serif text-xs sm:text-sm text-accent font-medium mt-1">
+                        {grade.rateDisplay}
+                      </div>
+
+                      <div className="w-full bg-border/60 h-1 rounded-full mt-2 overflow-hidden">
+                        <div
+                          className={`h-full transition-all duration-300 ${
+                            isActive ? "bg-accent" : "bg-transparent"
+                          }`}
+                        />
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
             </div>
 
-            <div className="flex items-center gap-2 text-xs text-muted font-mono bg-background px-3 py-1.5 rounded-full border border-border">
-              <RotateCw size={12} className="text-accent" />
-              <span>Interactive 3D Mansion: Drag to Orbit 360&deg;</span>
-            </div>
-          </div>
+            {/* Center: Large 3D Real Mansion Stage (Prominent & Clear) */}
+            <div className="relative flex-1 w-full my-3 rounded-3xl bg-gradient-to-b from-[#f9f7f2] via-[#f5f0e6] to-[#ece5d8] border border-border shadow-2xl overflow-hidden min-h-[320px] max-h-[58vh]">
+              {/* 3D Real Mansion Canvas with Continuous Progress */}
+              <Mansion3DScene progress={buildProgress} />
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-            {/* Left Column: 3D Real Mansion Canvas */}
-            <div className="lg:col-span-7 flex flex-col gap-4">
-              <div className="relative aspect-[16/11] sm:aspect-[16/10] w-full rounded-2xl bg-gradient-to-b from-[#f9f7f2] via-[#f5f0e6] to-[#ece5d8] border border-border overflow-hidden shadow-inner">
-                {/* 3D Real Mansion Engine */}
-                <Mansion3DScene stage={currentStage} />
-
-                {/* Floating Architectural Stage Badge in Canvas */}
-                <div className="absolute top-4 left-4 pointer-events-none z-10 flex flex-col gap-1">
-                  <span className="text-[9.5px] uppercase tracking-widest font-mono text-accent font-bold bg-white/90 px-3 py-1 rounded-full border border-accent/30 shadow-xs backdrop-blur-sm">
-                    {activeTier.code} &middot; {activeTier.subtitle.toUpperCase()}
+              {/* Live Architectural Stage Callout Banner */}
+              <div className="absolute top-4 left-4 pointer-events-none z-10 flex flex-col gap-1.5 max-w-xs sm:max-w-md">
+                <div className="flex items-center gap-2">
+                  <span className="h-2 w-2 rounded-full bg-accent animate-pulse" />
+                  <span className="text-[10px] uppercase tracking-widest font-mono text-accent font-bold bg-white/95 px-3 py-1 rounded-full border border-accent/30 shadow-xs backdrop-blur-sm">
+                    {buildProgress < 0.35
+                      ? "GROUND SITE SURVEY & FOUNDATION"
+                      : `${activeTier.code} · ${activeTier.subtitle.toUpperCase()}`}
                   </span>
-                  <span className="font-serif text-lg text-foreground font-medium bg-white/80 px-3 py-0.5 rounded-md w-fit border border-black/5">
+                </div>
+
+                <div className="bg-white/90 backdrop-blur-sm px-3.5 py-1.5 rounded-xl border border-black/5 shadow-xs w-fit">
+                  <span className="font-serif text-lg sm:text-xl text-foreground font-medium">
                     {activeTier.rateDisplay} <span className="text-xs font-sans text-muted">/ m²</span>
                   </span>
+                  <p className="text-[10.5px] text-foreground/75 font-light line-clamp-1 mt-0.5">
+                    {activeTier.tagline}
+                  </p>
                 </div>
               </div>
 
-              {/* Real-time Material Swatch Palette */}
-              <div>
-                <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-mono mb-2">
-                  Material Palette Deployed in Stage {activeTier.number}:
-                </p>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                  {activeTier.materials.map((mat) => (
-                    <div
-                      key={mat.name}
-                      className="p-3 rounded-xl bg-background border border-border/80 flex flex-col justify-between"
-                    >
-                      <span className="text-[8.5px] uppercase tracking-wider text-muted font-mono">
-                        {mat.category}
-                      </span>
-                      <span className="text-xs text-foreground font-medium mt-0.5">
-                        {mat.name}
-                      </span>
-                    </div>
-                  ))}
-                </div>
+              {/* Scroll Guidance Indicator */}
+              <div className="absolute bottom-4 left-4 pointer-events-none z-10 hidden sm:flex items-center gap-2 text-muted text-[10px] font-mono bg-white/80 px-3 py-1 rounded-full border border-border backdrop-blur-xs">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-ping" />
+                <span>
+                  {scrollPercent < 0.96
+                    ? "Scroll down to build the mansion in place ↓"
+                    : "Mansion fully assembled! Scroll down to estimate costs ↓"}
+                </span>
               </div>
             </div>
 
-            {/* Right Column: Specifications Monograph & Action */}
-            <div className="lg:col-span-5 flex flex-col justify-between h-full">
-              <div>
-                <span className="text-[10px] uppercase tracking-[0.22em] text-accent font-mono font-medium block mb-1">
-                  Turnkey Deliverables &amp; Inclusions
+            {/* Bottom Bar: Live Materials Deployed + Quick Action */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2">
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="text-[9.5px] uppercase tracking-wider text-muted font-mono mr-1">
+                  Active Materials:
                 </span>
-
-                <h3 className="font-serif text-2xl sm:text-3xl text-foreground font-light mb-1">
-                  {activeTier.name} Architecture
-                </h3>
-
-                <p className="text-xs sm:text-sm text-foreground/75 font-light leading-relaxed mb-6">
-                  {activeTier.tagline}
-                </p>
-
-                {/* Categorized Specifications Cards */}
-                <div className="space-y-3 mb-6">
-                  {/* Ceiling & Lighting */}
-                  <div className="p-3.5 rounded-xl bg-background border border-border/70 flex flex-col gap-1">
-                    <span className="text-[9.5px] uppercase tracking-[0.16em] text-accent font-mono font-medium">
-                      Ceiling &amp; Illumination
-                    </span>
-                    <p className="text-xs text-foreground/85 font-light leading-relaxed">
-                      {activeTier.specifications.ceiling}
-                    </p>
-                  </div>
-
-                  {/* Fenestration & Glass */}
-                  <div className="p-3.5 rounded-xl bg-background border border-border/70 flex flex-col gap-1">
-                    <span className="text-[9.5px] uppercase tracking-[0.16em] text-accent font-mono font-medium">
-                      Fenestration &amp; Glass Openings
-                    </span>
-                    <p className="text-xs text-foreground/85 font-light leading-relaxed">
-                      {activeTier.specifications.windows}
-                    </p>
-                  </div>
-
-                  {/* Flooring & Surfaces */}
-                  <div className="p-3.5 rounded-xl bg-background border border-border/70 flex flex-col gap-1">
-                    <span className="text-[9.5px] uppercase tracking-[0.16em] text-accent font-mono font-medium">
-                      Flooring, Walls &amp; Exterior Stone
-                    </span>
-                    <p className="text-xs text-foreground/85 font-light leading-relaxed">
-                      {activeTier.specifications.flooring}; {activeTier.specifications.walls}
-                    </p>
-                  </div>
-
-                  {/* Doors & MEP Fixtures */}
-                  <div className="p-3.5 rounded-xl bg-background border border-border/70 flex flex-col gap-1">
-                    <span className="text-[9.5px] uppercase tracking-[0.16em] text-accent font-mono font-medium">
-                      Doors, Hardware &amp; Sanitary Fixtures
-                    </span>
-                    <p className="text-xs text-foreground/85 font-light leading-relaxed">
-                      {activeTier.specifications.doors}; {activeTier.specifications.fixtures}
-                    </p>
-                  </div>
-                </div>
+                {activeTier.materials.map((mat) => (
+                  <span
+                    key={mat.name}
+                    className="text-[9.5px] uppercase tracking-wider px-2.5 py-1 rounded-lg bg-surface text-foreground font-mono border border-border shadow-2xs"
+                  >
+                    {mat.name}
+                  </span>
+                ))}
               </div>
 
-              {/* Actions */}
-              <div className="flex flex-wrap items-center gap-3 pt-4 border-t border-border">
-                <a
-                  href="#cost-estimator"
-                  className="btn btn--accent rounded-full px-5 py-2.5 text-xs uppercase tracking-[0.18em] shadow-sm flex items-center gap-2"
-                >
-                  <span>Estimate This Stage</span>
-                  <ArrowDown size={13} />
-                </a>
-
+              <div className="flex items-center gap-3">
                 <button
                   type="button"
                   onClick={() => setShowMatrix((v) => !v)}
-                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full text-xs uppercase tracking-[0.16em] border border-border text-foreground hover:border-accent hover:text-accent bg-background transition-all cursor-pointer"
+                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-[10.5px] uppercase tracking-[0.16em] border border-border text-foreground hover:border-accent hover:text-accent bg-surface transition-all cursor-pointer font-medium"
                 >
-                  <Layers size={12} className="text-accent" />
+                  <Layers size={11} className="text-accent" />
                   <span>{showMatrix ? "Hide Matrix" : "Compare 01–04"}</span>
-                  {showMatrix ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
+                  {showMatrix ? <ChevronUp size={11} /> : <ChevronDown size={11} />}
                 </button>
+
+                <a
+                  href="#cost-estimator"
+                  className="btn btn--accent rounded-full px-4 py-1.5 text-[10.5px] uppercase tracking-[0.16em] shadow-xs flex items-center gap-1.5"
+                >
+                  <span>Estimate Costs</span>
+                  <ArrowDown size={12} />
+                </a>
               </div>
             </div>
           </div>
-
-          {/* Optional Comparative Specification Matrix Drawer */}
-          {showMatrix && (
-            <div className="mt-8 pt-8 border-t border-border animate-in fade-in slide-in-from-top-4 duration-400 overflow-x-auto">
-              <div className="mb-4">
-                <h4 className="font-serif text-xl sm:text-2xl text-foreground font-normal">
-                  Comparative Specification Matrix
-                </h4>
-                <p className="text-xs text-muted font-light mt-1">
-                  Detailed side-by-side comparison across all four build standards.
-                </p>
-              </div>
-
-              <table className="w-full text-left text-xs border-collapse min-w-[700px]">
-                <thead>
-                  <tr className="border-b border-border text-accent uppercase tracking-widest text-[9.5px] font-mono">
-                    <th className="py-2.5 px-4">Component</th>
-                    <th className="py-2.5 px-4">01 Bare Shell</th>
-                    <th className="py-2.5 px-4">02 Standard</th>
-                    <th className="py-2.5 px-4 bg-accent/5">03 Premium (Popular)</th>
-                    <th className="py-2.5 px-4">04 Luxury</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-border/60 text-foreground/80 font-light">
-                  <tr>
-                    <td className="py-2.5 px-4 font-medium text-foreground">Rate / m²</td>
-                    <td className="py-2.5 px-4 font-serif text-accent">₱18k – ₱20k</td>
-                    <td className="py-2.5 px-4 font-serif text-accent">₱20k – ₱25k</td>
-                    <td className="py-2.5 px-4 font-serif text-accent font-medium bg-accent/5">₱25k – ₱29k</td>
-                    <td className="py-2.5 px-4 font-serif text-accent font-medium">₱29k+</td>
-                  </tr>
-                  <tr>
-                    <td className="py-2.5 px-4 font-medium text-foreground">Ceiling</td>
-                    <td className="py-2.5 px-4">Exposed slab / flat board</td>
-                    <td className="py-2.5 px-4">Gypsum + recessed LED</td>
-                    <td className="py-2.5 px-4 bg-accent/5">Textured PVC / wood slats</td>
-                    <td className="py-2.5 px-4">Multi-tier floating cove</td>
-                  </tr>
-                  <tr>
-                    <td className="py-2.5 px-4 font-medium text-foreground">Windows</td>
-                    <td className="py-2.5 px-4">Jalousie / steel casement</td>
-                    <td className="py-2.5 px-4">White UPVC / aluminum</td>
-                    <td className="py-2.5 px-4 bg-accent/5">Analok bronze sliding</td>
-                    <td className="py-2.5 px-4">Thermal floor-to-ceiling glass</td>
-                  </tr>
-                  <tr>
-                    <td className="py-2.5 px-4 font-medium text-foreground">Flooring</td>
-                    <td className="py-2.5 px-4">Smooth cement screed</td>
-                    <td className="py-2.5 px-4">60×60 polished ceramic</td>
-                    <td className="py-2.5 px-4 bg-accent/5">60×120 porcelain slabs</td>
-                    <td className="py-2.5 px-4">Sintered stone &amp; parquet</td>
-                  </tr>
-                  <tr>
-                    <td className="py-2.5 px-4 font-medium text-foreground">Doors</td>
-                    <td className="py-2.5 px-4">Flush hollow core</td>
-                    <td className="py-2.5 px-4">Engineered wood</td>
-                    <td className="py-2.5 px-4 bg-accent/5">Solid hardwood pivot door</td>
-                    <td className="py-2.5 px-4">Custom oversized mahogany</td>
-                  </tr>
-                  <tr>
-                    <td className="py-2.5 px-4 font-medium text-foreground">Walls</td>
-                    <td className="py-2.5 px-4">Plastered concrete</td>
-                    <td className="py-2.5 px-4">Two-coat latex paint</td>
-                    <td className="py-2.5 px-4 bg-accent/5">Stacked natural stone</td>
-                    <td className="py-2.5 px-4">Natural marble veneers</td>
-                  </tr>
-                  <tr>
-                    <td className="py-2.5 px-4 font-medium text-foreground">Fixtures</td>
-                    <td className="py-2.5 px-4">Economic rough-in</td>
-                    <td className="py-2.5 px-4">American Standard / Pozzi</td>
-                    <td className="py-2.5 px-4 bg-accent/5">Kohler / Hansgrohe</td>
-                    <td className="py-2.5 px-4">Toto / Grohe + Smart Home</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          )}
         </div>
+      </div>
 
-        {/* 3. Interactive Architectural Investment Estimator */}
-        <div id="cost-estimator" data-reveal data-reveal-delay="0.15" className="p-8 sm:p-12 bg-surface border border-border relative overflow-hidden rounded-3xl shadow-sm">
+      {/* ============================================================== */}
+      {/* COMPARATIVE SPECIFICATION MATRIX MODAL / DRAWER                */}
+      {/* ============================================================== */}
+      {showMatrix && (
+        <div className="mx-auto max-w-7xl px-4 sm:px-8 py-8 animate-in fade-in slide-in-from-top-4 duration-400 overflow-x-auto">
+          <div className="p-6 sm:p-8 rounded-3xl bg-surface border border-accent/30 shadow-xl">
+            <div className="mb-4">
+              <h4 className="font-serif text-xl sm:text-2xl text-foreground font-normal">
+                Comparative Specification Matrix (01 till 04)
+              </h4>
+              <p className="text-xs text-muted font-light mt-1">
+                Detailed side-by-side comparison across all four build standards.
+              </p>
+            </div>
+
+            <table className="w-full text-left text-xs border-collapse min-w-[700px]">
+              <thead>
+                <tr className="border-b border-border text-accent uppercase tracking-widest text-[9.5px] font-mono">
+                  <th className="py-2.5 px-4">Component</th>
+                  <th className="py-2.5 px-4">01 Bare Shell</th>
+                  <th className="py-2.5 px-4">02 Standard</th>
+                  <th className="py-2.5 px-4 bg-accent/5">03 Premium (Popular)</th>
+                  <th className="py-2.5 px-4">04 Luxury</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-border/60 text-foreground/80 font-light">
+                <tr>
+                  <td className="py-2.5 px-4 font-medium text-foreground">Rate / m²</td>
+                  <td className="py-2.5 px-4 font-serif text-accent">₱18k – ₱20k</td>
+                  <td className="py-2.5 px-4 font-serif text-accent">₱20k – ₱25k</td>
+                  <td className="py-2.5 px-4 font-serif text-accent font-medium bg-accent/5">₱25k – ₱29k</td>
+                  <td className="py-2.5 px-4 font-serif text-accent font-medium">₱29k+</td>
+                </tr>
+                <tr>
+                  <td className="py-2.5 px-4 font-medium text-foreground">Ceiling</td>
+                  <td className="py-2.5 px-4">Exposed slab / flat board</td>
+                  <td className="py-2.5 px-4">Gypsum + recessed LED</td>
+                  <td className="py-2.5 px-4 bg-accent/5">Textured PVC / wood slats</td>
+                  <td className="py-2.5 px-4">Multi-tier floating cove</td>
+                </tr>
+                <tr>
+                  <td className="py-2.5 px-4 font-medium text-foreground">Windows</td>
+                  <td className="py-2.5 px-4">Jalousie / steel casement</td>
+                  <td className="py-2.5 px-4">White UPVC / aluminum</td>
+                  <td className="py-2.5 px-4 bg-accent/5">Analok bronze sliding</td>
+                  <td className="py-2.5 px-4">Thermal floor-to-ceiling glass</td>
+                </tr>
+                <tr>
+                  <td className="py-2.5 px-4 font-medium text-foreground">Flooring</td>
+                  <td className="py-2.5 px-4">Smooth cement screed</td>
+                  <td className="py-2.5 px-4">60×60 polished ceramic</td>
+                  <td className="py-2.5 px-4 bg-accent/5">60×120 porcelain slabs</td>
+                  <td className="py-2.5 px-4">Sintered stone &amp; parquet</td>
+                </tr>
+                <tr>
+                  <td className="py-2.5 px-4 font-medium text-foreground">Doors</td>
+                  <td className="py-2.5 px-4">Flush hollow core</td>
+                  <td className="py-2.5 px-4">Engineered wood</td>
+                  <td className="py-2.5 px-4 bg-accent/5">Solid hardwood pivot door</td>
+                  <td className="py-2.5 px-4">Custom oversized mahogany</td>
+                </tr>
+                <tr>
+                  <td className="py-2.5 px-4 font-medium text-foreground">Walls</td>
+                  <td className="py-2.5 px-4">Plastered concrete</td>
+                  <td className="py-2.5 px-4">Two-coat latex paint</td>
+                  <td className="py-2.5 px-4 bg-accent/5">Stacked natural stone</td>
+                  <td className="py-2.5 px-4">Natural marble veneers</td>
+                </tr>
+                <tr>
+                  <td className="py-2.5 px-4 font-medium text-foreground">Fixtures</td>
+                  <td className="py-2.5 px-4">Economic rough-in</td>
+                  <td className="py-2.5 px-4">American Standard / Pozzi</td>
+                  <td className="py-2.5 px-4 bg-accent/5">Kohler / Hansgrohe</td>
+                  <td className="py-2.5 px-4">Toto / Grohe + Smart Home</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {/* ============================================================== */}
+      {/* 4. INTERACTIVE ARCHITECTURAL INVESTMENT ESTIMATOR               */}
+      {/* (Scrolled to after the mansion finishes assembling!)           */}
+      {/* ============================================================== */}
+      <div id="cost-estimator" className="mx-auto max-w-7xl px-4 sm:px-8 py-20">
+        <div data-reveal className="p-8 sm:p-12 bg-surface border border-border relative overflow-hidden rounded-3xl shadow-sm">
           <div className="flex items-center gap-3 text-accent text-xs uppercase tracking-[0.2em] font-medium mb-3">
             <Calculator size={16} />
             <span>Interactive Residence Cost Estimator</span>
