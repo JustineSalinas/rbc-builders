@@ -64,7 +64,7 @@ export default function Testimonials() {
   const current = CASE_STUDIES[index];
 
   return (
-    <section ref={sectionRef} className="py-28 sm:py-36 px-4 sm:px-8 bg-background relative border-t border-border">
+    <section ref={sectionRef} id="testimonials" className="py-28 sm:py-36 px-4 sm:px-8 bg-background relative border-t border-border">
       <div className="mx-auto max-w-7xl">
         {/* Header */}
         <div data-reveal className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-16 sm:mb-20">

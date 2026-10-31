@@ -61,7 +61,7 @@ export default function Footer() {
   };
 
   return (
-    <footer className="bg-[#08090a] border-t border-border relative overflow-hidden text-foreground">
+    <footer id="footer" className="bg-[#08090a] border-t border-border relative overflow-hidden text-foreground">
       {/* Luxury Mansion Background Image with Deep Architectural Atmosphere */}
       <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
         <Image

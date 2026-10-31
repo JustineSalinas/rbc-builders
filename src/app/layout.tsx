@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Cormorant_Garamond, Plus_Jakarta_Sans } from "next/font/google";
 import SmoothScroll from "@/components/SmoothScroll";
 import ChatBot from "@/components/ChatBot";
+import OnboardingTour from "@/components/OnboardingTour";
 import "./globals.css";
 
 const cormorant = Cormorant_Garamond({
@@ -53,6 +54,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col bg-background text-foreground font-sans">
         <SmoothScroll>{children}</SmoothScroll>
         <ChatBot />
+        <OnboardingTour />
       </body>
     </html>
   );
