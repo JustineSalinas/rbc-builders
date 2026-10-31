@@ -5,546 +5,630 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import { Float, ContactShadows, OrbitControls } from "@react-three/drei";
 import * as THREE from "three";
 
-// Architectural Color Palette matching RBC Builders brand with high contrast & clarity
-const CONCRETE_CORE = "#7d7870";
-const CONCRETE_PLINTH = "#9e978c";
+// Colors matching the signature San Fernando luxury villa reference photograph
+const STONE_TRAVERTINE = "#ded7cb";
+const CONCRETE_PLINTH = "#9e988d";
+const CONCRETE_CORE = "#757067";
 const REBAR_BRONZE = "#b0854d";
-const WALL_STUCCO = "#f5f0e6";
-const WALL_STONE = "#bdae99";
-const TIMBER_SLAT = "#825026";
-const TIMBER_DOOR = "#2b180a";
-const ANALOK_BRONZE = "#33261a";
-const GLASS_CLEAR = "#a3cad9";
-const GLASS_BRONZE = "#708994";
-const ROOF_FASCIA = "#1c1916";
-const GOLD_ACCENT = "#d6a54f";
-const POOL_WATER = "#22a3b8";
-const POOL_DECK = "#916035";
-const GRASS_TERRACE = "#5a6b48";
+const WALL_STUCCO = "#f5f2eb";
+const WALL_TIMBER_WARM = "#6b4423";
+const TIMBER_SOFFIT = "#784b28";
+const TIMBER_LOUVER = "#5c371b";
+const DOOR_MAHOGANY = "#24140b";
+const ANALOK_BRONZE = "#2d231b";
+const GLASS_PANEL = "#82a8b8";
+const ROOF_FASCIA = "#1e1a17";
+const GOLD_PULL = "#d4af37";
+const WATER_FALL = "#3299a8";
+const DRIVEWAY_PAVER = "#cfc9be";
+const FOLIAGE_GREEN = "#405232";
 
 function clamp(val: number, min: number, max: number) {
   return Math.min(Math.max(val, min), max);
 }
 
-function MansionModel({ progress }: { progress: number }) {
+function SanFernandoVillaModel({ progress }: { progress: number }) {
   const group = useRef<THREE.Group>(null);
 
-  // Structural sub-groups
-  const foundationGroup = useRef<THREE.Group>(null);
-  const colGfGroup = useRef<THREE.Group>(null);
-  const beamGfGroup = useRef<THREE.Group>(null);
-  const slab2fGroup = useRef<THREE.Group>(null);
-  const col2fGroup = useRef<THREE.Group>(null);
-  const roofBeamsGroup = useRef<THREE.Group>(null);
-  const rebarGroup = useRef<THREE.Group>(null);
+  // 01 Structural Skeleton groups
+  const foundationRef = useRef<THREE.Group>(null);
+  const concreteColumnsRef = useRef<THREE.Group>(null);
+  const tieBeamsRef = useRef<THREE.Group>(null);
+  const floorPlate2FRef = useRef<THREE.Group>(null);
+  const roofSkeletonRef = useRef<THREE.Group>(null);
+  const rebarPinsRef = useRef<THREE.Group>(null);
 
-  // Enclosure sub-groups
-  const wallsGfGroup = useRef<THREE.Group>(null);
-  const walls2fGroup = useRef<THREE.Group>(null);
-  const standardWindowsGroup = useRef<THREE.Group>(null);
-  const standardDoorGroup = useRef<THREE.Group>(null);
+  // 02 Standard Enclosure groups
+  const stuccoWallsRef = useRef<THREE.Group>(null);
+  const standardWindowsRef = useRef<THREE.Group>(null);
+  const interiorLightingRef = useRef<THREE.Group>(null);
 
-  // Premium sub-groups
-  const premiumSlatsGroup = useRef<THREE.Group>(null);
-  const bronzeFenestrationGroup = useRef<THREE.Group>(null);
-  const stoneColumnGroup = useRef<THREE.Group>(null);
-  const planterGroup = useRef<THREE.Group>(null);
+  // 03 Premium Accents groups
+  const timberLouversRef = useRef<THREE.Group>(null);
+  const travertinePortalRef = useRef<THREE.Group>(null);
+  const bronzeFenestrationRef = useRef<THREE.Group>(null);
+  const coveLightingRef = useRef<THREE.Group>(null);
 
-  // Luxury sub-groups
-  const cantileverRoofGroup = useRef<THREE.Group>(null);
-  const marbleFacadeGroup = useRef<THREE.Group>(null);
-  const luxuryDoorGroup = useRef<THREE.Group>(null);
-  const glassBalconyGroup = useRef<THREE.Group>(null);
-  const poolGroup = useRef<THREE.Group>(null);
-  const lightsGroup = useRef<THREE.Group>(null);
-
-  // Calculate fine-grained animation stages based on progress (0.0 to 4.0)
-  // 0.0 - 0.2: Ground & Site Foundation
-  // 0.2 - 1.0: 01 Bare Shell (Columns, tie beams, 2F slab, roof skeleton)
-  // 1.0 - 2.0: 02 Standard (Enclosure walls, plaster, windows, basic door)
-  // 2.0 - 3.0: 03 Premium (Timber slats, Analok bronze, stone column, planters)
-  // 3.0 - 4.0: 04 Luxury (Cantilever extension, marble wall, pivot door, pool, lights)
+  // 04 Luxury Masterpiece groups
+  const pictureFrameBoxRef = useRef<THREE.Group>(null);
+  const timberSoffitsRef = useRef<THREE.Group>(null);
+  const grandMahoganyDoorRef = useRef<THREE.Group>(null);
+  const glassBalconiesRef = useRef<THREE.Group>(null);
+  const waterCascadeRef = useRef<THREE.Group>(null);
+  const staircaseAtriumRef = useRef<THREE.Group>(null);
+  const luxurySpotlightsRef = useRef<THREE.Group>(null);
 
   useFrame(() => {
-    // Stage 0 -> 1: Foundation & Concrete Skeleton
-    const foundationP = clamp(progress / 0.25, 0, 1);
-    if (foundationGroup.current) {
-      foundationGroup.current.scale.set(foundationP, foundationP, foundationP);
-      foundationGroup.current.visible = foundationP > 0.01;
+    // 0.0 -> 0.35: Foundation & Structural Skeleton (Stage 01)
+    const fndP = clamp(progress / 0.2, 0, 1);
+    if (foundationRef.current) {
+      foundationRef.current.scale.set(fndP, fndP, fndP);
+      foundationRef.current.visible = fndP > 0.01;
     }
 
-    const colGfP = clamp((progress - 0.15) / 0.25, 0, 1);
-    if (colGfGroup.current) {
-      colGfGroup.current.scale.set(1, colGfP, 1);
-      colGfGroup.current.visible = colGfP > 0.01;
+    const colP = clamp((progress - 0.12) / 0.28, 0, 1);
+    if (concreteColumnsRef.current) {
+      concreteColumnsRef.current.scale.set(1, colP, 1);
+      concreteColumnsRef.current.visible = colP > 0.01;
     }
 
-    const beamGfP = clamp((progress - 0.35) / 0.25, 0, 1);
-    if (beamGfGroup.current) {
-      beamGfGroup.current.scale.set(beamGfP, 1, beamGfP);
-      beamGfGroup.current.visible = beamGfP > 0.01;
+    const beamP = clamp((progress - 0.3) / 0.25, 0, 1);
+    if (tieBeamsRef.current) {
+      tieBeamsRef.current.scale.set(beamP, 1, beamP);
+      tieBeamsRef.current.visible = beamP > 0.01;
     }
 
-    const slab2fP = clamp((progress - 0.5) / 0.25, 0, 1);
-    if (slab2fGroup.current) {
-      slab2fGroup.current.scale.set(slab2fP, 1, slab2fP);
-      slab2fGroup.current.visible = slab2fP > 0.01;
+    const slab2P = clamp((progress - 0.45) / 0.25, 0, 1);
+    if (floorPlate2FRef.current) {
+      floorPlate2FRef.current.scale.set(slab2P, 1, slab2P);
+      floorPlate2FRef.current.visible = slab2P > 0.01;
     }
 
-    const col2fP = clamp((progress - 0.65) / 0.25, 0, 1);
-    if (col2fGroup.current) {
-      col2fGroup.current.scale.set(1, col2fP, 1);
-      col2fGroup.current.visible = col2fP > 0.01;
+    const roofSkelP = clamp((progress - 0.7) / 0.3, 0, 1);
+    if (roofSkeletonRef.current) {
+      roofSkeletonRef.current.scale.set(roofSkelP, 1, roofSkelP);
+      roofSkeletonRef.current.visible = roofSkelP > 0.01;
     }
 
-    const roofBeamsP = clamp((progress - 0.8) / 0.25, 0, 1);
-    if (roofBeamsGroup.current) {
-      roofBeamsGroup.current.scale.set(roofBeamsP, 1, roofBeamsP);
-      roofBeamsGroup.current.visible = roofBeamsP > 0.01;
+    // Rebars visible during structural phase
+    const rebarP = clamp((progress - 0.2) / 0.4, 0, 1) * (1 - clamp((progress - 1.8) / 0.4, 0, 1));
+    if (rebarPinsRef.current) {
+      rebarPinsRef.current.scale.set(1, rebarP, 1);
+      rebarPinsRef.current.visible = rebarP > 0.01;
     }
 
-    // Rebars show during structural phase and fade as walls enclose
-    const rebarP = clamp((progress - 0.3) / 0.4, 0, 1) * (1 - clamp((progress - 1.8) / 0.5, 0, 1));
-    if (rebarGroup.current) {
-      rebarGroup.current.scale.set(1, rebarP, 1);
-      rebarGroup.current.visible = rebarP > 0.01;
+    // 1.0 -> 2.0: Standard Enclosure & Stucco Walls (Stage 02)
+    const wallsP = clamp((progress - 1.0) / 0.6, 0, 1);
+    if (stuccoWallsRef.current) {
+      stuccoWallsRef.current.scale.set(1, wallsP, 1);
+      stuccoWallsRef.current.visible = wallsP > 0.01;
     }
 
-    // Stage 1 -> 2: Walls Enclose (Standard)
-    const wallsGfP = clamp((progress - 1.0) / 0.5, 0, 1);
-    if (wallsGfGroup.current) {
-      wallsGfGroup.current.scale.set(1, wallsGfP, 1);
-      wallsGfGroup.current.visible = wallsGfP > 0.01;
+    const stdWinP = clamp((progress - 1.4) / 0.45, 0, 1) * (1 - clamp((progress - 2.2) / 0.4, 0, 1));
+    if (standardWindowsRef.current) {
+      standardWindowsRef.current.scale.set(stdWinP, stdWinP, stdWinP);
+      standardWindowsRef.current.visible = stdWinP > 0.01;
     }
 
-    const walls2fP = clamp((progress - 1.35) / 0.5, 0, 1);
-    if (walls2fGroup.current) {
-      walls2fGroup.current.scale.set(1, walls2fP, 1);
-      walls2fGroup.current.visible = walls2fP > 0.01;
+    const intLightP = clamp((progress - 1.5) / 0.5, 0, 1);
+    if (interiorLightingRef.current) {
+      interiorLightingRef.current.visible = intLightP > 0.01;
     }
 
-    const stdWinP = clamp((progress - 1.5) / 0.4, 0, 1) * (1 - clamp((progress - 2.2) / 0.4, 0, 1));
-    if (standardWindowsGroup.current) {
-      standardWindowsGroup.current.scale.set(stdWinP, stdWinP, stdWinP);
-      standardWindowsGroup.current.visible = stdWinP > 0.01;
+    // 2.0 -> 3.0: Premium Timber Louvers, Travertine Portal & Bronze Glazing (Stage 03)
+    const louverP = clamp((progress - 2.0) / 0.5, 0, 1);
+    if (timberLouversRef.current) {
+      timberLouversRef.current.scale.set(1, louverP, 1);
+      timberLouversRef.current.visible = louverP > 0.01;
     }
 
-    const stdDoorP = clamp((progress - 1.6) / 0.35, 0, 1) * (1 - clamp((progress - 3.2) / 0.3, 0, 1));
-    if (standardDoorGroup.current) {
-      standardDoorGroup.current.scale.set(1, stdDoorP, 1);
-      standardDoorGroup.current.visible = stdDoorP > 0.01;
+    const portalP = clamp((progress - 2.15) / 0.45, 0, 1);
+    if (travertinePortalRef.current) {
+      travertinePortalRef.current.scale.set(1, portalP, 1);
+      travertinePortalRef.current.visible = portalP > 0.01;
     }
 
-    // Stage 2 -> 3: Premium (Wood Slats, Analok Bronze, Stone Column)
-    const slatsP = clamp((progress - 2.0) / 0.5, 0, 1);
-    if (premiumSlatsGroup.current) {
-      premiumSlatsGroup.current.scale.set(1, slatsP, 1);
-      premiumSlatsGroup.current.visible = slatsP > 0.01;
+    const bronzeP = clamp((progress - 2.3) / 0.45, 0, 1);
+    if (bronzeFenestrationRef.current) {
+      bronzeFenestrationRef.current.scale.set(bronzeP, bronzeP, bronzeP);
+      bronzeFenestrationRef.current.visible = bronzeP > 0.01;
     }
 
-    const bronzeP = clamp((progress - 2.15) / 0.45, 0, 1);
-    if (bronzeFenestrationGroup.current) {
-      bronzeFenestrationGroup.current.scale.set(bronzeP, bronzeP, bronzeP);
-      bronzeFenestrationGroup.current.visible = bronzeP > 0.01;
+    const coveLightP = clamp((progress - 2.4) / 0.45, 0, 1);
+    if (coveLightingRef.current) {
+      coveLightingRef.current.visible = coveLightP > 0.01;
     }
 
-    const stoneP = clamp((progress - 2.3) / 0.45, 0, 1);
-    if (stoneColumnGroup.current) {
-      stoneColumnGroup.current.scale.set(1, stoneP, 1);
-      stoneColumnGroup.current.visible = stoneP > 0.01;
+    // 3.0 -> 4.0: Luxury Picture-Frame Box, Mahogany Door, Water Cascade & Soffits (Stage 04)
+    const boxP = clamp((progress - 3.0) / 0.45, 0, 1);
+    if (pictureFrameBoxRef.current) {
+      pictureFrameBoxRef.current.scale.set(boxP, boxP, boxP);
+      pictureFrameBoxRef.current.visible = boxP > 0.01;
     }
 
-    const planterP = clamp((progress - 2.5) / 0.4, 0, 1);
-    if (planterGroup.current) {
-      planterGroup.current.scale.set(planterP, planterP, planterP);
-      planterGroup.current.visible = planterP > 0.01;
+    const soffitP = clamp((progress - 3.1) / 0.4, 0, 1);
+    if (timberSoffitsRef.current) {
+      timberSoffitsRef.current.scale.set(1, 1, soffitP);
+      timberSoffitsRef.current.visible = soffitP > 0.01;
     }
 
-    // Stage 3 -> 4: Luxury (Cantilever extension, Marble wall, Pivot door, Pool, Lights)
-    const cantileverP = clamp((progress - 3.0) / 0.45, 0, 1);
-    if (cantileverRoofGroup.current) {
-      cantileverRoofGroup.current.scale.set(1, 1, cantileverP);
-      cantileverRoofGroup.current.visible = cantileverP > 0.01;
+    const grandDoorP = clamp((progress - 3.25) / 0.35, 0, 1);
+    if (grandMahoganyDoorRef.current) {
+      grandMahoganyDoorRef.current.scale.set(1, grandDoorP, 1);
+      grandMahoganyDoorRef.current.visible = grandDoorP > 0.01;
     }
 
-    const marbleP = clamp((progress - 3.15) / 0.4, 0, 1);
-    if (marbleFacadeGroup.current) {
-      marbleFacadeGroup.current.scale.set(marbleP, marbleP, marbleP);
-      marbleFacadeGroup.current.visible = marbleP > 0.01;
+    const atriumP = clamp((progress - 3.35) / 0.35, 0, 1);
+    if (staircaseAtriumRef.current) {
+      staircaseAtriumRef.current.scale.set(atriumP, atriumP, atriumP);
+      staircaseAtriumRef.current.visible = atriumP > 0.01;
     }
 
-    const luxDoorP = clamp((progress - 3.3) / 0.35, 0, 1);
-    if (luxuryDoorGroup.current) {
-      luxuryDoorGroup.current.scale.set(1, luxDoorP, 1);
-      luxuryDoorGroup.current.visible = luxDoorP > 0.01;
+    const balconyP = clamp((progress - 3.45) / 0.35, 0, 1);
+    if (glassBalconiesRef.current) {
+      glassBalconiesRef.current.scale.set(balconyP, 1, 1);
+      glassBalconiesRef.current.visible = balconyP > 0.01;
     }
 
-    const balconyP = clamp((progress - 3.4) / 0.35, 0, 1);
-    if (glassBalconyGroup.current) {
-      glassBalconyGroup.current.scale.set(balconyP, 1, 1);
-      glassBalconyGroup.current.visible = balconyP > 0.01;
+    const cascadeP = clamp((progress - 3.55) / 0.35, 0, 1);
+    if (waterCascadeRef.current) {
+      waterCascadeRef.current.scale.set(cascadeP, cascadeP, cascadeP);
+      waterCascadeRef.current.visible = cascadeP > 0.01;
     }
 
-    const poolP = clamp((progress - 3.5) / 0.4, 0, 1);
-    if (poolGroup.current) {
-      poolGroup.current.scale.set(poolP, poolP, poolP);
-      poolGroup.current.visible = poolP > 0.01;
-    }
-
-    const lightsP = clamp((progress - 2.2) / 1.5, 0, 1);
-    if (lightsGroup.current) {
-      lightsGroup.current.visible = lightsP > 0.01;
+    const luxLightP = clamp((progress - 3.3) / 0.5, 0, 1);
+    if (luxurySpotlightsRef.current) {
+      luxurySpotlightsRef.current.visible = luxLightP > 0.01;
     }
   });
 
-  // Reusable materials
-  const concreteMat = useMemo(() => new THREE.MeshStandardMaterial({ color: CONCRETE_CORE, roughness: 0.85 }), []);
+  // Reusable PBR Materials
   const plinthMat = useMemo(() => new THREE.MeshStandardMaterial({ color: CONCRETE_PLINTH, roughness: 0.95 }), []);
-  const stuccoMat = useMemo(() => new THREE.MeshStandardMaterial({ color: WALL_STUCCO, roughness: 0.75 }), []);
-  const rebarMat = useMemo(() => new THREE.MeshStandardMaterial({ color: REBAR_BRONZE, metalness: 0.75, roughness: 0.3 }), []);
-  const timberMat = useMemo(() => new THREE.MeshStandardMaterial({ color: TIMBER_SLAT, roughness: 0.6 }), []);
-  const stoneMat = useMemo(() => new THREE.MeshStandardMaterial({ color: WALL_STONE, roughness: 0.95 }), []);
+  const concreteMat = useMemo(() => new THREE.MeshStandardMaterial({ color: CONCRETE_CORE, roughness: 0.85 }), []);
+  const rebarMat = useMemo(() => new THREE.MeshStandardMaterial({ color: REBAR_BRONZE, metalness: 0.8, roughness: 0.25 }), []);
+  const travertineMat = useMemo(() => new THREE.MeshStandardMaterial({ color: STONE_TRAVERTINE, roughness: 0.85 }), []);
+  const stuccoMat = useMemo(() => new THREE.MeshStandardMaterial({ color: WALL_STUCCO, roughness: 0.65 }), []);
+  const warmTimberMat = useMemo(() => new THREE.MeshStandardMaterial({ color: WALL_TIMBER_WARM, roughness: 0.55 }), []);
+  const soffitMat = useMemo(() => new THREE.MeshStandardMaterial({ color: TIMBER_SOFFIT, roughness: 0.5 }), []);
+  const louverMat = useMemo(() => new THREE.MeshStandardMaterial({ color: TIMBER_LOUVER, roughness: 0.6 }), []);
+  const mahoganyMat = useMemo(() => new THREE.MeshStandardMaterial({ color: DOOR_MAHOGANY, roughness: 0.4 }), []);
   const bronzeMat = useMemo(() => new THREE.MeshStandardMaterial({ color: ANALOK_BRONZE, metalness: 0.85, roughness: 0.2 }), []);
-  const roofMat = useMemo(() => new THREE.MeshStandardMaterial({ color: ROOF_FASCIA, roughness: 0.35 }), []);
-  const glassClearMat = useMemo(
-    () => new THREE.MeshPhysicalMaterial({ color: GLASS_CLEAR, roughness: 0.04, transmission: 0.65, transparent: true, opacity: 0.85 }),
+  const roofMat = useMemo(() => new THREE.MeshStandardMaterial({ color: ROOF_FASCIA, roughness: 0.3 }), []);
+  const glassMat = useMemo(
+    () => new THREE.MeshPhysicalMaterial({ color: GLASS_PANEL, roughness: 0.03, transmission: 0.75, transparent: true, opacity: 0.88 }),
     []
   );
-  const glassBronzeMat = useMemo(
-    () => new THREE.MeshPhysicalMaterial({ color: GLASS_BRONZE, roughness: 0.04, transmission: 0.55, transparent: true, opacity: 0.9 }),
+  const goldMat = useMemo(() => new THREE.MeshStandardMaterial({ color: GOLD_PULL, metalness: 0.95, roughness: 0.15 }), []);
+  const waterMat = useMemo(
+    () => new THREE.MeshPhysicalMaterial({ color: WATER_FALL, roughness: 0.02, transmission: 0.85, transparent: true, opacity: 0.9 }),
     []
   );
-  const poolWaterMat = useMemo(
-    () => new THREE.MeshPhysicalMaterial({ color: POOL_WATER, roughness: 0.02, transmission: 0.88, transparent: true, opacity: 0.92 }),
-    []
-  );
-  const goldMat = useMemo(() => new THREE.MeshStandardMaterial({ color: GOLD_ACCENT, metalness: 0.9, roughness: 0.15 }), []);
+  const drivewayMat = useMemo(() => new THREE.MeshStandardMaterial({ color: DRIVEWAY_PAVER, roughness: 0.9 }), []);
+  const foliageMat = useMemo(() => new THREE.MeshStandardMaterial({ color: FOLIAGE_GREEN, roughness: 0.9 }), []);
 
   return (
-    <group ref={group} scale={1.22} position={[0, -0.65, 0]} rotation={[0, -Math.PI / 5.2, 0]}>
+    <group ref={group} scale={0.96} position={[0, -0.65, 0]} rotation={[0, -Math.PI / 6.5, 0]}>
       {/* ============================================================== */}
-      {/* 00. SITE GROUND PLANE & EXCAVATION GRID (ALWAYS VISIBLE)        */}
+      {/* 00. SITE GROUNDS, DRIVEWAY PAVERS & ENTRANCE STAIRS            */}
       {/* ============================================================== */}
-      <mesh position={[0, -0.01, 0]} receiveShadow>
-        <boxGeometry args={[4.8, 0.04, 3.8]} />
-        <meshStandardMaterial color="#ebe6dc" roughness={1} />
+      {/* Main Ground Surface */}
+      <mesh position={[0, -0.02, 0]} receiveShadow>
+        <boxGeometry args={[6.8, 0.04, 4.4]} />
+        <meshStandardMaterial color="#ece7de" roughness={1} />
       </mesh>
+      {/* Right Driveway Pavers under Carport */}
+      <mesh position={[1.8, 0.01, 0.4]} receiveShadow>
+        <boxGeometry args={[2.8, 0.02, 3.2]} />
+        <primitive object={drivewayMat} attach="material" />
+      </mesh>
+      {/* Central Garden Steps leading to front door */}
+      <group position={[0.05, 0.06, 1.45]}>
+        <mesh position={[0, 0, 0]} receiveShadow>
+          <boxGeometry args={[1.3, 0.04, 0.5]} />
+          <primitive object={drivewayMat} attach="material" />
+        </mesh>
+        <mesh position={[0, 0.04, -0.15]} receiveShadow>
+          <boxGeometry args={[1.2, 0.04, 0.4]} />
+          <primitive object={drivewayMat} attach="material" />
+        </mesh>
+        <mesh position={[0, 0.08, -0.3]} receiveShadow>
+          <boxGeometry args={[1.1, 0.04, 0.3]} />
+          <primitive object={drivewayMat} attach="material" />
+        </mesh>
+      </group>
 
       {/* ============================================================== */}
-      {/* 01. BARE SHELL: Foundation, Columns, Beams, Concrete Slabs     */}
+      {/* 01. BARE SHELL: Foundation, Columns, Beams, Transfer Slabs     */}
       {/* ============================================================== */}
-      <group ref={foundationGroup}>
+      <group ref={foundationRef}>
         {/* Foundation Plinth */}
-        <mesh position={[0, 0.06, 0]} receiveShadow>
-          <boxGeometry args={[4.4, 0.12, 3.4]} />
+        <mesh position={[-0.1, 0.08, 0.1]} receiveShadow>
+          <boxGeometry args={[6.0, 0.14, 3.4]} />
           <primitive object={plinthMat} attach="material" />
         </mesh>
-
-        {/* First Floor Concrete Slab Plinth */}
-        <mesh position={[-0.2, 0.14, 0.1]} receiveShadow>
-          <boxGeometry args={[3.2, 0.08, 2.4]} />
-          <primitive object={concreteMat} attach="material" />
-        </mesh>
       </group>
 
-      {/* Ground Floor Columns (Rise from 0 height) */}
-      <group ref={colGfGroup} position={[0, 0.18, 0]}>
+      {/* Concrete Columns (Ground Floor) */}
+      <group ref={concreteColumnsRef} position={[0, 0.15, 0]}>
+        {/* Left Living Pavilion Columns */}
         {[
-          [-1.6, 0.6, 1.2],
-          [-0.2, 0.6, 1.2],
-          [1.2, 0.6, 1.2],
-          [-1.6, 0.6, -1.0],
-          [-0.2, 0.6, -1.0],
-          [1.2, 0.6, -1.0],
+          [-2.6, 0.7, 1.2],
+          [-1.3, 0.7, 1.2],
+          [-2.6, 0.7, -1.0],
+          [-1.3, 0.7, -1.0],
         ].map(([x, y, z], idx) => (
-          <mesh key={`col-gf-${idx}`} position={[x, y, z]} castShadow>
-            <boxGeometry args={[0.2, 1.2, 0.2]} />
+          <mesh key={`col-l-${idx}`} position={[x, y, z]} castShadow>
+            <boxGeometry args={[0.22, 1.4, 0.22]} />
+            <primitive object={concreteMat} attach="material" />
+          </mesh>
+        ))}
+
+        {/* Center Portal Columns (Towering 2-Story Shaft) */}
+        {[
+          [-0.45, 1.4, 0.8],
+          [0.55, 1.4, 0.8],
+          [-0.45, 1.4, -0.6],
+          [0.55, 1.4, -0.6],
+        ].map(([x, y, z], idx) => (
+          <mesh key={`col-c-${idx}`} position={[x, y, z]} castShadow>
+            <boxGeometry args={[0.24, 2.8, 0.24]} />
+            <primitive object={concreteMat} attach="material" />
+          </mesh>
+        ))}
+
+        {/* Right Carport & Bedroom Wing Columns */}
+        {[
+          [1.8, 0.7, 1.2],
+          [2.8, 0.7, 1.2],
+          [1.8, 0.7, -1.0],
+          [2.8, 0.7, -1.0],
+        ].map(([x, y, z], idx) => (
+          <mesh key={`col-r-${idx}`} position={[x, y, z]} castShadow>
+            <boxGeometry args={[0.22, 1.4, 0.22]} />
             <primitive object={concreteMat} attach="material" />
           </mesh>
         ))}
       </group>
 
-      {/* Ground Floor Tie-Beams */}
-      <group ref={beamGfGroup}>
-        <mesh position={[-0.2, 1.44, 1.2]} castShadow>
-          <boxGeometry args={[3.0, 0.18, 0.2]} />
+      {/* Tie-Beams (Linking Columns at First Floor Ceiling) */}
+      <group ref={tieBeamsRef}>
+        <mesh position={[-1.95, 1.62, 1.2]} castShadow>
+          <boxGeometry args={[1.5, 0.18, 0.22]} />
           <primitive object={concreteMat} attach="material" />
         </mesh>
-        <mesh position={[-0.2, 1.44, -1.0]} castShadow>
-          <boxGeometry args={[3.0, 0.18, 0.2]} />
+        <mesh position={[2.3, 1.62, 1.2]} castShadow>
+          <boxGeometry args={[1.2, 0.18, 0.22]} />
           <primitive object={concreteMat} attach="material" />
         </mesh>
-        <mesh position={[-1.6, 1.44, 0.1]} castShadow>
-          <boxGeometry args={[0.2, 0.18, 2.2]} />
-          <primitive object={concreteMat} attach="material" />
-        </mesh>
-        <mesh position={[1.2, 1.44, 0.1]} castShadow>
-          <boxGeometry args={[0.2, 0.18, 2.2]} />
+        <mesh position={[-0.1, 1.62, -1.0]} castShadow>
+          <boxGeometry args={[5.6, 0.18, 0.22]} />
           <primitive object={concreteMat} attach="material" />
         </mesh>
       </group>
 
-      {/* 2nd Floor Cantilevered Transfer Slab */}
-      <group ref={slab2fGroup}>
-        <mesh position={[-0.35, 1.56, 0.15]} castShadow receiveShadow>
-          <boxGeometry args={[3.6, 0.14, 2.8]} />
+      {/* 2nd Floor Transfer Slab (Left Balcony & Right Terrace) */}
+      <group ref={floorPlate2FRef}>
+        {/* Left Wing 2F Balcony Slab (Extends Forward) */}
+        <mesh position={[-1.9, 1.72, 0.3]} castShadow receiveShadow>
+          <boxGeometry args={[2.5, 0.14, 2.7]} />
+          <primitive object={concreteMat} attach="material" />
+        </mesh>
+        {/* Right Wing 2F Bedroom & Terrace Slab (Over Carport) */}
+        <mesh position={[1.9, 1.72, 0.3]} castShadow receiveShadow>
+          <boxGeometry args={[2.5, 0.14, 2.7]} />
           <primitive object={concreteMat} attach="material" />
         </mesh>
       </group>
 
-      {/* 2nd Floor Columns */}
-      <group ref={col2fGroup} position={[0, 1.63, 0]}>
+      {/* Roof Skeleton & Top Tie-Beams */}
+      <group ref={roofSkeletonRef}>
+        <mesh position={[-0.1, 3.15, 0.2]} castShadow>
+          <boxGeometry args={[6.1, 0.14, 3.1]} />
+          <primitive object={concreteMat} attach="material" />
+        </mesh>
+      </group>
+
+      {/* Rebar Pins on Column Heads */}
+      <group ref={rebarPinsRef}>
         {[
-          [-1.9, 0.58, 1.35],
-          [-0.35, 0.58, 1.35],
-          [1.2, 0.58, 1.35],
-          [-1.9, 0.58, -1.0],
-          [-0.35, 0.58, -1.0],
-          [1.2, 0.58, -1.0],
+          [-2.6, 3.25, 1.2],
+          [-1.3, 3.25, 1.2],
+          [-0.45, 3.25, 0.8],
+          [0.55, 3.25, 0.8],
+          [1.8, 3.25, 1.2],
+          [2.8, 3.25, 1.2],
         ].map(([x, y, z], idx) => (
-          <mesh key={`col-2f-${idx}`} position={[x, y, z]} castShadow>
-            <boxGeometry args={[0.18, 1.16, 0.18]} />
-            <primitive object={concreteMat} attach="material" />
+          <mesh key={`reb-${idx}`} position={[x, y + 0.1, z]}>
+            <cylinderGeometry args={[0.015, 0.015, 0.22, 6]} />
+            <primitive object={rebarMat} attach="material" />
           </mesh>
         ))}
       </group>
 
-      {/* Roof Beams & Base Flat Slab */}
-      <group ref={roofBeamsGroup}>
-        <mesh position={[-0.35, 2.85, 0.15]} castShadow>
-          <boxGeometry args={[3.8, 0.14, 3.0]} />
-          <primitive object={concreteMat} attach="material" />
+      {/* ============================================================== */}
+      {/* 02. STANDARD: Enclosure Walls, Basic Windows & Plaster Finishes */}
+      {/* ============================================================== */}
+      <group ref={stuccoWallsRef} position={[0, 0.15, 0]}>
+        {/* Left Living Pavilion Rear & Side Walls */}
+        <mesh position={[-2.7, 0.7, 0.1]} castShadow receiveShadow>
+          <boxGeometry args={[0.16, 1.35, 2.2]} />
+          <primitive object={stuccoMat} attach="material" />
+        </mesh>
+        <mesh position={[-1.95, 0.7, -0.95]} castShadow receiveShadow>
+          <boxGeometry args={[1.5, 1.35, 0.16]} />
+          <primitive object={stuccoMat} attach="material" />
+        </mesh>
+
+        {/* Left 2F Master Suite Walls */}
+        <mesh position={[-2.8, 2.25, 0.2]} castShadow receiveShadow>
+          <boxGeometry args={[0.16, 1.3, 2.4]} />
+          <primitive object={stuccoMat} attach="material" />
+        </mesh>
+        <mesh position={[-1.95, 2.25, -0.95]} castShadow receiveShadow>
+          <boxGeometry args={[1.5, 1.3, 0.16]} />
+          <primitive object={stuccoMat} attach="material" />
+        </mesh>
+
+        {/* Right Carport Rear Wall (Warm Wood Planking) */}
+        <mesh position={[2.1, 0.7, -0.85]} castShadow receiveShadow>
+          <boxGeometry args={[2.0, 1.35, 0.12]} />
+          <primitive object={warmTimberMat} attach="material" />
+        </mesh>
+
+        {/* Right 2F Bedroom Suite Walls */}
+        <mesh position={[2.7, 2.25, 0.2]} castShadow receiveShadow>
+          <boxGeometry args={[0.16, 1.3, 2.4]} />
+          <primitive object={stuccoMat} attach="material" />
+        </mesh>
+        <mesh position={[1.9, 2.25, -0.95]} castShadow receiveShadow>
+          <boxGeometry args={[1.6, 1.3, 0.16]} />
+          <primitive object={stuccoMat} attach="material" />
         </mesh>
       </group>
 
-      {/* Exposed Rebar Dowels on Column Tops */}
-      <group ref={rebarGroup}>
-        {[
-          [-1.9, 2.96, 1.35],
-          [-0.35, 2.96, 1.35],
-          [1.2, 2.96, 1.35],
-          [-1.9, 2.96, -1.0],
-          [1.2, 2.96, -1.0],
-        ].map(([x, y, z], idx) => (
-          <group key={`rebar-pin-${idx}`} position={[x, y, z]}>
-            <mesh position={[-0.04, 0.12, -0.04]}>
-              <cylinderGeometry args={[0.012, 0.012, 0.24, 6]} />
-              <primitive object={rebarMat} attach="material" />
-            </mesh>
-            <mesh position={[0.04, 0.12, 0.04]}>
-              <cylinderGeometry args={[0.012, 0.012, 0.24, 6]} />
-              <primitive object={rebarMat} attach="material" />
-            </mesh>
-          </group>
-        ))}
+      {/* Standard Temporary Windows */}
+      <group ref={standardWindowsRef} position={[0, 0.15, 0]}>
+        <mesh position={[-1.95, 0.7, 1.22]}>
+          <boxGeometry args={[1.4, 1.2, 0.03]} />
+          <primitive object={glassMat} attach="material" />
+        </mesh>
+        <mesh position={[1.95, 2.25, 1.22]}>
+          <boxGeometry args={[1.4, 1.15, 0.03]} />
+          <primitive object={glassMat} attach="material" />
+        </mesh>
+      </group>
+
+      {/* Interior Warm Downlights */}
+      <group ref={interiorLightingRef}>
+        <pointLight position={[-1.9, 1.4, 0.3]} intensity={1.8} color="#ffe2b8" distance={3.0} />
+        <pointLight position={[2.1, 1.4, 0.3]} intensity={1.5} color="#ffe2b8" distance={3.0} />
       </group>
 
       {/* ============================================================== */}
-      {/* 02. STANDARD: Plaster Walls, Windows, Standard Door            */}
+      {/* 03. PREMIUM: Travertine Portal, Vertical Louvers & Bronze Glass */}
       {/* ============================================================== */}
-      <group ref={wallsGfGroup} position={[0, 0.18, 0]}>
-        <mesh position={[-0.9, 0.6, 1.15]} castShadow receiveShadow>
-          <boxGeometry args={[1.2, 1.15, 0.15]} />
-          <primitive object={stuccoMat} attach="material" />
+      {/* Central 2-Story Travertine Portal Arch */}
+      <group ref={travertinePortalRef} position={[0.05, 0.15, 0]}>
+        {/* Left Portal Pillar */}
+        <mesh position={[-0.48, 1.45, 0.85]} castShadow receiveShadow>
+          <boxGeometry args={[0.32, 2.9, 0.45]} />
+          <primitive object={travertineMat} attach="material" />
         </mesh>
-        <mesh position={[-1.55, 0.6, 0.1]} castShadow receiveShadow>
-          <boxGeometry args={[0.15, 1.15, 2.1]} />
-          <primitive object={stuccoMat} attach="material" />
+        {/* Right Portal Pillar */}
+        <mesh position={[0.55, 1.45, 0.85]} castShadow receiveShadow>
+          <boxGeometry args={[0.32, 2.9, 0.45]} />
+          <primitive object={travertineMat} attach="material" />
         </mesh>
-        <mesh position={[-0.2, 0.6, -0.95]} castShadow receiveShadow>
-          <boxGeometry args={[2.7, 1.15, 0.15]} />
-          <primitive object={stuccoMat} attach="material" />
-        </mesh>
-        <mesh position={[1.4, 0.6, 1.15]} castShadow>
-          <boxGeometry args={[0.24, 1.15, 0.24]} />
-          <primitive object={stuccoMat} attach="material" />
-        </mesh>
-      </group>
-
-      <group ref={walls2fGroup} position={[0, 1.63, 0]}>
-        <mesh position={[-1.1, 0.58, 1.3]} castShadow receiveShadow>
-          <boxGeometry args={[1.4, 1.1, 0.15]} />
-          <primitive object={stuccoMat} attach="material" />
-        </mesh>
-        <mesh position={[-1.85, 0.58, 0.15]} castShadow receiveShadow>
-          <boxGeometry args={[0.15, 1.1, 2.4]} />
-          <primitive object={stuccoMat} attach="material" />
-        </mesh>
-        <mesh position={[-0.35, 0.58, -0.95]} castShadow receiveShadow>
-          <boxGeometry args={[2.9, 1.1, 0.15]} />
-          <primitive object={stuccoMat} attach="material" />
-        </mesh>
-        <mesh position={[1.15, 0.58, 0.15]} castShadow receiveShadow>
-          <boxGeometry args={[0.15, 1.1, 2.4]} />
-          <primitive object={stuccoMat} attach="material" />
+        {/* Portal Top Header Beam */}
+        <mesh position={[0.035, 2.85, 0.85]} castShadow receiveShadow>
+          <boxGeometry args={[1.35, 0.34, 0.45]} />
+          <primitive object={travertineMat} attach="material" />
         </mesh>
       </group>
 
-      {/* Standard Basic Windows */}
-      <group ref={standardWindowsGroup} position={[0, 0.18, 0]}>
-        <mesh position={[-0.9, 0.65, 1.24]}>
-          <boxGeometry args={[0.75, 0.55, 0.03]} />
-          <primitive object={glassClearMat} attach="material" />
-        </mesh>
-        <mesh position={[-1.1, 2.1, 1.39]}>
-          <boxGeometry args={[0.85, 0.6, 0.03]} />
-          <primitive object={glassClearMat} attach="material" />
-        </mesh>
-      </group>
-
-      {/* Standard Front Door */}
-      <group ref={standardDoorGroup} position={[0, 0.18, 0]}>
-        <mesh position={[0.4, 0.52, 1.2]} castShadow>
-          <boxGeometry args={[0.5, 0.98, 0.06]} />
-          <meshStandardMaterial color={TIMBER_DOOR} roughness={0.7} />
-        </mesh>
-      </group>
-
-      {/* ============================================================== */}
-      {/* 03. PREMIUM: Acoustic Wood Slats, Bronze Fenestration, Stone   */}
-      {/* ============================================================== */}
-      <group ref={premiumSlatsGroup} position={[0, 1.63, 0]}>
-        {[-1.75, -1.6, -1.45, -1.3, -1.15, -1.0, -0.85, -0.7, -0.55].map((x, idx) => (
-          <mesh key={`prem-slat-${idx}`} position={[x, 0.58, 1.39]} castShadow>
-            <boxGeometry args={[0.05, 1.1, 0.05]} />
-            <primitive object={timberMat} attach="material" />
+      {/* Iconic Right-Wing Vertical Timber Louver Screen (Floor-to-Ceiling 2F) */}
+      <group ref={timberLouversRef} position={[0, 0.15, 0]}>
+        {[1.25, 1.35, 1.45, 1.55, 1.65, 1.75, 1.85, 1.95, 2.05].map((x, idx) => (
+          <mesh key={`louv-${idx}`} position={[x, 2.25, 1.26]} castShadow>
+            <boxGeometry args={[0.04, 1.25, 0.08]} />
+            <primitive object={louverMat} attach="material" />
           </mesh>
         ))}
       </group>
 
-      {/* Analok Bronze Sliding Panels */}
-      <group ref={bronzeFenestrationGroup} position={[0, 0.18, 0]}>
-        <group position={[0.4, 0.65, 1.24]}>
+      {/* Heavy-Gauge Analok Bronze Sliding Glass Doors (Left Living + 2F) */}
+      <group ref={bronzeFenestrationRef} position={[0, 0.15, 0]}>
+        {/* Ground Floor Living Sliding Glass Wall */}
+        <group position={[-1.95, 0.7, 1.24]}>
           <mesh>
-            <boxGeometry args={[1.35, 0.98, 0.03]} />
-            <primitive object={glassBronzeMat} attach="material" />
+            <boxGeometry args={[1.45, 1.25, 0.03]} />
+            <primitive object={glassMat} attach="material" />
           </mesh>
-          <mesh position={[0, 0.48, 0]}>
-            <boxGeometry args={[1.38, 0.04, 0.06]} />
+          <mesh position={[0, 0.6, 0]}>
+            <boxGeometry args={[1.49, 0.04, 0.06]} />
             <primitive object={bronzeMat} attach="material" />
           </mesh>
-          <mesh position={[0, -0.48, 0]}>
-            <boxGeometry args={[1.38, 0.04, 0.06]} />
+          <mesh position={[0, -0.6, 0]}>
+            <boxGeometry args={[1.49, 0.04, 0.06]} />
             <primitive object={bronzeMat} attach="material" />
           </mesh>
-          <mesh position={[-0.67, 0, 0]}>
-            <boxGeometry args={[0.04, 0.98, 0.06]} />
+          <mesh position={[-0.72, 0, 0]}>
+            <boxGeometry args={[0.04, 1.25, 0.06]} />
             <primitive object={bronzeMat} attach="material" />
           </mesh>
-          <mesh position={[0.67, 0, 0]}>
-            <boxGeometry args={[0.04, 0.98, 0.06]} />
+          <mesh position={[0.72, 0, 0]}>
+            <boxGeometry args={[0.04, 1.25, 0.06]} />
             <primitive object={bronzeMat} attach="material" />
           </mesh>
         </group>
 
-        {/* 2F Master Suite Bronze Fenestration */}
-        <group position={[0.2, 2.1, 1.4]}>
+        {/* 2F Master Suite Sliding Glass Wall */}
+        <group position={[-1.95, 2.25, 1.15]}>
           <mesh>
-            <boxGeometry args={[1.65, 1.05, 0.03]} />
-            <primitive object={glassBronzeMat} attach="material" />
+            <boxGeometry args={[1.45, 1.25, 0.03]} />
+            <primitive object={glassMat} attach="material" />
           </mesh>
-          <mesh position={[0, 0.52, 0]}>
-            <boxGeometry args={[1.69, 0.04, 0.06]} />
-            <primitive object={bronzeMat} attach="material" />
-          </mesh>
-          <mesh position={[0, -0.52, 0]}>
-            <boxGeometry args={[1.69, 0.04, 0.06]} />
-            <primitive object={bronzeMat} attach="material" />
+        </group>
+
+        {/* 2F Right Bedroom Sliding Glass */}
+        <group position={[2.3, 2.25, 1.2]}>
+          <mesh>
+            <boxGeometry args={[1.0, 1.25, 0.03]} />
+            <primitive object={glassMat} attach="material" />
           </mesh>
         </group>
       </group>
 
-      {/* 2-Story Stacked Stone Feature Column */}
-      <group ref={stoneColumnGroup} position={[0, 0.18, 0]}>
-        <mesh position={[1.4, 1.35, 1.26]} castShadow receiveShadow>
-          <boxGeometry args={[0.4, 2.55, 0.4]} />
-          <primitive object={stoneMat} attach="material" />
-        </mesh>
-      </group>
-
-      {/* Garden Planters */}
-      <group ref={planterGroup} position={[0, 0.18, 0]}>
-        <mesh position={[-1.75, 0.16, 1.7]} castShadow receiveShadow>
-          <boxGeometry args={[0.85, 0.3, 0.42]} />
-          <primitive object={stoneMat} attach="material" />
-        </mesh>
-        <mesh position={[-1.75, 0.42, 1.7]}>
-          <sphereGeometry args={[0.2, 10, 10]} />
-          <meshStandardMaterial color={GRASS_TERRACE} roughness={0.9} />
-        </mesh>
+      {/* Perimeter Warm LED Cove Lighting */}
+      <group ref={coveLightingRef}>
+        <pointLight position={[-1.9, 1.7, 1.3]} intensity={2.2} color="#ffbe6b" distance={2.5} />
+        <pointLight position={[2.0, 1.7, 1.3]} intensity={2.0} color="#ffbe6b" distance={2.5} />
       </group>
 
       {/* ============================================================== */}
-      {/* 04. LUXURY: Extended Cantilever, Sintered Marble, Pivot Door,  */}
-      {/*     Glass Balconies, Sun Deck & Turquoise Plunge Pool          */}
+      {/* 04. LUXURY: Picture-Frame Box, Timber Soffit, Grand Door, Pool  */}
       {/* ============================================================== */}
-      <group ref={cantileverRoofGroup} position={[0, 0, 0]}>
-        {/* Extended Cantilever Roof Soffit Reaching Outward */}
-        <mesh position={[-0.3, 2.87, 0.45]} castShadow>
-          <boxGeometry args={[4.4, 0.12, 3.6]} />
+      {/* Left Wing Iconic White Architectural Picture-Frame Box */}
+      <group ref={pictureFrameBoxRef} position={[-1.95, 2.4, 0.5]}>
+        {/* Outer White Cantilever Frame */}
+        {/* Bottom Ledge */}
+        <mesh position={[0, -0.6, 0.8]} castShadow>
+          <boxGeometry args={[2.5, 0.1, 1.6]} />
+          <primitive object={stuccoMat} attach="material" />
+        </mesh>
+        {/* Top Header Ledge */}
+        <mesh position={[0, 0.6, 0.8]} castShadow>
+          <boxGeometry args={[2.5, 0.1, 1.6]} />
+          <primitive object={stuccoMat} attach="material" />
+        </mesh>
+        {/* Left Vertical Frame */}
+        <mesh position={[-1.2, 0, 0.8]} castShadow>
+          <boxGeometry args={[0.1, 1.1, 1.6]} />
+          <primitive object={stuccoMat} attach="material" />
+        </mesh>
+        {/* Warm Timber Lining on Inner Balcony Wall */}
+        <mesh position={[-1.13, 0, 0.8]}>
+          <boxGeometry args={[0.02, 1.08, 1.56]} />
+          <primitive object={warmTimberMat} attach="material" />
+        </mesh>
+      </group>
+
+      {/* Grand Continuous Roof with Timber Battens Underneath */}
+      <group ref={timberSoffitsRef} position={[-0.1, 3.25, 0.4]}>
+        {/* Dark Architectural Roof Fascia with Curved Left Corner */}
+        <mesh position={[0, 0, 0]} castShadow>
+          <boxGeometry args={[6.4, 0.12, 3.5]} />
           <primitive object={roofMat} attach="material" />
         </mesh>
-        <mesh position={[-0.3, 2.8, 0.45]}>
-          <boxGeometry args={[4.36, 0.02, 3.56]} />
-          <primitive object={timberMat} attach="material" />
+        {/* Warm Timber Soffit Underneath */}
+        <mesh position={[0, -0.07, 0]}>
+          <boxGeometry args={[6.36, 0.02, 3.46]} />
+          <primitive object={soffitMat} attach="material" />
         </mesh>
       </group>
 
-      {/* Sintered Stone Marble Focal Wall */}
-      <group ref={marbleFacadeGroup} position={[0, 0.18, 0]}>
-        <mesh position={[0.4, 0.65, 1.21]} castShadow receiveShadow>
-          <boxGeometry args={[0.85, 1.15, 0.04]} />
-          <meshStandardMaterial color="#faf7f0" roughness={0.15} metalness={0.1} />
+      {/* Double-Height Glass Staircase Atrium (Behind Left of Stone Portal) */}
+      <group ref={staircaseAtriumRef} position={[-0.7, 1.55, 0.75]}>
+        <mesh>
+          <boxGeometry args={[0.6, 2.65, 0.03]} />
+          <primitive object={glassMat} attach="material" />
         </mesh>
+        {/* Interior Illuminated Floating Staircase Steps */}
+        {[-0.8, -0.4, 0.0, 0.4, 0.8].map((y, idx) => (
+          <mesh key={`stair-${idx}`} position={[0, y, -0.2]}>
+            <boxGeometry args={[0.5, 0.05, 0.15]} />
+            <meshStandardMaterial color="#faf5ee" roughness={0.3} />
+          </mesh>
+        ))}
       </group>
 
-      {/* Oversized Luxury Pivot Door */}
-      <group ref={luxuryDoorGroup} position={[0, 0.18, 0]}>
-        <mesh position={[-0.1, 0.62, 1.24]} castShadow>
-          <boxGeometry args={[0.62, 1.1, 0.07]} />
-          <meshStandardMaterial color="#1a110a" roughness={0.35} />
+      {/* 2-Story Grand Mahogany Architectural Pivot Entrance Door */}
+      <group ref={grandMahoganyDoorRef} position={[0.05, 1.45, 0.88]}>
+        {/* Massive Solid Mahogany Door Slab */}
+        <mesh castShadow>
+          <boxGeometry args={[0.68, 2.65, 0.08]} />
+          <primitive object={mahoganyMat} attach="material" />
         </mesh>
-        <mesh position={[0.16, 0.62, 1.28]}>
-          <cylinderGeometry args={[0.014, 0.014, 0.7, 8]} />
+        {/* Vertical Brushed Brass Pull Handle */}
+        <mesh position={[0.26, 0, 0.06]}>
+          <cylinderGeometry args={[0.016, 0.016, 1.2, 8]} />
           <primitive object={goldMat} attach="material" />
         </mesh>
       </group>
 
-      {/* Frameless Glass Balcony Railing */}
-      <group ref={glassBalconyGroup} position={[0, 1.63, 0]}>
-        <group position={[-0.35, 0.22, 1.58]}>
+      {/* Frameless Glass Balcony Railings with Lush Planter Foliage */}
+      <group ref={glassBalconiesRef}>
+        {/* Left Balcony Glass Railing */}
+        <group position={[-1.95, 1.95, 1.62]}>
           <mesh>
-            <boxGeometry args={[2.9, 0.38, 0.02]} />
-            <primitive object={glassClearMat} attach="material" />
+            <boxGeometry args={[2.3, 0.38, 0.02]} />
+            <primitive object={glassMat} attach="material" />
           </mesh>
-          <mesh position={[0, 0.19, 0]}>
-            <boxGeometry args={[2.92, 0.02, 0.03]} />
+          <mesh position={[0, 0.18, 0]}>
+            <boxGeometry args={[2.32, 0.02, 0.03]} />
             <primitive object={bronzeMat} attach="material" />
           </mesh>
+          {/* Planter Shrub Spheres along railing */}
+          {[-0.8, -0.3, 0.2, 0.7].map((x, idx) => (
+            <mesh key={`plant-l-${idx}`} position={[x, -0.08, -0.05]}>
+              <sphereGeometry args={[0.12, 8, 8]} />
+              <primitive object={foliageMat} attach="material" />
+            </mesh>
+          ))}
+        </group>
+
+        {/* Right Balcony Glass Railing */}
+        <group position={[1.9, 1.95, 1.62]}>
+          <mesh>
+            <boxGeometry args={[2.3, 0.38, 0.02]} />
+            <primitive object={glassMat} attach="material" />
+          </mesh>
+          <mesh position={[0, 0.18, 0]}>
+            <boxGeometry args={[2.32, 0.02, 0.03]} />
+            <primitive object={bronzeMat} attach="material" />
+          </mesh>
+          {/* Planters */}
+          {[-0.7, 0, 0.7].map((x, idx) => (
+            <mesh key={`plant-r-${idx}`} position={[x, -0.08, -0.05]}>
+              <sphereGeometry args={[0.12, 8, 8]} />
+              <primitive object={foliageMat} attach="material" />
+            </mesh>
+          ))}
         </group>
       </group>
 
-      {/* Luxury Front Courtyard Plunge Pool & Teak Sun Deck */}
-      <group ref={poolGroup} position={[0, 0.08, 0]}>
-        <mesh position={[0.6, 0.05, 1.95]} receiveShadow>
-          <boxGeometry args={[1.9, 0.08, 1.4]} />
-          <meshStandardMaterial color={POOL_DECK} roughness={0.7} />
+      {/* Front Left Illuminated Waterfall & Cascading Reflection Pool */}
+      <group ref={waterCascadeRef} position={[-2.4, 0.12, 1.8]}>
+        {/* Pool Concrete Retaining Wall */}
+        <mesh position={[0, 0.08, 0]} receiveShadow>
+          <boxGeometry args={[1.4, 0.2, 0.8]} />
+          <primitive object={plinthMat} attach="material" />
         </mesh>
-        <mesh position={[0.6, -0.01, 1.95]} receiveShadow>
-          <boxGeometry args={[1.4, 0.06, 0.95]} />
-          <meshStandardMaterial color="#0f3b45" />
+        {/* Water Surface Basin */}
+        <mesh position={[0, 0.15, 0]}>
+          <boxGeometry args={[1.32, 0.02, 0.72]} />
+          <primitive object={waterMat} attach="material" />
         </mesh>
-        <mesh position={[0.6, 0.06, 1.95]}>
-          <boxGeometry args={[1.38, 0.02, 0.93]} />
-          <primitive object={poolWaterMat} attach="material" />
+        {/* Waterfall Spillway Wall */}
+        <mesh position={[0, 0.35, -0.38]} castShadow>
+          <boxGeometry args={[1.2, 0.35, 0.06]} />
+          <primitive object={travertineMat} attach="material" />
+        </mesh>
+        {/* Tropical Palm Planter */}
+        <mesh position={[0.8, 0.3, 0.1]}>
+          <sphereGeometry args={[0.22, 10, 10]} />
+          <primitive object={foliageMat} attach="material" />
         </mesh>
       </group>
 
-      {/* Architectural Lighting (Active in Premium & Luxury) */}
-      <group ref={lightsGroup}>
-        <pointLight position={[-0.3, 1.5, 1.45]} intensity={progress >= 2.5 ? 2.2 : 0} color="#ffbe6b" distance={3.0} />
-        <pointLight position={[0.4, 1.35, 1.35]} intensity={progress >= 1.5 ? 1.5 : 0} color="#ffcca0" distance={2.5} />
-        <pointLight position={[0.6, 0.25, 1.95]} intensity={progress >= 3.2 ? 3.0 : 0} color="#35d6eb" distance={2.6} />
+      {/* Architectural Spotlights (Evening Mood Glow) */}
+      <group ref={luxurySpotlightsRef}>
+        {/* Upward Spotlight grazing Central Travertine Portal */}
+        <pointLight position={[0.05, 0.3, 1.2]} intensity={3.2} color="#ffe5bd" distance={3.8} />
+        {/* Water Cascade Turquoise Glow */}
+        <pointLight position={[-2.4, 0.25, 1.8]} intensity={3.0} color="#35d6eb" distance={2.5} />
+        {/* Carport Warm Sconces */}
+        <pointLight position={[2.2, 1.3, 0.5]} intensity={2.0} color="#ffbe6b" distance={3.0} />
       </group>
     </group>
   );
@@ -557,29 +641,30 @@ export default function Mansion3DScene({ progress }: { progress: number }) {
         shadows
         dpr={[1, 2]}
         gl={{ antialias: true, powerPreference: "high-performance" }}
-        camera={{ position: [4.4, 2.7, 4.8], fov: 36 }}
+        // Zoomed-out camera so the full mansion, driveway, and waterfall pool fit comfortably without cramping
+        camera={{ position: [5.6, 2.9, 6.2], fov: 32 }}
       >
-        {/* Soft Alabaster Sun & Sky Illumination for Maximum Architectural Clarity */}
-        <ambientLight intensity={0.75} />
+        {/* Soft Warm Alabaster Illumination */}
+        <ambientLight intensity={0.8} />
         <directionalLight
-          position={[6, 9, 5]}
-          intensity={2.4}
+          position={[7, 10, 6]}
+          intensity={2.8}
           castShadow
           shadow-mapSize={[1024, 1024]}
-          shadow-camera-left={-4.5}
-          shadow-camera-right={4.5}
-          shadow-camera-top={4.5}
-          shadow-camera-bottom={-4.5}
+          shadow-camera-left={-5.5}
+          shadow-camera-right={5.5}
+          shadow-camera-top={5.5}
+          shadow-camera-bottom={-5.5}
           color="#fffaf0"
         />
-        <directionalLight position={[-5, 4, -4]} intensity={0.8} color="#e5f0ff" />
-        <directionalLight position={[0, 6, -5]} intensity={1.0} color="#ffd8ad" />
+        <directionalLight position={[-6, 5, -5]} intensity={0.9} color="#e5f0ff" />
+        <directionalLight position={[0, 8, -6]} intensity={1.2} color="#ffd8ad" />
 
-        <Float speed={0.8} rotationIntensity={0.02} floatIntensity={0.03}>
-          <MansionModel progress={progress} />
+        <Float speed={0.7} rotationIntensity={0.015} floatIntensity={0.02}>
+          <SanFernandoVillaModel progress={progress} />
         </Float>
 
-        <ContactShadows position={[0, -0.66, 0]} opacity={0.55} scale={7.2} blur={2.0} far={2.8} />
+        <ContactShadows position={[0, -0.66, 0]} opacity={0.6} scale={8.5} blur={2.2} far={3.0} />
 
         <OrbitControls
           enableZoom={false}
@@ -590,10 +675,10 @@ export default function Mansion3DScene({ progress }: { progress: number }) {
         />
       </Canvas>
 
-      {/* Floating 3D Interaction Notice */}
+      {/* Floating 3D Interaction Pill */}
       <div className="absolute bottom-3 right-3 pointer-events-none z-10">
         <span className="text-[9.5px] uppercase tracking-widest font-mono text-muted/80 bg-white/85 px-3 py-1 rounded-full border border-black/10 shadow-xs backdrop-blur-xs">
-          3D View &middot; Drag to Orbit 360&deg;
+          San Fernando Signature Villa &middot; Drag to Orbit 360&deg;
         </span>
       </div>
     </div>

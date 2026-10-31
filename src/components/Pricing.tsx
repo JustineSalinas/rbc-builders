@@ -363,7 +363,7 @@ export default function Pricing() {
             </div>
 
             {/* Center: Large 3D Real Mansion Stage (Prominent & Clear) */}
-            <div className="relative flex-1 w-full my-3 rounded-3xl bg-gradient-to-b from-[#f9f7f2] via-[#f5f0e6] to-[#ece5d8] border border-border shadow-2xl overflow-hidden min-h-[320px] max-h-[58vh]">
+            <div className="relative flex-1 w-full my-2.5 rounded-3xl bg-gradient-to-b from-[#f9f7f2] via-[#f5f0e6] to-[#ece5d8] border border-border shadow-2xl overflow-hidden min-h-[360px] sm:min-h-[440px] max-h-[62vh]">
               {/* 3D Real Mansion Canvas with Continuous Progress */}
               <Mansion3DScene progress={buildProgress} />
 
