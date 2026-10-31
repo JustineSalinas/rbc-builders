@@ -177,19 +177,32 @@ export default function Process() {
     let trackTop = 0;
     let trackHeight = 0;
 
+    const getLenis = () =>
+      (window as unknown as { __lenis?: { resize: () => void } }).__lenis;
+
     const measureTrack = () => {
       if (!pinTrackRef.current) return;
       const rect = pinTrackRef.current.getBoundingClientRect();
       trackTop = window.scrollY + rect.top;
       trackHeight = rect.height;
+      // Lenis caches its own scroll ceiling from whatever the document
+      // height was when it last measured. If layout shifts after that
+      // (web fonts swapping, this lazy-loaded canvas mounting, images
+      // loading in later sections) without telling Lenis to resize, its
+      // real scroll ceiling can end up shorter than what this component
+      // expects — the progress math then has no way to reach 100%
+      // because the user physically can't scroll that far.
+      getLenis()?.resize();
     };
 
     measureTrack();
     const t1 = setTimeout(measureTrack, 250);
     const t2 = setTimeout(measureTrack, 800);
+    const t3 = setTimeout(measureTrack, 2000);
     if (typeof document !== "undefined" && document.fonts) {
       document.fonts.ready.then(measureTrack);
     }
+    window.addEventListener("load", measureTrack);
 
     const onScroll = () => {
       if (!trackHeight) measureTrack();
@@ -287,6 +300,8 @@ export default function Process() {
     return () => {
       clearTimeout(t1);
       clearTimeout(t2);
+      clearTimeout(t3);
+      window.removeEventListener("load", measureTrack);
       cancelAnimationFrame(attachLenis);
       if (usingLenis) {
         usingLenis.off("scroll", onScroll);
