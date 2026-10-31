@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 import { ArrowUp, ArrowRight, Phone, Mail, MapPin, Clock, ShieldCheck } from "lucide-react";
 import { useReveal } from "@/lib/useReveal";
@@ -37,6 +37,20 @@ const SERVICE_REGIONS = [
 export default function Footer() {
   const footerNavRef = useReveal<HTMLDivElement>();
   const [manilaTime, setManilaTime] = useState<string>("");
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+  const footerRef = useRef<HTMLElement | null>(null);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
+    if (!footerRef.current) return;
+    const rect = footerRef.current.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
+    const y = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
+    setTilt({ x, y });
+  };
+
+  const handleMouseLeave = () => {
+    setTilt({ x: 0, y: 0 });
+  };
 
   useEffect(() => {
     const updateTime = () => {
@@ -61,97 +75,108 @@ export default function Footer() {
   };
 
   return (
-    <footer id="footer" className="bg-[#f8f6f0] border-t border-border relative overflow-hidden text-foreground">
-      {/* 1. RBC Builders Bespoke Estate Finale: Architectural House Presentation */}
-      <section className="bg-gradient-to-b from-[#fbfaf8] via-[#f5f2eb] to-[#f8f6f0] pt-16 sm:pt-24 pb-12 sm:pb-16 border-b border-border relative overflow-hidden" aria-labelledby="estate-finale-title">
-        <div className="max-w-7xl mx-auto px-4 sm:px-8">
-          {/* Editorial Invitation Header (Crisp, High-Contrast, Set Gracefully on Travertine) */}
-          <div className="max-w-3xl mb-10 sm:mb-14">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1 mb-4 border border-accent/40 rounded-full bg-white/80 shadow-sm backdrop-blur-sm">
-              <span className="h-1.5 w-1.5 rounded-full bg-accent animate-pulse" />
-              <span className="text-[10px] uppercase tracking-[0.24em] text-accent font-medium font-mono">
-                Central Luzon Master Practice &middot; San Fernando, Pampanga
-              </span>
-            </div>
+    <footer
+      id="footer"
+      ref={footerRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      className="bg-[#f8f6f0] border-t border-border relative overflow-hidden text-foreground"
+      style={{ perspective: "1000px" }}
+    >
+      {/* 3D Background Villa Layer: Spans the Entire Footer */}
+      <div
+        className="absolute inset-0 overflow-hidden pointer-events-none transition-transform duration-700 ease-out z-0"
+        style={{
+          transform: `scale(1.08) translate3d(${tilt.x * -20}px, ${tilt.y * -16}px, 0)`,
+        }}
+      >
+        <Image
+          src="/images/hero.jpg"
+          alt="RBC Builders completed luxury modern villa in San Fernando, Pampanga"
+          fill
+          quality={95}
+          sizes="100vw"
+          className="object-cover object-[50%_25%]"
+        />
+        {/* Soft Alabaster Travertine Glass Scrim for 100% WCAG AAA Legibility */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#fbfaf8]/76 via-[#f5f2eb]/90 to-[#f8f6f0]/96 backdrop-blur-[5px]" />
+      </div>
 
-            <h2 id="estate-finale-title" className="font-serif text-3xl sm:text-5xl lg:text-6xl font-light text-[#151413] tracking-tight leading-[1.08]">
-              Every landmark residence begins with a conversation.
-            </h2>
+      {/* Floating 3D Mid-Ground Typographic Relief ("RBC BUILDERS") */}
+      <div
+        className="absolute top-14 sm:top-20 inset-x-0 text-center pointer-events-none select-none z-10 transition-transform duration-700 ease-out"
+        style={{
+          transform: `translate3d(${tilt.x * 28}px, ${tilt.y * 22}px, 0)`,
+        }}
+        aria-hidden="true"
+      >
+        <span className="font-serif text-[13vw] font-light tracking-[0.24em] text-foreground/[0.06] uppercase whitespace-nowrap block leading-none">
+          RBC BUILDERS
+        </span>
+      </div>
 
-            <p className="text-sm sm:text-base text-[#5c564e] font-light mt-4 max-w-2xl leading-relaxed">
-              Schedule a private design-build consultation with our principal architects and structural engineers. We provide full feasibility reviews, custom schematics, and transparent cost models.
-            </p>
-
-            {/* Direct Consultation Actions */}
-            <div className="flex flex-wrap items-center gap-3 sm:gap-4 mt-8">
-              <a
-                href="#contact"
-                className="btn btn--accent shadow-md rounded-full px-7 py-3.5 text-xs uppercase tracking-[0.18em]"
-              >
-                <span>Commission an Estate</span>
-                <ArrowRight size={14} />
-              </a>
-
-              <a
-                href="tel:+639772873075"
-                className="inline-flex items-center gap-2 px-5 py-3.5 text-xs uppercase tracking-[0.14em] font-mono text-[#151413] border border-border hover:border-accent hover:text-accent transition-all rounded-full bg-white shadow-sm"
-                title="Direct Hotline: 0977 287 3075"
-              >
-                <Phone size={13} className="text-accent shrink-0" />
-                <span>0977 287 3075</span>
-              </a>
-
-              <a
-                href="mailto:rbcbuilders70@gmail.com"
-                className="inline-flex items-center gap-2 px-5 py-3.5 text-xs uppercase tracking-[0.14em] font-mono text-[#151413] border border-border hover:border-accent hover:text-accent transition-all rounded-full bg-white shadow-sm"
-                title="Official Email: rbcbuilders70@gmail.com"
-              >
-                <Mail size={13} className="text-accent shrink-0" />
-                <span>rbcbuilders70@gmail.com</span>
-              </a>
-            </div>
-          </div>
-
-          {/* Unobstructed, Full Cinematic Villa Panorama (Zero Boxes or Modals Covering the Architecture) */}
-          <div className="relative aspect-[16/9] sm:aspect-[21/9] lg:aspect-[2.4/1] w-full rounded-2xl sm:rounded-3xl overflow-hidden border border-border shadow-2xl bg-surface group">
-            <Image
-              src="/images/hero.jpg"
-              alt="RBC Builders completed luxury modern villa in San Fernando, Pampanga"
-              fill
-              quality={95}
-              sizes="(max-width: 1280px) 100vw, 1280px"
-              className="object-cover object-[50%_35%] transition-transform duration-1000 group-hover:scale-[1.01]"
-            />
-
-            {/* Subtle, soft vignette for architectural depth */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
-
-            {/* Minimal Monograph Caption Plaque */}
-            <div className="absolute bottom-4 left-4 sm:bottom-6 sm:left-6 z-10 flex items-center gap-3">
-              <div className="px-3.5 py-1.5 rounded-full bg-black/60 backdrop-blur-md border border-white/20 text-white flex items-center gap-2">
-                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-                <span className="text-[10px] sm:text-[11px] font-mono uppercase tracking-[0.18em]">
-                  The Pavilioned Estate &middot; San Fernando, Pampanga
+      {/* Foreground Content: Consultation Monograph & Master Directory */}
+      <div className="relative z-20">
+        {/* 1. RBC Builders Estate Finale: Editorial Consultation Header */}
+        <section className="pt-16 sm:pt-24 pb-12 sm:pb-16 border-b border-border/80" aria-labelledby="estate-finale-title">
+          <div className="max-w-7xl mx-auto px-4 sm:px-8">
+            <div className="max-w-3xl">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1 mb-4 border border-accent/40 rounded-full bg-white/85 shadow-sm backdrop-blur-sm">
+                <span className="h-1.5 w-1.5 rounded-full bg-accent animate-pulse" />
+                <span className="text-[10px] uppercase tracking-[0.24em] text-accent font-medium font-mono">
+                  Central Luzon Master Practice &middot; San Fernando, Pampanga
                 </span>
               </div>
-            </div>
 
-            {/* Back to top button on bottom right */}
-            <div className="absolute bottom-4 right-4 sm:bottom-6 sm:right-6 z-10">
-              <button
-                onClick={scrollToTop}
-                aria-label="Back to top"
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/90 hover:bg-white text-foreground text-xs uppercase tracking-[0.16em] font-medium shadow-md backdrop-blur-sm transition-all border border-border"
-              >
-                <span>Top</span>
-                <ArrowUp size={13} className="text-accent" />
-              </button>
+              <h2 id="estate-finale-title" className="font-serif text-3xl sm:text-5xl lg:text-6xl font-light text-[#151413] tracking-tight leading-[1.08]">
+                Every landmark residence begins with a conversation.
+              </h2>
+
+              <p className="text-sm sm:text-base text-[#5c564e] font-light mt-4 max-w-2xl leading-relaxed">
+                Schedule a private design-build consultation with our principal architects and structural engineers. We provide full feasibility reviews, custom schematics, and transparent cost models.
+              </p>
+
+              {/* Direct Consultation Actions */}
+              <div className="flex flex-wrap items-center gap-3 sm:gap-4 mt-8">
+                <a
+                  href="#contact"
+                  className="btn btn--accent shadow-md rounded-full px-7 py-3.5 text-xs uppercase tracking-[0.18em]"
+                >
+                  <span>Commission an Estate</span>
+                  <ArrowRight size={14} />
+                </a>
+
+                <a
+                  href="tel:+639772873075"
+                  className="inline-flex items-center gap-2 px-5 py-3.5 text-xs uppercase tracking-[0.14em] font-mono text-[#151413] border border-border hover:border-accent hover:text-accent transition-all rounded-full bg-white/90 backdrop-blur-sm shadow-sm"
+                  title="Direct Hotline: 0977 287 3075"
+                >
+                  <Phone size={13} className="text-accent shrink-0" />
+                  <span>0977 287 3075</span>
+                </a>
+
+                <a
+                  href="mailto:rbcbuilders70@gmail.com"
+                  className="inline-flex items-center gap-2 px-5 py-3.5 text-xs uppercase tracking-[0.14em] font-mono text-[#151413] border border-border hover:border-accent hover:text-accent transition-all rounded-full bg-white/90 backdrop-blur-sm shadow-sm"
+                  title="Official Email: rbcbuilders70@gmail.com"
+                >
+                  <Mail size={13} className="text-accent shrink-0" />
+                  <span>rbcbuilders70@gmail.com</span>
+                </a>
+
+                <button
+                  onClick={scrollToTop}
+                  aria-label="Back to top"
+                  className="inline-flex items-center gap-2 px-4 py-3.5 rounded-full bg-white/90 hover:bg-white text-foreground text-xs uppercase tracking-[0.16em] font-medium shadow-sm backdrop-blur-sm transition-all border border-border ml-auto sm:ml-0"
+                >
+                  <span>Top</span>
+                  <ArrowUp size={13} className="text-accent" />
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <div className="relative z-10">
         {/* Main Monograph Directory: Spacious 4-Column Architectural Spread */}
         <div ref={footerNavRef} className="mx-auto max-w-7xl px-4 sm:px-8 py-20 sm:py-28 border-b border-border">
           <div data-reveal className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
