@@ -52,16 +52,16 @@ export default function About() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
           {/* Left Column: Image with Architectural Monograph Framing */}
           <div data-reveal data-reveal-delay="0.1" className="lg:col-span-5 relative">
-            <div className="relative aspect-[4/5] w-full overflow-hidden border border-border bg-surface">
+            <div className="relative aspect-[4/3.5] sm:aspect-[4/3] w-full overflow-hidden border border-border bg-surface rounded-xl sm:rounded-2xl shadow-sm">
               <Image
                 src="/images/project-1.jpg"
                 alt="RBC Builders completed luxury estate in Pampanga"
                 fill
                 quality={95}
                 sizes="(max-width: 1024px) 100vw, 40vw"
-                className="object-cover object-center"
+                className="object-cover object-center transition-transform duration-700 hover:scale-[1.02]"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
 
               {/* Monograph caption */}
               <div className="absolute bottom-6 inset-x-6">
