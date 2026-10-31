@@ -254,18 +254,46 @@ export default function Process() {
       }
     };
 
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", () => {
+    // Lenis fires its own 'scroll' event once per rAF tick with precise
+    // float values. The native browser 'scroll' event gets throttled/
+    // coalesced by the browser when it's driven by Lenis's programmatic
+    // scrollTo() calls, so subscribing to Lenis directly (when present)
+    // is what keeps this in lockstep with the smooth-scroll motion
+    // instead of visibly stepping during fast or inertial scrolling.
+    type LenisLike = { on: (e: string, cb: () => void) => void; off: (e: string, cb: () => void) => void };
+    let usingLenis: LenisLike | null = null;
+
+    const onResize = () => {
       measureTrack();
       onScroll();
-    });
+    };
+    window.addEventListener("resize", onResize);
+    window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
+
+    // SmoothScroll's effect (an ancestor) sets window.__lenis, but React
+    // runs child effects before parent effects on mount, so it may not
+    // exist yet on this tick. Defer one frame to pick it up reliably and
+    // switch from the native listener to Lenis's precise one.
+    const attachLenis = requestAnimationFrame(() => {
+      const lenis = (window as unknown as { __lenis?: LenisLike }).__lenis;
+      if (lenis) {
+        window.removeEventListener("scroll", onScroll);
+        lenis.on("scroll", onScroll);
+        usingLenis = lenis;
+      }
+    });
 
     return () => {
       clearTimeout(t1);
       clearTimeout(t2);
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
+      cancelAnimationFrame(attachLenis);
+      if (usingLenis) {
+        usingLenis.off("scroll", onScroll);
+      } else {
+        window.removeEventListener("scroll", onScroll);
+      }
+      window.removeEventListener("resize", onResize);
     };
   }, []);
 
