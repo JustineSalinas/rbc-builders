@@ -7,71 +7,79 @@ import {
   ShieldCheck,
   Calculator,
   Layers,
-  CheckCircle2,
   Compass,
   Building2,
   Calendar,
   Check,
   ChevronDown,
   ChevronUp,
+  AppWindow,
+  DoorOpen,
+  Grid,
+  Paintbrush,
+  Shield,
+  Lock,
+  Bath,
+  UtensilsCrossed,
+  Lightbulb,
+  Fence,
+  Phone,
+  Mail,
 } from "lucide-react";
 import { useReveal } from "@/lib/useReveal";
 
-type FinishGrade = {
+export interface SpecificationItems {
+  ceiling: string;
+  windows: string;
+  doors: string;
+  floors: string;
+  walls: string;
+  railings: string;
+  locketHinges: string;
+  toiletBath: string;
+  kitchen: string;
+  lightingElectrical: string;
+  gate: string;
+}
+
+export type FinishGrade = {
   id: string;
   stageNum: number;
   code: string;
   number: string;
   name: string;
-  subtitle: string;
   minRate: number;
   maxRate: number | null;
   rateDisplay: string;
-  tagline: string;
   popular?: boolean;
   idealFor: string;
-  materials: { name: string; category: string }[];
-  specifications: {
-    ceiling: string;
-    windows: string;
-    doors: string;
-    flooring: string;
-    walls: string;
-    fixtures: string;
-    railings: string;
-    structural: string;
-  };
+  specifications: SpecificationItems;
 };
 
+// Exact Official Architectural Specifications per RBC Builders flyer
 const FINISH_GRADES: FinishGrade[] = [
   {
     id: "bare",
     stageNum: 1,
     code: "GRADE 01",
     number: "01",
-    name: "Bare Shell",
-    subtitle: "Structural Core",
+    name: "Bare Finish",
     minRate: 18000,
     maxRate: 20000,
     rateDisplay: "₱18,000 – ₱20,000",
-    tagline:
-      "Reinforced structural concrete framing, weather-tight perimeter shell, and primary rough MEP conduit.",
-    idealFor: "Investors & homeowners planning progressive interior completion over time.",
-    materials: [
-      { name: "28 MPa Concrete", category: "Structural Frame" },
-      { name: "Grade 60 PNS Rebar", category: "Reinforcement" },
-      { name: "Power-Troweled Screed", category: "Floor Surface" },
-      { name: "CHB 150mm Perimeter", category: "Masonry" },
-    ],
+    idealFor: "Homeowners & investors seeking structural core completion with progressive interior build.",
     specifications: {
-      ceiling: "Exposed reinforced slab or basic flat gypsum board ready for custom soffit framing",
-      windows: "Jalousie or standard heavy-gauge powder-coated steel casement windows",
-      doors: "Flush hollow core timber doors with standard cylindrical locksets",
-      flooring: "Power-troweled smooth monolithic cement screed ready for custom tile overlay",
-      walls: "Plastered reinforced concrete masonry ready for primer and finishing paint",
-      fixtures: "Economic sanitary plumbing rough-in & primary electrical service conduit",
-      railings: "Structural steel perimeter safety framing & basic rough site enclosure",
-      structural: "Monolithic footings, tie beams, and column cages designed for Zone 4 seismic loads",
+      ceiling: "None, Flat",
+      windows: "Jalousie, Steel",
+      doors: "Simple Wood",
+      floors: "Cement Finish, Ceramic Tiles",
+      walls: "Concrete Finish, No Paint",
+      railings: "Steel",
+      locketHinges: "Economic",
+      toiletBath: "Economic",
+      kitchen: "Economic",
+      lightingElectrical: "Economic",
+      gate: "None",
     },
   },
   {
@@ -79,29 +87,23 @@ const FINISH_GRADES: FinishGrade[] = [
     stageNum: 2,
     code: "GRADE 02",
     number: "02",
-    name: "Standard Architecture",
-    subtitle: "Turnkey Contemporary",
+    name: "Standard Finish",
     minRate: 20000,
     maxRate: 25000,
     rateDisplay: "₱20,000 – ₱25,000",
-    tagline:
-      "Complete move-in contemporary home with painted interiors, modern recessed downlights, and ceramic tiling.",
-    idealFor: "Modern family homes seeking complete turnkey move-in quality at balanced cost.",
-    materials: [
-      { name: "Flat Gypsum Board", category: "Ceiling System" },
-      { name: "UPVC / Powder Aluminum", category: "Fenestration" },
-      { name: "60×60 Polished Ceramic", category: "Floor Tile" },
-      { name: "Two-Coat Premium Latex", category: "Wall Coating" },
-    ],
+    idealFor: "Turnkey contemporary residences with painted surfaces, ceramic flooring, and steel perimeter fence.",
     specifications: {
-      ceiling: "Flat moisture-resistant gypsum board with modern recessed LED warm downlights",
-      windows: "White powder-coated aluminum or thermal UPVC casement windows",
-      doors: "Engineered solid timber with contemporary brushed stainless lever hardware",
-      flooring: "60×60cm high-gloss polished ceramic floor tiles throughout living zones",
-      walls: "Two-coat premium latex paint with subtle tone-on-tone architectural accent walls",
-      fixtures: "Standard American Standard / Pozzi plumbing fittings & modern modular switches",
-      railings: "Modern painted tubular steel balustrades & matching pedestrian entry gate",
-      structural: "Full seismic structural engineering with ready-mix certified concrete testing",
+      ceiling: "Flat",
+      windows: "Aluminum Analok Frame, Upvc White",
+      doors: "Simple Wood",
+      floors: "Ceramic Tiles",
+      walls: "Paint w/ Accent Colors",
+      railings: "Steel",
+      locketHinges: "Regular",
+      toiletBath: "Regular",
+      kitchen: "Regular",
+      lightingElectrical: "Regular",
+      gate: "Steel Gate & Fence",
     },
   },
   {
@@ -109,30 +111,24 @@ const FINISH_GRADES: FinishGrade[] = [
     stageNum: 3,
     code: "GRADE 03",
     number: "03",
-    name: "Premium Architectural",
-    subtitle: "Signature Architectural",
+    name: "Premium Finish",
     popular: true,
     minRate: 25000,
     maxRate: 29000,
     rateDisplay: "₱25,000 – ₱29,000",
-    tagline:
-      "Our most requested specification in Pampanga. Textured wood-slats, Analok bronze, and large-format porcelain slabs.",
-    idealFor: "Executive tropical modern residences with signature architectural detailing.",
-    materials: [
-      { name: "Acoustic Wood Slats", category: "Wall Accents" },
-      { name: "Analok Bronze Glazing", category: "Heavy Glazing" },
-      { name: "60×120 Porcelain Slabs", category: "Stone Floor" },
-      { name: "Natural Travertine Accent", category: "Facade Cladding" },
-    ],
+    idealFor: "Executive modern residences featuring granite tiling, natural stone wall accents, and PVC paneling.",
     specifications: {
-      ceiling: "Textured PVC / acoustic wood-slat accent panels with perimeter LED cove lighting",
-      windows: "Analok bronze heavy-gauge aluminum sliding fenestration with tinted safety glass",
-      doors: "Solid core hardwood entrance pivot door with digital smart lock preparation",
-      flooring: "Imported 60×120cm large-format porcelain slabs or engineered timber in bedrooms",
-      walls: "Hand-laid natural stacked-stone exterior portals & textured interior feature walls",
-      fixtures: "Semi-luxury Kohler / Hansgrohe designer plumbing fixtures & rainwater shower heads",
-      railings: "Tempered laminated glass balustrades & architectural motorized driveway gate",
-      structural: "Heavy-duty 2F transfer slabs, cantilevers, and certified 15-Year Structural Warranty",
+      ceiling: "Flat, PVC Textured Panel",
+      windows: "Aluminum Analok Frame, Upvc White",
+      doors: "Solid Wood",
+      floors: "Granite Tiles, Wood Floors",
+      walls: "Paint Finish w/ Stone Accents, PVC Cladding",
+      railings: "Glass Steel",
+      locketHinges: "Semi-Luxury",
+      toiletBath: "Semi-Luxury",
+      kitchen: "Semi-Luxury",
+      lightingElectrical: "Semi-Luxury",
+      gate: "Steel Gate w/ Wood & Fence",
     },
   },
   {
@@ -140,32 +136,41 @@ const FINISH_GRADES: FinishGrade[] = [
     stageNum: 4,
     code: "GRADE 04",
     number: "04",
-    name: "Luxury Masterpiece",
-    subtitle: "Bespoke Masterpiece",
+    name: "Luxury Finish",
     minRate: 29000,
     maxRate: null,
-    rateDisplay: "₱29,000+",
-    tagline:
-      "High-end imported finishes, floating multi-tier cove illumination, and panoramic floor-to-ceiling glass.",
-    idealFor: "High-end bespoke luxury estates, private villas, and legacy architectural homes.",
-    materials: [
-      { name: "Floating Cove Lighting", category: "Multi-Tier Ceiling" },
-      { name: "Thermal-Break Glass", category: "Full Facade" },
-      { name: "Sintered Stone Slabs", category: "Luxury Cladding" },
-      { name: "Solid Teak Pivot Door", category: "Grand Entry" },
-    ],
+    rateDisplay: "₱29,000 – Above",
+    idealFor: "Bespoke high-end masterpieces with architectural cove lights, solid wood doors, and luxury stone gates.",
     specifications: {
-      ceiling: "Multi-tier floating cove ceilings with indirect warm channel lighting & acoustic timber battens",
-      windows: "Thermal-break powder-coated floor-to-ceiling sliding glass fenestration",
-      doors: "Custom oversized solid mahogany or teakwood architectural pivot doors (2.8m+ height)",
-      flooring: "Seamless large-format sintered stone slabs & solid hardwood parquet flooring",
-      walls: "Full-height natural marble veneers, fluted acoustic PVC cladding, and microcement finishes",
-      fixtures: "Full luxury Toto / Grohe smart sanitary fixtures & pre-wired smart home automation",
-      railings: "Frameless laminated safety glass balustrades & custom acoustic timber-slat gate",
-      structural: "Complex structural engineering, cantilevered upper-floor living boxes & infinity pool basin",
+      ceiling: "Flat, PVC Textured Panel, Cove Lights",
+      windows: "Aluminum Powdercoated, UPVC White",
+      doors: "Solid Wood",
+      floors: "Granite Tiles, Wood Floors",
+      walls: "Paint Finish w/ Stone Accents, PVC Cladding",
+      railings: "Glass Steel, Steel w/ Wood Top",
+      locketHinges: "Luxury",
+      toiletBath: "Luxury",
+      kitchen: "Luxury",
+      lightingElectrical: "Luxury",
+      gate: "Steel Gate w/ Wood, Stone & Fence",
     },
   },
 ];
+
+// The exact 11 Architectural Specification Categories
+const SPEC_CATEGORIES = [
+  { key: "ceiling", label: "Ceiling", icon: Layers },
+  { key: "windows", label: "Windows", icon: AppWindow },
+  { key: "doors", label: "Doors", icon: DoorOpen },
+  { key: "floors", label: "Floors", icon: Grid },
+  { key: "walls", label: "Walls", icon: Paintbrush },
+  { key: "railings", label: "Railings", icon: Shield },
+  { key: "locketHinges", label: "Locket & Hinges", icon: Lock },
+  { key: "toiletBath", label: "Toilet & Bath Fixtures", icon: Bath },
+  { key: "kitchen", label: "Kitchen Fixtures", icon: UtensilsCrossed },
+  { key: "lightingElectrical", label: "Lighting & Electrical", icon: Lightbulb },
+  { key: "gate", label: "Gate", icon: Fence },
+] as const;
 
 const LOCATIONS = [
   "San Fernando, Pampanga",
@@ -218,13 +223,13 @@ export default function Pricing() {
               <span>Specification Standards &middot; Central Luzon</span>
             </div>
             <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-light text-foreground tracking-tight leading-tight">
-              Transparent Architectural{" "}
+              House Construction Cost{" "}
               <em className="font-serif italic font-normal text-accent">
-                Investment
+                in Pampanga
               </em>
             </h2>
             <p className="text-sm sm:text-base text-foreground/75 font-light leading-relaxed mt-3">
-              Clear, itemized Philippine construction rates per square meter for Pampanga and Central Luzon. Direct design-build delivery with zero hidden contractor escalations.
+              Exact itemized specifications per finish tier. Direct design-build delivery with zero hidden contractor escalations.
             </p>
           </div>
 
@@ -242,7 +247,7 @@ export default function Pricing() {
         </div>
 
         {/* ============================================================== */}
-        {/* 01 TILL 04 TIER SELECTOR TABS (Matching Schematic Layout)      */}
+        {/* 01 TILL 04 TIER SELECTOR TABS                                  */}
         {/* ============================================================== */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-8">
           {FINISH_GRADES.map((grade, idx) => {
@@ -268,7 +273,7 @@ export default function Pricing() {
                 <div>
                   <div className="flex items-center justify-between gap-2 mb-2">
                     <span className="font-mono text-[10px] uppercase tracking-widest text-muted">
-                      {grade.number} &middot; {grade.subtitle}
+                      {grade.number} &middot; {grade.code}
                     </span>
                     <div
                       className={`h-2 w-2 rounded-full ${
@@ -307,7 +312,7 @@ export default function Pricing() {
                     )}
                   </span>
                   <span className="text-[9px] text-muted/70">
-                    Stage {grade.stageNum} of 04
+                    Grade 0{grade.stageNum} of 04
                   </span>
                 </div>
               </button>
@@ -316,8 +321,7 @@ export default function Pricing() {
         </div>
 
         {/* ============================================================== */}
-        {/* ACTIVE TIER COMPREHENSIVE SPECIFICATION DOSSIER                */}
-        {/* Generously spaced, neat, highly legible, zero 3D clutter       */}
+        {/* ACTIVE TIER EXACT SPECIFICATION DOSSIER                        */}
         {/* ============================================================== */}
         <div className="rounded-3xl bg-surface border border-border shadow-xl p-6 sm:p-8 lg:p-10 mb-12">
           {/* Top Dossier Header */}
@@ -328,7 +332,7 @@ export default function Pricing() {
                   {activeTier.code}
                 </span>
                 <span className="text-[11px] uppercase tracking-wider font-mono text-muted">
-                  {activeTier.subtitle}
+                  House Construction Cost in Pampanga
                 </span>
                 {activeTier.popular && (
                   <span className="inline-flex items-center gap-1 text-[8.5px] uppercase tracking-widest bg-accent text-white px-2 py-0.5 font-bold rounded-full shadow-2xs">
@@ -339,15 +343,11 @@ export default function Pricing() {
               </div>
 
               <h3 className="font-serif text-2xl sm:text-3xl text-foreground font-normal tracking-tight">
-                {activeTier.name} Architecture
+                {activeTier.name} Standards
               </h3>
 
-              <p className="text-sm text-foreground/80 font-light leading-relaxed mt-2">
-                {activeTier.tagline}
-              </p>
-
               <div className="flex items-center gap-2 text-xs text-muted font-mono mt-3">
-                <Building2 size={13} className="text-accent" />
+                <Building2 size={13} className="text-accent shrink-0" />
                 <span>
                   <strong>Ideal for:</strong> {activeTier.idealFor}
                 </span>
@@ -372,126 +372,70 @@ export default function Pricing() {
             </div>
           </div>
 
-          {/* Architectural Specifications Grid: 8 Generous Modular Cards */}
+          {/* Exact 11 Architectural Specification Cards */}
           <div className="my-8">
             <div className="flex items-center justify-between gap-2 mb-4">
               <h4 className="font-serif text-lg text-foreground font-normal">
-                Itemized Architectural &amp; Engineering Inclusions
+                Exact Architectural Inclusions &amp; Finishes
               </h4>
-              <span className="text-[10px] uppercase tracking-wider font-mono text-muted hidden sm:inline">
-                8 Architectural Divisions
+              <span className="text-[10px] uppercase tracking-wider font-mono text-muted">
+                11 Specification Categories
               </span>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-              {/* Ceiling */}
-              <div className="p-4 rounded-2xl bg-background/60 border border-border/80 flex flex-col justify-start">
-                <span className="text-[9.5px] uppercase tracking-wider font-mono text-accent font-semibold mb-1.5 flex items-center gap-1.5">
-                  <span className="h-1.5 w-1.5 rounded-full bg-accent" />
-                  <span>Ceiling Architecture</span>
-                </span>
-                <p className="text-xs text-foreground/85 leading-relaxed font-light">
-                  {activeTier.specifications.ceiling}
-                </p>
-              </div>
-
-              {/* Fenestration */}
-              <div className="p-4 rounded-2xl bg-background/60 border border-border/80 flex flex-col justify-start">
-                <span className="text-[9.5px] uppercase tracking-wider font-mono text-accent font-semibold mb-1.5 flex items-center gap-1.5">
-                  <span className="h-1.5 w-1.5 rounded-full bg-accent" />
-                  <span>Fenestration &amp; Glass</span>
-                </span>
-                <p className="text-xs text-foreground/85 leading-relaxed font-light">
-                  {activeTier.specifications.windows}
-                </p>
-              </div>
-
-              {/* Flooring */}
-              <div className="p-4 rounded-2xl bg-background/60 border border-border/80 flex flex-col justify-start">
-                <span className="text-[9.5px] uppercase tracking-wider font-mono text-accent font-semibold mb-1.5 flex items-center gap-1.5">
-                  <span className="h-1.5 w-1.5 rounded-full bg-accent" />
-                  <span>Flooring &amp; Surfaces</span>
-                </span>
-                <p className="text-xs text-foreground/85 leading-relaxed font-light">
-                  {activeTier.specifications.flooring}
-                </p>
-              </div>
-
-              {/* Doors */}
-              <div className="p-4 rounded-2xl bg-background/60 border border-border/80 flex flex-col justify-start">
-                <span className="text-[9.5px] uppercase tracking-wider font-mono text-accent font-semibold mb-1.5 flex items-center gap-1.5">
-                  <span className="h-1.5 w-1.5 rounded-full bg-accent" />
-                  <span>Doors &amp; Hardware</span>
-                </span>
-                <p className="text-xs text-foreground/85 leading-relaxed font-light">
-                  {activeTier.specifications.doors}
-                </p>
-              </div>
-
-              {/* Walls */}
-              <div className="p-4 rounded-2xl bg-background/60 border border-border/80 flex flex-col justify-start">
-                <span className="text-[9.5px] uppercase tracking-wider font-mono text-accent font-semibold mb-1.5 flex items-center gap-1.5">
-                  <span className="h-1.5 w-1.5 rounded-full bg-accent" />
-                  <span>Walls &amp; Cladding</span>
-                </span>
-                <p className="text-xs text-foreground/85 leading-relaxed font-light">
-                  {activeTier.specifications.walls}
-                </p>
-              </div>
-
-              {/* Fixtures */}
-              <div className="p-4 rounded-2xl bg-background/60 border border-border/80 flex flex-col justify-start">
-                <span className="text-[9.5px] uppercase tracking-wider font-mono text-accent font-semibold mb-1.5 flex items-center gap-1.5">
-                  <span className="h-1.5 w-1.5 rounded-full bg-accent" />
-                  <span>Fixtures &amp; MEP</span>
-                </span>
-                <p className="text-xs text-foreground/85 leading-relaxed font-light">
-                  {activeTier.specifications.fixtures}
-                </p>
-              </div>
-
-              {/* Railings */}
-              <div className="p-4 rounded-2xl bg-background/60 border border-border/80 flex flex-col justify-start">
-                <span className="text-[9.5px] uppercase tracking-wider font-mono text-accent font-semibold mb-1.5 flex items-center gap-1.5">
-                  <span className="h-1.5 w-1.5 rounded-full bg-accent" />
-                  <span>Railings &amp; Gate</span>
-                </span>
-                <p className="text-xs text-foreground/85 leading-relaxed font-light">
-                  {activeTier.specifications.railings}
-                </p>
-              </div>
-
-              {/* Structural */}
-              <div className="p-4 rounded-2xl bg-background/60 border border-border/80 flex flex-col justify-start">
-                <span className="text-[9.5px] uppercase tracking-wider font-mono text-accent font-semibold mb-1.5 flex items-center gap-1.5">
-                  <span className="h-1.5 w-1.5 rounded-full bg-accent" />
-                  <span>Structural Integrity</span>
-                </span>
-                <p className="text-xs text-foreground/85 leading-relaxed font-light">
-                  {activeTier.specifications.structural}
-                </p>
-              </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-3.5">
+              {SPEC_CATEGORIES.map((cat) => {
+                const IconComponent = cat.icon;
+                const value = activeTier.specifications[cat.key];
+                return (
+                  <div
+                    key={cat.key}
+                    className="p-4 rounded-2xl bg-background/70 border border-border/80 flex flex-col justify-between hover:border-accent/40 transition-colors"
+                  >
+                    <div>
+                      <div className="flex items-center justify-between gap-2 mb-2">
+                        <span className="text-[9.5px] uppercase tracking-wider font-mono text-accent font-semibold flex items-center gap-1.5">
+                          <IconComponent size={12} className="text-accent" />
+                          <span>{cat.label}</span>
+                        </span>
+                        <span className="text-[8px] uppercase font-mono text-muted/60">
+                          {activeTier.code}
+                        </span>
+                      </div>
+                      <div className="font-serif text-sm sm:text-base text-foreground font-medium leading-snug">
+                        {value}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
 
-          {/* Tactile Material Palette Specification */}
-          <div className="p-4 rounded-2xl bg-background/40 border border-border/60 mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-            <div className="flex items-center gap-2">
-              <span className="text-[10px] uppercase tracking-widest font-mono text-muted">
-                Tactile Material Palette:
+          {/* Official Verification & Contact Hotline */}
+          <div className="p-4 rounded-2xl bg-background/50 border border-border/70 mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs font-mono">
+            <div className="flex items-center gap-2 text-muted">
+              <ShieldCheck size={14} className="text-accent shrink-0" />
+              <span>
+                All specifications verified by PRC-Licensed Architects &amp; Civil Engineers.
               </span>
             </div>
-            <div className="flex flex-wrap items-center gap-2">
-              {activeTier.materials.map((mat) => (
-                <span
-                  key={mat.name}
-                  className="inline-flex items-center gap-1.5 text-[10px] uppercase tracking-wider px-3 py-1 rounded-full bg-surface border border-accent/30 text-accent font-mono shadow-2xs"
-                >
-                  <span className="h-1.5 w-1.5 rounded-full bg-accent" />
-                  <span>{mat.name}</span>
-                  <span className="text-muted/60 text-[8.5px]">({mat.category})</span>
-                </span>
-              ))}
+            <div className="flex items-center gap-3 text-foreground/80">
+              <a
+                href="tel:09772873075"
+                className="inline-flex items-center gap-1.5 hover:text-accent transition-colors"
+              >
+                <Phone size={11} className="text-accent" />
+                <span>0977-287-3075</span>
+              </a>
+              <span className="text-border">|</span>
+              <a
+                href="mailto:rbcbuilders70@gmail.com"
+                className="inline-flex items-center gap-1.5 hover:text-accent transition-colors"
+              >
+                <Mail size={11} className="text-accent" />
+                <span>rbcbuilders70@gmail.com</span>
+              </a>
             </div>
           </div>
 
@@ -607,11 +551,11 @@ export default function Pricing() {
                   Comprehensive Comparison Matrix
                 </span>
                 <h3 className="font-serif text-2xl text-foreground font-normal tracking-tight mt-1">
-                  Side-by-Side Specification Standards
+                  Exact Specifications Across All 4 Tiers
                 </h3>
               </div>
               <span className="text-xs text-muted font-mono">
-                Central Luzon Standards (Pampanga, Tarlac, Bataan, Zambales)
+                House Construction Cost in Pampanga &middot; Central Luzon
               </span>
             </div>
 
@@ -647,136 +591,29 @@ export default function Pricing() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border/60">
-                  <tr>
-                    <td className="py-3 px-4 font-mono text-[10.5px] text-muted font-semibold">
-                      Ceiling
-                    </td>
-                    {FINISH_GRADES.map((g) => (
-                      <td
-                        key={g.id}
-                        className={`py-3 px-4 leading-relaxed font-light ${
-                          g.id === activeTier.id ? "bg-accent/5 font-normal" : "text-foreground/80"
-                        }`}
-                      >
-                        {g.specifications.ceiling}
-                      </td>
-                    ))}
-                  </tr>
-
-                  <tr>
-                    <td className="py-3 px-4 font-mono text-[10.5px] text-muted font-semibold">
-                      Windows &amp; Glazing
-                    </td>
-                    {FINISH_GRADES.map((g) => (
-                      <td
-                        key={g.id}
-                        className={`py-3 px-4 leading-relaxed font-light ${
-                          g.id === activeTier.id ? "bg-accent/5 font-normal" : "text-foreground/80"
-                        }`}
-                      >
-                        {g.specifications.windows}
-                      </td>
-                    ))}
-                  </tr>
-
-                  <tr>
-                    <td className="py-3 px-4 font-mono text-[10.5px] text-muted font-semibold">
-                      Flooring
-                    </td>
-                    {FINISH_GRADES.map((g) => (
-                      <td
-                        key={g.id}
-                        className={`py-3 px-4 leading-relaxed font-light ${
-                          g.id === activeTier.id ? "bg-accent/5 font-normal" : "text-foreground/80"
-                        }`}
-                      >
-                        {g.specifications.flooring}
-                      </td>
-                    ))}
-                  </tr>
-
-                  <tr>
-                    <td className="py-3 px-4 font-mono text-[10.5px] text-muted font-semibold">
-                      Doors &amp; Hardware
-                    </td>
-                    {FINISH_GRADES.map((g) => (
-                      <td
-                        key={g.id}
-                        className={`py-3 px-4 leading-relaxed font-light ${
-                          g.id === activeTier.id ? "bg-accent/5 font-normal" : "text-foreground/80"
-                        }`}
-                      >
-                        {g.specifications.doors}
-                      </td>
-                    ))}
-                  </tr>
-
-                  <tr>
-                    <td className="py-3 px-4 font-mono text-[10.5px] text-muted font-semibold">
-                      Walls &amp; Cladding
-                    </td>
-                    {FINISH_GRADES.map((g) => (
-                      <td
-                        key={g.id}
-                        className={`py-3 px-4 leading-relaxed font-light ${
-                          g.id === activeTier.id ? "bg-accent/5 font-normal" : "text-foreground/80"
-                        }`}
-                      >
-                        {g.specifications.walls}
-                      </td>
-                    ))}
-                  </tr>
-
-                  <tr>
-                    <td className="py-3 px-4 font-mono text-[10.5px] text-muted font-semibold">
-                      Fixtures &amp; MEP
-                    </td>
-                    {FINISH_GRADES.map((g) => (
-                      <td
-                        key={g.id}
-                        className={`py-3 px-4 leading-relaxed font-light ${
-                          g.id === activeTier.id ? "bg-accent/5 font-normal" : "text-foreground/80"
-                        }`}
-                      >
-                        {g.specifications.fixtures}
-                      </td>
-                    ))}
-                  </tr>
-
-                  <tr>
-                    <td className="py-3 px-4 font-mono text-[10.5px] text-muted font-semibold">
-                      Railings &amp; Gate
-                    </td>
-                    {FINISH_GRADES.map((g) => (
-                      <td
-                        key={g.id}
-                        className={`py-3 px-4 leading-relaxed font-light ${
-                          g.id === activeTier.id ? "bg-accent/5 font-normal" : "text-foreground/80"
-                        }`}
-                      >
-                        {g.specifications.railings}
-                      </td>
-                    ))}
-                  </tr>
-
-                  <tr>
-                    <td className="py-3 px-4 font-mono text-[10.5px] text-muted font-semibold">
-                      Structural Warranty
-                    </td>
-                    {FINISH_GRADES.map((g) => (
-                      <td
-                        key={g.id}
-                        className={`py-3 px-4 leading-relaxed font-light ${
-                          g.id === activeTier.id ? "bg-accent/5 font-normal" : "text-foreground/80"
-                        }`}
-                      >
-                        <span className="inline-flex items-center gap-1 text-emerald-600 dark:text-emerald-400 font-medium">
-                          <CheckCircle2 size={12} />
-                          <span>15-Year Certified</span>
-                        </span>
-                      </td>
-                    ))}
-                  </tr>
+                  {SPEC_CATEGORIES.map((cat) => {
+                    const IconComponent = cat.icon;
+                    return (
+                      <tr key={cat.key}>
+                        <td className="py-3 px-4 font-mono text-[10.5px] text-muted font-semibold">
+                          <div className="flex items-center gap-1.5">
+                            <IconComponent size={12} className="text-accent" />
+                            <span>{cat.label}</span>
+                          </div>
+                        </td>
+                        {FINISH_GRADES.map((g) => (
+                          <td
+                            key={g.id}
+                            className={`py-3 px-4 leading-relaxed font-light ${
+                              g.id === activeTier.id ? "bg-accent/5 font-medium text-foreground" : "text-foreground/85"
+                            }`}
+                          >
+                            {g.specifications[cat.key]}
+                          </td>
+                        ))}
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
