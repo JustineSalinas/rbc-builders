@@ -51,7 +51,7 @@ const JOURNEY_STEPS: StepData[] = [
     tagline: "Understanding your vision, lifestyle, and design inspirations.",
     body: "We begin by understanding your family's spatial needs, daily routines, and aesthetic inspirations, establishing a transparent architectural framework tailored to your lot in Central Luzon.",
     icon: Compass,
-    leadRole: "Principal PRC Architect",
+    leadRole: "Principal Architect",
     deliverables: [
       "Client lifestyle & spatial requirements brief",
       "Lot orientation & topography feasibility report",
@@ -66,7 +66,7 @@ const JOURNEY_STEPS: StepData[] = [
     tagline: "Lot boundary verification, prevailing winds, and solar exposure study.",
     body: "We conduct physical on-site surveys in Pampanga to evaluate elevation grades, natural cross-ventilation, and solar exposure, followed by initial conceptual floor plans and spatial volume sketches.",
     icon: Paintbrush,
-    leadRole: "PRC Geodetic Surveyor",
+    leadRole: "Site Surveyor",
     deliverables: [
       "Boundary relocation & elevation grade survey",
       "Solar path & natural cross-ventilation assessment",
@@ -96,9 +96,9 @@ const JOURNEY_STEPS: StepData[] = [
     tagline: "Signed and sealed blueprints, full municipal approvals, and bank BOQ.",
     body: "Signed and sealed architectural, structural, electrical, and sanitary blueprints by licensed PRC professionals, fully submitted and approved for all municipal building permits with zero delays.",
     icon: FileCheck,
-    leadRole: "PRC Licensed Engineers",
+    leadRole: "Engineering Team",
     deliverables: [
-      "Seismic structural calculations signed by licensed Civil Engineers",
+      "Structural calculations prepared for permit submission",
       "Complete technical MEP working construction blueprints",
       "Official municipal Building Permit release & clearances",
     ],
@@ -115,7 +115,7 @@ const JOURNEY_STEPS: StepData[] = [
     deliverables: [
       "Groundbreaking ceremony & site mobilization",
       "Excavation & soil treatment termite barrier",
-      "Grade 60 PNS rebar cage installation & footing pour",
+      "Rebar cage installation & footing pour",
     ],
   },
   {
@@ -144,7 +144,7 @@ const JOURNEY_STEPS: StepData[] = [
     leadRole: "Turnover Director",
     deliverables: [
       "Zero-defect multi-point quality assurance punch listing",
-      "Official 15-Year Structural Warranty certificate",
+      "Final walkthrough & punch list resolution",
       "Turnkey keys handover & municipal Certificate of Occupancy",
     ],
   },
@@ -469,10 +469,10 @@ export default function Process() {
                 >
                   <div className="w-20 h-20 sm:w-28 sm:h-28 rounded-full border-2 sm:border-4 border-double border-[#9b2f24] text-[#9b2f24] flex flex-col items-center justify-center text-center p-1.5 sm:p-2 bg-radial from-[#9b2f24]/10 to-transparent shadow-lg backdrop-blur-2xs">
                     <span className="text-[5.5px] sm:text-[6.5px] uppercase tracking-[0.2em] font-mono font-bold">
-                      Signed &amp; Sealed
+                      Permits
                     </span>
                     <span className="font-serif text-[9px] sm:text-xs font-semibold tracking-wide my-0.5">
-                      PRC Licensed
+                      Approved
                     </span>
                     <span className="text-[5px] sm:text-[6px] uppercase tracking-[0.16em] font-mono font-bold">
                       RBC Builders &middot; 2026
@@ -569,7 +569,7 @@ export default function Process() {
                 {/* Deliverables Checklist (Compact, clean, zero blank voids) */}
                 <div className="my-1 sm:my-2 p-2 sm:p-2.5 rounded-xl bg-background/80 border border-border/80">
                   <span className="text-[8px] sm:text-[8.5px] uppercase tracking-widest font-mono text-accent font-semibold mb-1 block">
-                    Verified Deliverables:
+                    Deliverables:
                   </span>
                   <div className="space-y-1">
                     {activeStep.deliverables.map((item, dIdx) => (
@@ -624,7 +624,7 @@ export default function Process() {
                 Step 0{activeStepIndex + 1} / 07 &middot; {activeStep.name}
               </span>
               <span className="hidden sm:inline">
-                San Fernando, Pampanga &middot; PRC Licensed Design-Build Practice
+                San Fernando, Pampanga &middot; Design-Build Practice
               </span>
             </div>
           </div>

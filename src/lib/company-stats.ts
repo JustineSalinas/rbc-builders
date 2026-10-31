@@ -1,11 +1,10 @@
-// Single source of truth for RBC Builders firm credentials & figures.
+// Single source of truth for company stats shown across the site.
+// Every figure here must trace back to something the client actually
+// gave us (their Facebook page, pricing flyers, project renders) —
+// no invented warranty terms, compliance rates, or certifications.
 export const COMPANY_STATS = {
-  totalFloorAreaDelivered: { value: "16,000+", unit: "m²", label: "Total Built Area Delivered" },
-  avgFloorAreaPerProject: { value: "260+", unit: "m²", label: "Avg. Residence Footprint" },
-  provincesServed: { value: "05", unit: "provinces", label: "Central Luzon Coverage" },
-  finishTiers: { value: "04", unit: "standards", label: "Specification Grades" },
-  avgTurnover: { value: "10", unit: "months", label: "Average Turnkey Turnover" },
-  structuralWarranty: { value: "15", unit: "years", label: "Structural Integrity Assurance" },
-  permitApprovalRate: { value: "100%", unit: "", label: "Building Permit Clearance" },
-  communityReach: { value: "12,000+", unit: "", label: "Homeowners & Community" },
+  facebookCommunity: { value: "12K+", unit: "", label: "Facebook Community" },
+  finishTiers: { value: "04", unit: "tiers", label: "Finish Specification Tiers" },
+  avgFloorAreaPerProject: { value: "240+", unit: "sqm", label: "Avg. Floor Area / Project" },
+  serviceAreas: { value: "06", unit: "areas", label: "Cities & Municipalities Served" },
 };

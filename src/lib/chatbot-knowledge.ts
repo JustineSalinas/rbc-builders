@@ -8,81 +8,76 @@ export type Intent = {
 export const INTENTS: Intent[] = [
   {
     id: "greeting",
-    keywords: ["hello", "hi", "hey", "good morning", "good afternoon", "kumusta", "architect", "concierge"],
+    keywords: ["hello", "hi", "hey", "good morning", "good afternoon", "kumusta"],
     reply:
-      "Welcome to RBC Builders Architectural Concierge. How may I assist you with your residence or commercial construction project in Central Luzon today?",
-    followUps: [
-      "What are your construction rates per sqm?",
-      "Which regions do you build in?",
-      "How does your design-build process work?",
-      "Can you assist with bank construction loans?",
-    ],
+      "Hi, I am the RBC Builders assistant. Ask me about pricing, services, timelines, or how to reach the team.",
+    followUps: ["What are your finish tiers?", "What areas do you serve?", "How do I get a quote?"],
   },
   {
     id: "pricing",
-    keywords: ["price", "pricing", "cost", "rate", "budget", "finish tier", "per sqm", "square meter", "estimate", "calculator"],
+    keywords: ["price", "pricing", "cost", "rate", "budget", "finish tier", "per sqm", "square meter"],
     reply:
-      "We build under four clear construction specification grades: Bare Shell (₱18k–₱20k/m²), Standard (₱20k–₱25k/m²), Premium Architectural (₱25k–₱29k/m²), and Luxury (₱29k+/m²). Each grade includes structural concrete, labor, materials, permits, and complete finish packages.",
-    followUps: ["What is included in the Luxury tier?", "How do I request a site inspection?"],
+      "We build across four finish tiers, priced per square meter: Bare Finish at 18,000 to 20,000 pesos, Standard Finish at 20,000 to 25,000, Premium Finish at 25,000 to 29,000, and Luxury Finish at 29,000 and up. Each tier covers ceiling, windows, doors, floors, walls, and fixtures at that spec level.",
+    followUps: ["What is included in Premium Finish?", "How do I get a quote?"],
   },
   {
-    id: "luxury-detail",
-    keywords: ["luxury", "luxury finish", "highest tier", "what is included in luxury"],
+    id: "premium-detail",
+    keywords: ["premium finish", "what is included in premium"],
     reply:
-      "Our Luxury grade (₱29,000+/m²) features heavy-gauge powder-coated architectural aluminum windows, imported large-format porcelain slabs, solid hardwood doors, multi-tier cove lighting, acoustic wood slatting, and premium designer sanitary fixtures.",
+      "Premium Finish (25,000 to 29,000 per sqm) includes PVC textured ceiling panels, aluminum analok windows, solid wood doors, granite tiles and wood floors, stone-accented paint walls, and semi-luxury fixtures throughout.",
   },
   {
     id: "services",
-    keywords: ["service", "offer", "what do you do", "design", "build", "construction", "disciplines"],
+    keywords: ["service", "offer", "what do you do", "design", "build", "construction"],
     reply:
-      "RBC Builders offers turnkey design-build services: custom architectural planning and 3D visualization, complete general contracting (labor & materials), government building permit processing, and bank loan assistance.",
-    followUps: ["Do you handle building permits?", "How does bank loan assistance work?"],
+      "RBC Builders handles the full build lifecycle: architectural design, labor and materials, government permit processing, and bank application assistance for financing. One accountable team from the first sketch to the keys in your hand.",
+    followUps: ["Do you help with permits?", "Can you assist with bank loans?"],
   },
   {
     id: "permits",
-    keywords: ["permit", "license", "government", "approval", "legal", "zoning", "occupancy"],
+    keywords: ["permit", "license", "government", "approval", "legal"],
     reply:
-      "Every project includes full management of government regulatory requirements — from LGU zoning, structural calculation seals, and barangay clearances to the final Certificate of Occupancy.",
+      "Yes. We process building permits and the related regulatory requirements for you, so your project stays compliant and on schedule from day one.",
   },
   {
     id: "financing",
-    keywords: ["bank", "loan", "finance", "financing", "mortgage", "pag-ibig", "drawdown"],
+    keywords: ["bank", "loan", "finance", "financing", "mortgage", "payment plan"],
     reply:
-      "We prepare bank-ready architectural blueprints, detailed Bills of Quantities (BOQ), and progress billing schedules. We coordinate directly with major lenders including BDO, BPI, Metrobank, Security Bank, and Pag-IBIG.",
+      "We assist with preparing and guiding your bank loan application for construction financing. Reach out with your target budget and we will walk you through the requirements.",
   },
   {
     id: "areas",
-    keywords: ["area", "location", "where", "city", "province", "cover", "serve", "pampanga", "angeles", "clark", "tarlac", "bataan", "zambales"],
+    keywords: ["area", "location", "where", "city", "province", "cover", "serve"],
     reply:
-      "Our active construction footprint covers San Fernando, Angeles City, Clark, Guagua, Lubao, and Mexico in Pampanga, as well as Tarlac, Olongapo, Balanga, and Mariveles.",
+      "We build in San Fernando, Tarlac, Angeles City, Olongapo, Balanga, and Mariveles, all across Pampanga and Central Luzon.",
   },
   {
     id: "timeline",
-    keywords: ["how long", "timeline", "duration", "turnover", "months", "schedule", "completion"],
+    keywords: ["how long", "timeline", "duration", "turnover", "months", "schedule"],
     reply:
-      "Turnkey residences typically achieve completion in 8 to 12 months (averaging 10 months), governed by strict milestone timelines, critical path monitoring, and transparent weekly site reports.",
+      "Most residential builds complete in about 10 months on average, depending on floor area and finish tier. We will give you a firm schedule once we review your plans.",
   },
   {
-    id: "projects",
-    keywords: ["portfolio", "project", "example", "past work", "houses", "estates", "completed"],
+    id: "portfolio",
+    keywords: ["portfolio", "project", "example", "past work", "behance", "gallery"],
     reply:
-      "You can explore our curated Selected Works section on this page, featuring completed estates, private residences, and interior architecture across Central Luzon. We also provide full architectural lookbooks upon consultation.",
+      "You can browse our rendered and completed projects on Behance, or scroll to the Portfolio section on this page for recent builds.",
   },
   {
     id: "contact",
-    keywords: ["contact", "call", "phone", "number", "email", "reach", "talk to someone", "quote", "meeting", "consultation"],
+    keywords: ["contact", "call", "phone", "number", "email", "reach", "talk to someone", "quote", "estimate"],
     reply:
-      "To schedule a private architectural consultation or site visit, reach our engineering team directly at 0977 287 3075 or 0962 786 3202, email rbcbuilders70@gmail.com, or submit your project details in the Commission an Estate section.",
+      "You can call or text 0977 287 3075 or 0962 786 3202, email rbcbuilders70@gmail.com, or fill out the form in the Contact section and we will get back to you within one business day.",
   },
   {
     id: "thanks",
-    keywords: ["thank", "thanks", "salamat", "appreciated"],
-    reply: "It is our pleasure. We look forward to helping you realize your architectural vision.",
+    keywords: ["thank", "thanks", "salamat"],
+    reply: "You are welcome. Let me know if there is anything else you would like to check.",
   },
 ];
 
 export const FALLBACK_REPLY =
-  "For project inquiries, site inspections, or structural consultations, please contact our team directly at 0977 287 3075 or email rbcbuilders70@gmail.com.";
+  "I do not have an exact answer for that yet. For specifics on your project, call or text 0977 287 3075 or email rbcbuilders70@gmail.com and the team will help directly.";
 
 export function matchIntent(input: string): Intent | null {
   const text = input.toLowerCase();

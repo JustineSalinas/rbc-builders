@@ -17,22 +17,19 @@ const EXPLORE_LINKS = [
 
 const DISCIPLINES = [
   "Custom Architectural Planning",
-  "Seismic Structural Engineering",
   "Turnkey General Contracting",
-  "LGU Permits & Fire Clearances",
-  "Bank Construction Financing",
-  "Photorealistic 3D Rendering & CGI",
-  "Interior Architecture & Millwork",
-  "Post-Turnover Structural Warranty",
+  "Government Permits & Clearances",
+  "Bank Financing Assistance",
+  "3D Rendering & CGI",
 ];
 
 const SERVICE_REGIONS = [
   "City of San Fernando (Headquarters)",
-  "Angeles City & Clark Freeport",
-  "Tarlac City & Province",
-  "Balanga & Mariveles (Bataan)",
-  "Olongapo & Subic Bay (Zambales)",
-  "Guagua, Lubao & Mexico (Pampanga)",
+  "Angeles City",
+  "Tarlac",
+  "Balanga",
+  "Mariveles",
+  "Olongapo",
 ];
 
 export default function Footer() {
@@ -357,7 +354,7 @@ export default function Footer() {
         <div className="mx-auto max-w-7xl px-4 sm:px-8 py-8 sm:py-10 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-muted font-light">
           <div className="flex items-center gap-2 text-foreground/80">
             <ShieldCheck size={16} className="text-accent shrink-0" />
-            <span>15-Year Structural Warranty &middot; PRC Licensed Architectural &amp; Engineering Practice</span>
+            <span>Design-Build Practice &middot; San Fernando, Pampanga</span>
           </div>
 
           <div className="flex items-center gap-3">

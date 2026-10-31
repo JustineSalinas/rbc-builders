@@ -2,7 +2,8 @@
 
 import { useEffect, useRef } from "react";
 import Image from "next/image";
-import { X, MapPin, Maximize2, BedDouble, Layers, Check, ArrowRight } from "lucide-react";
+import { X, MapPin, Ruler, BedDouble, Layers } from "lucide-react";
+import { gsap } from "@/lib/gsap";
 import type { Project } from "@/lib/projects-data";
 
 export default function ProjectModal({
@@ -15,6 +16,13 @@ export default function ProjectModal({
   const panelRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
+    if (panelRef.current) {
+      gsap.fromTo(
+        panelRef.current,
+        { opacity: 0, y: 24, scale: 0.98 },
+        { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: "expo.out" }
+      );
+    }
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
     document.addEventListener("keydown", onKey);
     document.body.style.overflow = "hidden";
@@ -24,136 +32,64 @@ export default function ProjectModal({
     };
   }, [onClose]);
 
+  const specs = [
+    project.location && { icon: MapPin, label: project.location },
+    project.floorArea && { icon: Ruler, label: project.floorArea },
+    project.bedrooms && { icon: BedDouble, label: project.bedrooms },
+    project.storeys && { icon: Layers, label: project.storeys },
+  ].filter(Boolean) as { icon: typeof MapPin; label: string }[];
+
   return (
     <div
-      className="fixed inset-0 z-[70] flex items-center justify-center bg-black/60 backdrop-blur-md px-4 py-6 sm:p-10 animate-in fade-in duration-300"
+      className="fixed inset-0 z-[70] flex items-center justify-center bg-background/90 backdrop-blur-sm px-4 py-8"
       onClick={onClose}
     >
       <div
         ref={panelRef}
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="modal-project-title"
         onClick={(e) => e.stopPropagation()}
-        className="relative w-full max-w-5xl max-h-[92vh] overflow-y-auto bg-surface border border-border text-foreground shadow-2xl flex flex-col"
+        className="relative w-full max-w-4xl max-h-[88vh] overflow-y-auto bg-surface border border-border"
       >
-        {/* Close Button */}
         <button
           onClick={onClose}
-          aria-label="Close project monograph"
-          className="absolute top-5 right-5 z-20 h-10 w-10 rounded-full bg-white/90 border border-border text-foreground hover:text-accent hover:border-accent transition-colors flex items-center justify-center backdrop-blur-sm shadow-md"
+          aria-label="Close project details"
+          className="absolute top-4 right-4 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-background/80 backdrop-blur text-foreground hover:text-accent transition-colors"
         >
           <X size={18} />
         </button>
 
-        {/* Hero Architectural Image Frame */}
-        <div className="relative aspect-[16/10] sm:aspect-[21/9] w-full overflow-hidden border-b border-border bg-black">
+        <div className="relative aspect-[4/3] sm:aspect-video w-full">
           <Image
             src={project.src}
             alt={project.title}
             fill
-            quality={95}
-            sizes="(max-width: 1280px) 100vw, 1200px"
-            className="object-cover object-center"
+            sizes="(max-width: 1024px) 100vw, 896px"
+            className="object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
-
-          <div className="absolute bottom-6 left-6 right-6 flex flex-wrap items-end justify-between gap-4">
-            <div>
-              <span className="text-[10px] uppercase tracking-[0.25em] text-accent font-medium block mb-1">
-                {project.category} · {project.year}
-              </span>
-              <h3 id="modal-project-title" className="font-serif text-3xl sm:text-4xl text-white font-normal">
-                {project.title}
-              </h3>
-            </div>
-            <span className="text-xs uppercase tracking-[0.2em] px-3.5 py-1.5 border border-accent/40 bg-black/60 text-accent font-medium backdrop-blur-sm">
-              {project.finishTier}
-            </span>
-          </div>
         </div>
 
-        {/* Monograph Body */}
-        <div className="p-6 sm:p-10 flex flex-col gap-8">
-          {/* Key Specifications Grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 py-4 border-y border-border">
-            <div className="flex flex-col">
-              <span className="text-[10px] uppercase tracking-[0.2em] text-muted flex items-center gap-1.5 mb-1">
-                <MapPin size={12} className="text-accent" /> Location
-              </span>
-              <span className="font-serif text-base text-foreground font-medium">
-                {project.location}
-              </span>
-            </div>
+        <div className="p-6 sm:p-10">
+          <p className="text-xs uppercase tracking-wider text-accent mb-3">{project.category}</p>
+          <h3 className="font-display text-3xl sm:text-4xl mb-5">{project.title}</h3>
+          <p className="text-foreground/70 leading-relaxed max-w-xl mb-8">{project.description}</p>
 
-            <div className="flex flex-col">
-              <span className="text-[10px] uppercase tracking-[0.2em] text-muted flex items-center gap-1.5 mb-1">
-                <Maximize2 size={12} className="text-accent" /> Floor Area
-              </span>
-              <span className="font-serif text-base text-foreground font-medium">
-                {project.floorArea}
-              </span>
+          {specs.length > 0 && (
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 border-t border-border pt-6 mb-8">
+              {specs.map((spec) => (
+                <div key={spec.label} className="flex items-center gap-2">
+                  <spec.icon size={16} className="text-accent shrink-0" />
+                  <span className="text-sm text-foreground/80">{spec.label}</span>
+                </div>
+              ))}
             </div>
+          )}
 
-            <div className="flex flex-col">
-              <span className="text-[10px] uppercase tracking-[0.2em] text-muted flex items-center gap-1.5 mb-1">
-                <BedDouble size={12} className="text-accent" /> Capacity
-              </span>
-              <span className="font-serif text-base text-foreground font-medium">
-                {project.bedrooms || "Custom Plan"}
-              </span>
-            </div>
-
-            <div className="flex flex-col">
-              <span className="text-[10px] uppercase tracking-[0.2em] text-muted flex items-center gap-1.5 mb-1">
-                <Layers size={12} className="text-accent" /> Structure
-              </span>
-              <span className="font-serif text-base text-foreground font-medium">
-                {project.storeys}
-              </span>
-            </div>
-          </div>
-
-          {/* Architectural Intent Narrative */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-            <div className="lg:col-span-7">
-              <h4 className="text-xs uppercase tracking-[0.2em] text-accent font-medium mb-3">
-                Architectural Statement &amp; Execution
-              </h4>
-              <p className="text-sm sm:text-base text-foreground/80 font-light leading-relaxed">
-                {project.description}
-              </p>
-            </div>
-
-            <div className="lg:col-span-5 bg-background border border-border p-6">
-              <h4 className="text-xs uppercase tracking-[0.2em] text-accent font-medium mb-4">
-                Structural &amp; Finish Highlights
-              </h4>
-              <ul className="flex flex-col gap-2.5">
-                {project.features.map((feat) => (
-                  <li key={feat} className="flex items-start gap-2.5 text-xs text-foreground/75 font-light leading-snug">
-                    <Check size={13} className="text-accent shrink-0 mt-0.5" />
-                    <span>{feat}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-
-          {/* CTA Footer */}
-          <div className="pt-6 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4">
-            <p className="text-xs text-muted font-light">
-              Full architectural drawings and itemized BOQ available for review upon consultation.
-            </p>
-            <a
-              href="#contact"
-              onClick={onClose}
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-3 text-xs uppercase tracking-[0.2em] font-medium bg-accent text-white hover:bg-accent-dim transition-colors shadow-sm"
-            >
-              <span>Build a Home Like This</span>
-              <ArrowRight size={13} />
-            </a>
-          </div>
+          <a
+            href="#contact"
+            onClick={onClose}
+            className="inline-flex items-center gap-2 bg-accent text-background px-6 py-3.5 text-sm font-semibold uppercase tracking-wide hover:bg-foreground transition-colors"
+          >
+            Build Something Like This
+          </a>
         </div>
       </div>
     </div>

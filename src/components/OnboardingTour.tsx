@@ -18,7 +18,7 @@ const TOUR_STEPS: TourStep[] = [
     badge: "01 / 10 · Firm Introduction",
     title: "Welcome to RBC Builders",
     getDescription: (name) =>
-      `Welcome to RBC Builders, ${name}. Here is our design-build overview and PRC-accredited credentials across Central Luzon. Explore our signature residential projects and key built metrics.`,
+      `Welcome to RBC Builders, ${name}. Here is our design-build overview across Central Luzon. Explore our signature residential projects and key built metrics.`,
     actionHint: "Inspect the slideshow controls and built square meters delivered.",
   },
   {
@@ -26,8 +26,8 @@ const TOUR_STEPS: TourStep[] = [
     badge: "02 / 10 · Firm Philosophy",
     title: "The Design-Build Practice",
     getDescription: (name) =>
-      `Here, ${name}, we detail our unified design-build accountability: eliminating contractor friction by housing architectural blueprints, civil engineering, and general contracting under a single 15-year warranty.`,
-    actionHint: "Review our 4 architectural pillars: cost engineering, seismic rigor, and authentic finishes.",
+      `Here, ${name}, we detail our unified design-build accountability: architectural blueprints, engineering, and general contracting under one roof.`,
+    actionHint: "Review our approach to design, budgeting, and build quality.",
   },
   {
     id: "services",
@@ -75,7 +75,7 @@ const TOUR_STEPS: TourStep[] = [
     title: "Homeowner Endorsements",
     getDescription: (name) =>
       `Read authentic reviews from homeowners and professionals who built their homes with RBC Builders, ${name}.`,
-    actionHint: "Browse the endorsement carousel and review our 15-year structural warranty badge.",
+    actionHint: "Browse the endorsement carousel.",
   },
   {
     id: "contact",
@@ -90,7 +90,7 @@ const TOUR_STEPS: TourStep[] = [
     badge: "10 / 10 · Regional Footprint",
     title: "Headquarters & Territories",
     getDescription: (name) =>
-      `Our expanded operations directory: real-time Manila PST clock, Central Luzon coverage across 5 provinces, and direct Facebook hotline. Thank you for touring RBC Builders, ${name}!`,
+      `Our contact directory: real-time Manila clock, service areas across Central Luzon, and direct Facebook contact. Thank you for touring RBC Builders, ${name}!`,
     actionHint: "Explore our active service regions or scroll back to top.",
   },
 ];
@@ -364,7 +364,7 @@ export default function OnboardingTour() {
             </form>
 
             <div className="mt-6 pt-4 border-t border-border flex items-center justify-between text-[10px] text-muted font-light">
-              <span>PRC Accredited Design-Build Firm</span>
+              <span>Design-Build Firm</span>
               <span>San Fernando, Pampanga</span>
             </div>
           </div>

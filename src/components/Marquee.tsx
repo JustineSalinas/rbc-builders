@@ -6,28 +6,28 @@ import { useReveal } from "@/lib/useReveal";
 const CREDENTIALS = [
   {
     icon: Compass,
-    title: "PRC Licensed Architecture & Engineering",
-    desc: "Complete architectural drawings, structural calculations, MEP seals",
+    title: "Architectural Planning",
+    desc: "Architectural drawings and structural plans for permit submission",
   },
   {
     icon: ShieldCheck,
     title: "Turnkey General Contracting",
-    desc: "Single-source labor, materials, and master builder accountability",
+    desc: "Single-source labor, materials, and builder accountability",
   },
   {
     icon: FileCheck2,
-    title: "100% LGU Permitting Clearance",
-    desc: "Barangay, zoning, municipal permits, and Certificate of Occupancy",
+    title: "Government Permit Processing",
+    desc: "Barangay and municipal permits handled on your behalf",
   },
   {
     icon: Landmark,
     title: "Bank Financing Assistance",
-    desc: "Accredited contractor estimates and milestone billing drawdowns",
+    desc: "Cost breakdowns and paperwork prepared for your construction loan",
   },
   {
     icon: Clock,
-    title: "10-Month Turnkey Schedule",
-    desc: "Rigorous critical path management and weekly milestone reports",
+    title: "Transparent Progress Reporting",
+    desc: "Milestone updates so you always know where the build stands",
   },
 ];
 

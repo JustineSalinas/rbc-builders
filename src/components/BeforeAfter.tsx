@@ -152,9 +152,9 @@ export default function BeforeAfter() {
               <ShieldCheck size={13} />
             </span>
             <div>
-              <h4 className="font-serif text-lg text-foreground font-normal">15-Year Structural Guarantee</h4>
+              <h4 className="font-serif text-lg text-foreground font-normal">Punch List Resolution</h4>
               <p className="text-xs text-muted font-light mt-0.5 leading-relaxed">
-                Official contractor warranty with comprehensive punch-list resolution prior to key handover.
+                Every item on the final walkthrough is resolved before keys are handed over.
               </p>
             </div>
           </div>

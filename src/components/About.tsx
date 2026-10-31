@@ -17,13 +17,13 @@ const PILLARS = [
   },
   {
     icon: Shield,
-    title: "Permit Governance & Seismic Rigor",
-    desc: "All structural calculations are sealed by licensed PRC civil engineers, fully complying with the National Building Code of the Philippines and local municipal seismic standards.",
+    title: "Government Permit Handling",
+    desc: "We manage barangay and municipal permit requirements on your behalf, so your project stays compliant from groundbreaking to turnover.",
   },
   {
     icon: Sparkles,
-    title: "High-Quality Material Finishes",
-    desc: "From Bare Shell to Luxury specification grades, our sourced materials — imported porcelain slabs, analok architectural windows, and solid hardwood millwork — are guaranteed authentic.",
+    title: "Quality Material Finishes",
+    desc: "From Bare Finish to Luxury specification tiers, materials are sourced to match the quality level you choose and sign off on.",
   },
 ];
 

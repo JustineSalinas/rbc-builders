@@ -2,42 +2,41 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { ChevronLeft, ChevronRight, ArrowRight, ArrowDownRight, MapPin, Maximize2, ShieldCheck } from "lucide-react";
+import { ChevronLeft, ChevronRight, ArrowRight, ArrowDownRight, MapPin } from "lucide-react";
 import { COMPANY_STATS } from "@/lib/company-stats";
 import { gsap } from "@/lib/gsap";
 
+// Design-direction references, not photos of specific completed
+// addresses — captions stay generic and don't claim a named project,
+// exact floor area, or location we can't verify.
 const SLIDES = [
   {
     src: "/images/hero.jpg",
-    title: "The Pavilioned Estate",
-    location: "San Fernando, Pampanga",
-    area: "340 m²",
-    typology: "Private Luxury Residence",
-    caption: "Unified architectural design, reinforced concrete execution, and turnkey luxury handover.",
+    title: "Signature Residence",
+    location: "Pampanga",
+    typology: "Contemporary Residence",
+    caption: "Every detail engineered for long-term quality, not just a good render.",
   },
   {
     src: "/images/hero-2.jpg",
-    title: "Double-Height Great Room",
-    location: "Angeles City, Pampanga",
-    area: "280 m²",
-    typology: "Contemporary Interior Architecture",
-    caption: "Bespoke interior architecture with imported large-format porcelain slabs and integrated cove illumination.",
+    title: "Interior Craftsmanship",
+    location: "Pampanga",
+    typology: "Interior Architecture",
+    caption: "Warm, livable luxury designed around how a family actually uses a home.",
   },
   {
     src: "/images/hero-3.jpg",
-    title: "The Gated Horizon Villa",
-    location: "Clark Enclave, Pampanga",
-    area: "310 m²",
-    typology: "Modern Gated Estate",
-    caption: "Custom boundary enclosure, architectural timber louvers, and climate-responsive solar shading.",
+    title: "Gated Family Home",
+    location: "Pampanga",
+    typology: "Modern Residence",
+    caption: "Landscaping, lighting, and materials specified down to the finish tier.",
   },
   {
     src: "/images/hero-4.jpg",
-    title: "The Angular Monolith",
-    location: "Tarlac City, Central Luzon",
-    area: "290 m²",
-    typology: "Mid-Century Modern Villa",
-    caption: "Structural integrity without compromise: permit processing, raw excavation to completed keys.",
+    title: "Contemporary Build",
+    location: "Pampanga",
+    typology: "Modern Residence",
+    caption: "Built to hold up: structure first, finishes that last, no shortcuts.",
   },
 ];
 
@@ -88,7 +87,7 @@ export default function Hero() {
             {/* Accreditation Eyebrow */}
             <div className="hero-reveal mb-4 sm:mb-5">
               <span className="text-[10px] sm:text-xs uppercase tracking-[0.18em] sm:tracking-[0.22em] text-accent font-medium whitespace-nowrap block">
-                San Fernando, Pampanga &middot; PRC Licensed Design
+                San Fernando, Pampanga &middot; Design + Build
               </span>
             </div>
 
@@ -133,7 +132,7 @@ export default function Hero() {
                     {slide.title}
                   </p>
                   <p className="text-[10px] uppercase tracking-wider text-muted font-light mt-0.5">
-                    {slide.location} &middot; {slide.area}
+                    {slide.location} &middot; {slide.typology}
                   </p>
                 </div>
               </div>
@@ -173,9 +172,7 @@ export default function Hero() {
                     <MapPin size={11} className="text-accent-light" />
                     <span>{slide.location}</span>
                     <span className="text-white/40">&middot;</span>
-                    <span className="text-white/90 flex items-center gap-1">
-                      <Maximize2 size={11} /> {slide.area}
-                    </span>
+                    <span className="text-white/90">{slide.typology}</span>
                   </div>
                   <h2 className="font-serif text-xl sm:text-2xl text-white font-normal leading-snug">
                     {slide.title}
@@ -217,40 +214,38 @@ export default function Hero() {
         <div className="hero-reveal border-t border-border pt-8 grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
           <div className="flex flex-col">
             <span className="font-serif text-3xl sm:text-4xl text-foreground font-light tracking-tight">
-              {COMPANY_STATS.totalFloorAreaDelivered.value}
+              {COMPANY_STATS.facebookCommunity.value}
             </span>
             <span className="text-[10.5px] uppercase tracking-[0.2em] text-muted mt-1 font-light">
-              Built Floor Area Delivered
+              {COMPANY_STATS.facebookCommunity.label}
             </span>
           </div>
 
           <div className="flex flex-col sm:border-l border-border sm:pl-8">
             <span className="font-serif text-3xl sm:text-4xl text-accent font-light tracking-tight">
-              {COMPANY_STATS.provincesServed.value}{" "}
-              <span className="text-sm font-sans font-normal text-muted">Provinces</span>
+              {COMPANY_STATS.serviceAreas.value}
             </span>
             <span className="text-[10.5px] uppercase tracking-[0.2em] text-muted mt-1 font-light">
-              Pampanga, Tarlac, Bataan, Zambales
+              San Fernando, Tarlac, Angeles, Olongapo, Balanga &amp; Mariveles
             </span>
           </div>
 
           <div className="flex flex-col border-t sm:border-t-0 sm:border-l border-border pt-4 sm:pt-0 sm:pl-8">
-            <span className="font-serif text-3xl sm:text-4xl text-foreground font-light tracking-tight flex items-center gap-2">
-              {COMPANY_STATS.permitApprovalRate.value}
-              <ShieldCheck size={20} className="text-accent" />
+            <span className="font-serif text-3xl sm:text-4xl text-foreground font-light tracking-tight">
+              {COMPANY_STATS.finishTiers.value}
             </span>
             <span className="text-[10.5px] uppercase tracking-[0.2em] text-muted mt-1 font-light">
-              LGU Permitting &amp; Title Compliance
+              {COMPANY_STATS.finishTiers.label}
             </span>
           </div>
 
           <div className="flex flex-col border-t lg:border-t-0 lg:border-l border-border pt-4 lg:pt-0 lg:pl-8">
             <span className="font-serif text-3xl sm:text-4xl text-foreground font-light tracking-tight">
-              {COMPANY_STATS.avgTurnover.value}{" "}
-              <span className="text-sm font-sans font-normal text-muted">Months</span>
+              {COMPANY_STATS.avgFloorAreaPerProject.value}{" "}
+              <span className="text-sm font-sans font-normal text-muted">sqm</span>
             </span>
             <span className="text-[10.5px] uppercase tracking-[0.2em] text-muted mt-1 font-light">
-              Average Turnkey Delivery
+              {COMPANY_STATS.avgFloorAreaPerProject.label}
             </span>
           </div>
         </div>
