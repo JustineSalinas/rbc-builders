@@ -8,42 +8,20 @@ const ease = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 
 const seg = (p: number, a: number, b: number) => ease(clamp((p - a) / (b - a)));
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
-interface Journey3DCanvasProps {
-  progress: number; // 0.0 to 7.0
-  onStampChange?: (show: boolean) => void;
-  onFinaleChange?: (show: boolean) => void;
-  onPhaseChange?: (phase: string, stepIndex: number) => void;
+export interface Journey3DHandle {
+  setProgress: (p: number) => void;
 }
 
-const PHASES = [
-  "Consultation",
-  "Site visit & schematic design",
-  "Design development",
-  "Plans & permits",
-  "Groundbreaking",
-  "Construction",
-  "Turnover",
-];
+interface Journey3DCanvasProps {
+  initialProgress?: number;
+  onInit?: (handle: Journey3DHandle) => void;
+}
 
 export default function Journey3DCanvas({
-  progress,
-  onStampChange,
-  onFinaleChange,
-  onPhaseChange,
+  initialProgress = 0,
+  onInit,
 }: Journey3DCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const initialProgressRef = useRef(progress);
-  const engineRef = useRef<{
-    setProgress: (p: number) => void;
-    setVisible: (v: boolean) => void;
-  } | null>(null);
-
-  // Sync incoming progress prop with the internal smooth Three.js engine
-  useEffect(() => {
-    if (engineRef.current) {
-      engineRef.current.setProgress(progress);
-    }
-  }, [progress]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -61,13 +39,14 @@ export default function Journey3DCanvas({
       return;
     }
 
-    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+    // Performance-tuned pixel ratio: caps at 1.25x for buttery 60 FPS without GPU strain
+    const dpr = Math.min(window.devicePixelRatio || 1, 1.25);
     renderer.setPixelRatio(dpr);
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.05;
-    renderer.shadowMap.enabled = true;
-    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    // Shadows disabled for maximum 60fps frame rate on all laptops & mobile devices
+    renderer.shadowMap.enabled = false;
 
     const PAPER = new THREE.Color("#ece6dc");
     const DUSK = new THREE.Color("#1c2230");
@@ -77,31 +56,19 @@ export default function Journey3DCanvas({
     scene.fog = new THREE.Fog(PAPER.clone(), 70, 140);
     const camera = new THREE.PerspectiveCamera(30, 1, 0.5, 300);
 
-    // ── Lighting ──
+    // ── Architectural Directional & Ambient Lighting ──
     const hemi = new THREE.HemisphereLight("#fffaf2", "#d8cbb8", 1.5);
-    const sun = new THREE.DirectionalLight("#fff1dc", 2.4);
+    const sun = new THREE.DirectionalLight("#fff1dc", 2.2);
     sun.position.set(-18, 30, 22);
-    sun.castShadow = true;
-    sun.shadow.mapSize.set(1024, 1024);
-    Object.assign(sun.shadow.camera, {
-      left: -22,
-      right: 22,
-      top: 22,
-      bottom: -22,
-      near: 1,
-      far: 90,
-    });
-    sun.shadow.bias = -0.0004;
-    sun.shadow.normalBias = 0.03;
 
-    // Architectural Interior Chandeliers & Sconces
+    // Interior Warm Lighting
     const warmA = new THREE.PointLight("#ffb867", 0, 22, 1.6);
     warmA.position.set(-2, 2.6, 6.5);
     const warmB = new THREE.PointLight("#ffb867", 0, 20, 1.6);
     warmB.position.set(4, 6.2, 5.5);
     scene.add(hemi, sun, warmA, warmB);
 
-    // ── Materials ──
+    // ── Material Palette ──
     const std = (color: string, o = {}) =>
       new THREE.MeshStandardMaterial({ color, roughness: 0.85, metalness: 0, ...o });
 
@@ -111,7 +78,7 @@ export default function Journey3DCanvas({
       concrete: std("#d6cfc4"),
       plaster: std("#efe9df"),
       charcoal: std("#3d3a37", { roughness: 0.7 }),
-      stone: std("#ded7cb", { roughness: 0.95 }), // Travertine Stone Portal
+      stone: std("#ded7cb", { roughness: 0.95 }), // Travertine Portal Tower
       timber: std("#9c6a3c", { roughness: 0.6 }),
       soffit: std("#b8834f", { roughness: 0.55 }),
       glass: std("#25303a", {
@@ -157,15 +124,12 @@ export default function Journey3DCanvas({
       y1: number,
       z0: number,
       z1: number,
-      mat: THREE.Material,
-      shadow = true
+      mat: THREE.Material
     ) => {
       const g = new THREE.BoxGeometry(x1 - x0, y1 - y0, z1 - z0);
       g.translate(0, (y1 - y0) / 2, 0);
       const m = new THREE.Mesh(g, mat);
       m.position.set((x0 + x1) / 2, y0, (z0 + z1) / 2);
-      m.castShadow = shadow;
-      m.receiveShadow = true;
       return m;
     };
 
@@ -174,7 +138,6 @@ export default function Journey3DCanvas({
       g.rotateX(-Math.PI / 2);
       const m = new THREE.Mesh(g, mat);
       m.position.set((x0 + x1) / 2, y, (z0 + z1) / 2);
-      m.receiveShadow = true;
       return m;
     };
 
@@ -204,13 +167,13 @@ export default function Journey3DCanvas({
       });
     };
 
-    // Pencil/ink drafting strokes cut into segments for smooth drawRange reveals
+    // Drafting strokes with drawRange reveals
     const strokes = (
       edges: [number, number, number, number, number?, number?][],
       mat: THREE.LineBasicMaterial,
       a: number,
       b: number,
-      { jitter = 0, piece = 0.3, y = 0.04 } = {}
+      { jitter = 0, piece = 0.35, y = 0.04 } = {}
     ) => {
       const pos: number[] = [];
       const j = () => (Math.random() - 0.5) * jitter;
@@ -265,7 +228,7 @@ export default function Journey3DCanvas({
       },
     });
 
-    // ── 01 · Consultation: The Footprint Sketched in Architectural Pencil ──
+    // ── 01 · Consultation: Pencil Drafted Footprint ──
     const pencil = ink("#7d6d5d");
     fade(pencil, 0, 0.15, 0.9, [4.3, 5.1]);
     const sketch = [
@@ -273,13 +236,13 @@ export default function Journey3DCanvas({
       ...rect(3.6, 9.6, -4, 4.4, 0.5),
       ...rect(-6.2, 6.4, -4.2, 3.0, 0.6),
     ];
-    strokes(sketch, pencil, 0.05, 0.85, { jitter: 0.07 });
-    strokes(sketch, pencil, 0.3, 0.98, { jitter: 0.16 });
+    strokes(sketch, pencil, 0.05, 0.85, { jitter: 0.06 });
+    strokes(sketch, pencil, 0.3, 0.98, { jitter: 0.12 });
 
-    // ── 02 · Site Visit: Property Boundary, Stakes, North Arrow, Sun Path Arc ──
+    // ── 02 · Site Visit: Lot Line, Stakes, North Arrow, Sun Path ──
     const lotMat = ink("#2a211a");
     fade(lotMat, 1.0, 1.1, 0.7, [6.2, 6.8]);
-    strokes(rect(-14, 14, -8, 12), lotMat, 1.0, 1.55, { piece: 0.45 });
+    strokes(rect(-14, 14, -8, 12), lotMat, 1.0, 1.55, { piece: 0.5 });
 
     [
       [-14, -8],
@@ -305,7 +268,7 @@ export default function Journey3DCanvas({
       });
     });
 
-    // North Arrow Compass on Ground
+    // North Compass
     const northShape = new THREE.Shape([
       new THREE.Vector2(0, 1.4),
       new THREE.Vector2(0.7, -0.8),
@@ -326,10 +289,10 @@ export default function Journey3DCanvas({
     add(north);
     fade(north.material as THREE.Material & { opacity: number }, 1.3, 1.6, 0.85, [4.4, 5]);
 
-    // Sun Path Arc Across the Sky
+    // Sun Arc Across the Sky
     const arcPts: THREE.Vector3[] = [];
-    for (let i = 0; i <= 48; i++) {
-      const a = (Math.PI * i) / 48;
+    for (let i = 0; i <= 36; i++) {
+      const a = (Math.PI * i) / 36;
       arcPts.push(new THREE.Vector3(Math.cos(a) * 17, Math.sin(a) * 13 + 0.2, -3));
     }
     const arcMat = ink("#a07a55");
@@ -345,10 +308,10 @@ export default function Journey3DCanvas({
         arcPts[i + 1].y,
       ]);
     }
-    strokes(arcEdges, arcMat, 1.25, 1.85, { piece: 0.5 });
+    strokes(arcEdges, arcMat, 1.25, 1.85, { piece: 0.6 });
 
-    // Glowing Sun Ball Traversing Arc
-    const sunBall = add(new THREE.Mesh(new THREE.SphereGeometry(0.45, 16, 16), M.sunball));
+    // Glowing Sun Ball
+    const sunBall = add(new THREE.Mesh(new THREE.SphereGeometry(0.45, 12, 12), M.sunball));
     fade(M.sunball, 1.35, 1.5, 0.9, [3.0, 3.5]);
     items.push({
       update: (p) => {
@@ -358,13 +321,12 @@ export default function Journey3DCanvas({
       },
     });
 
-    // ── 03 · Design Development: White Architectural Massing Volumes ──
+    // ── 03 · Design Development: Massing Volumes ──
     rise(box(-7.6, 3.4, 0, 3.4, -3.8, 3.2, M.massing), 2.05, 2.45);
     rise(box(3.4, 9.4, 0, 3.4, -3.8, 4.2, M.massing), 2.2, 2.6);
     rise(box(-6.2, 6.4, 3.4, 6.8, -4.2, 3.0, M.massing), 2.4, 2.85);
     fade(M.massing, 2.0, 2.15, 0.95, [3.2, 3.75]);
 
-    // Massing Outline Ink Strokes
     const mLines = ink("#2a211a");
     fade(mLines, 2.05, 2.15, 0.85, [4.8, 5.2]);
     const massEdges: [number, number, number, number, number?, number?][] = [
@@ -372,9 +334,9 @@ export default function Journey3DCanvas({
       ...rect(3.4, 9.4, -3.8, 4.2).map(([x0, z0, x1, z1]) => [x0, z0, x1, z1, 3.4, 3.4] as [number, number, number, number, number, number]),
       ...rect(-6.2, 6.4, -4.2, 3.0).map(([x0, z0, x1, z1]) => [x0, z0, x1, z1, 6.8, 6.8] as [number, number, number, number, number, number]),
     ];
-    strokes(massEdges, mLines, 2.15, 2.85, { piece: 0.35 });
+    strokes(massEdges, mLines, 2.15, 2.85, { piece: 0.4 });
 
-    // ── 04 · Plans & Permits: Technical Blueprint Dimensions & Ink Drafting ──
+    // ── 04 · Plans & Permits: Technical Blueprint Dimensions ──
     const dimMat = ink("#9b2f24");
     fade(dimMat, 3.0, 3.15, 0.85, [4.4, 4.9]);
     const dims: [number, number, number, number][] = [
@@ -383,9 +345,9 @@ export default function Journey3DCanvas({
       [10.8, -3.8, 10.8, 4.2],
       [-9.0, -3.8, -9.0, 3.2],
     ];
-    strokes(dims, dimMat, 3.05, 3.65, { piece: 0.3 });
+    strokes(dims, dimMat, 3.05, 3.65, { piece: 0.35 });
 
-    // ── 05 · Groundbreaking: Earth Excavation, Concrete Footings & Rebar Pins ──
+    // ── 05 · Groundbreaking: Earth Excavation & Rebar Pins ──
     const earthBox = box(-8.6, 9.8, -0.45, 0.05, -4.6, 4.6, M.earth);
     add(earthBox);
     fade(M.earth, 4.0, 4.2, 0.95, [5.1, 5.4]);
@@ -405,7 +367,6 @@ export default function Journey3DCanvas({
     ];
 
     COLS.forEach(([x, z], i) => {
-      // Footing pad
       const pad = box(x - 0.7, x + 0.7, 0, 0.35, z - 0.7, z + 0.7, M.concrete);
       add(pad);
       items.push({
@@ -415,8 +376,7 @@ export default function Journey3DCanvas({
           pad.scale.y = Math.max(e, 0.01);
         },
       });
-      // Vertical Rebar Pins
-      const bar = box(x - 0.05, x + 0.05, 0.35, 1.9, z - 0.05, z + 0.05, M.stone, false);
+      const bar = box(x - 0.05, x + 0.05, 0.35, 1.9, z - 0.05, z + 0.05, M.stone);
       add(bar);
       items.push({
         update: (p) => {
@@ -427,28 +387,21 @@ export default function Journey3DCanvas({
       });
     });
 
-    // ── 06 · Construction: Structural Skeleton, Travertine Portal & Luxury Enclosure ──
+    // ── 06 · Construction: Structural Framing, Travertine Portal & Glass ──
     COLS.forEach(([x, z], i) =>
       rise(box(x - 0.22, x + 0.22, 0.35, 3.4, z - 0.22, z + 0.22, M.concrete), 5.0 + i * 0.02, 5.25 + i * 0.02)
     );
-    // Plinth
     rise(box(-8.4, 9.6, 0, 0.3, -4.4, 4.4, M.concrete), 5.0, 5.15);
-    // Ground Floor Stucco Walls
     rise(box(-7.6, 3.4, 0.3, 3.4, -3.8, 3.2, M.plaster), 5.22, 5.45);
-    // 2F Transfer Slab
     rise(box(-9, 9.8, 3.4, 3.75, -4.6, 4.8, M.concrete), 5.4, 5.5);
-    // 2F Timber Under-Soffit
-    rise(box(-8.8, 9.6, 3.36, 3.4, -4.4, 4.6, M.soffit, false), 5.45, 5.52);
-    // 2F Upper Pavilion
+    rise(box(-8.8, 9.6, 3.36, 3.4, -4.4, 4.6, M.soffit), 5.45, 5.52);
     rise(box(-6.2, 6.4, 3.75, 6.8, -4.2, 3.0, M.charcoal), 5.5, 5.72);
-    // Main Continuous Roof Slab
     rise(box(-7.4, 8.0, 6.8, 7.15, -5.2, 4.4, M.concrete), 5.7, 5.8);
-    // Continuous Timber Batten Under-Soffit
-    rise(box(-7.2, 7.8, 6.76, 6.8, -5.0, 4.2, M.soffit, false), 5.74, 5.8);
-    // Signature Travertine Stone Portal Tower
+    rise(box(-7.2, 7.8, 6.76, 6.8, -5.0, 4.2, M.soffit), 5.74, 5.8);
+    // Travertine Entrance Portal Tower
     rise(box(-1.6, -0.3, 0, 7.0, 3.0, 3.9, M.stone), 5.3, 5.7);
 
-    // Floor-to-Ceiling Panoramic Glass Fenestration
+    // Glass Fenestration
     [
       [-7.3, -1.9, 0.5, 3.2, 3.2, 3.26],
       [-0.1, 3.2, 0.5, 3.2, 3.2, 3.26],
@@ -457,20 +410,20 @@ export default function Journey3DCanvas({
       [-7.66, -7.6, 0.5, 3.2, -3.4, 2.8],
       [-6.26, -6.2, 4.0, 6.5, -3.8, 2.6],
     ].forEach(([x0, x1, y0, y1, z0, z1], i) =>
-      rise(box(x0, x1, y0, y1, z0, z1, M.glass, false), 5.72 + i * 0.03, 5.85 + i * 0.03)
+      rise(box(x0, x1, y0, y1, z0, z1, M.glass), 5.72 + i * 0.03, 5.85 + i * 0.03)
     );
 
-    // Acoustic Vertical Timber Louver Screen on 2F
+    // Acoustic Timber Louvers
     for (let i = 0; i < 18; i++) {
       const x = 1.7 + i * 0.26;
       rise(box(x, x + 0.09, 3.85, 6.7, 3.06, 3.22, M.timber), 5.78 + i * 0.008, 5.9 + i * 0.008);
     }
 
-    // Frameless Glass Balustrade Rails
-    rise(box(9.5, 9.56, 3.75, 4.85, -4.4, 4.6, M.rail, false), 5.85, 5.95);
-    rise(box(6.4, 9.56, 3.75, 4.85, 4.54, 4.6, M.rail, false), 5.85, 5.95);
+    // Balustrades
+    rise(box(9.5, 9.56, 3.75, 4.85, -4.4, 4.6, M.rail), 5.85, 5.95);
+    rise(box(6.4, 9.56, 3.75, 4.85, 4.54, 4.6, M.rail), 5.85, 5.95);
 
-    // ── 07 · Turnover: Warm LED Soffits, Cascading Waterfall Pool & Twilight Sky ──
+    // ── 07 · Turnover: Soffit Lights, Reflection Pool & Twilight Atmosphere ──
     [
       [-9, 9.8, 3.24, 3.36, 4.66, 4.82],
       [-7.4, 8.0, 6.64, 6.76, 4.26, 4.42],
@@ -478,10 +431,9 @@ export default function Journey3DCanvas({
       [7.86, 8.02, 6.64, 6.76, -5.2, 4.4],
       [-9.02, -8.86, 3.24, 3.36, -4.6, 4.8],
       [-7.42, -7.26, 6.64, 6.76, -5.2, 4.4],
-    ].forEach(([x0, x1, y0, y1, z0, z1]) => add(box(x0, x1, y0, y1, z0, z1, M.led, false)));
+    ].forEach(([x0, x1, y0, y1, z0, z1]) => add(box(x0, x1, y0, y1, z0, z1, M.led)));
     fade(M.led, 6.35, 6.7);
 
-    // Landscaping, Driveway, Timber Deck, Cascading Waterfall Pool
     add(flat(-14, 14, 4.8, 12, 0.012, M.lawn));
     fade(M.lawn, 6.05, 6.35);
     add(flat(5.4, 12, 4.4, 12, 0.016, M.drive));
@@ -491,7 +443,7 @@ export default function Journey3DCanvas({
     add(flat(-9, -2, 6, 9.5, 0.024, M.water));
     fade(M.water, 6.15, 6.4);
 
-    // Tropical Trees & Foliage
+    // Tropical Trees
     [
       [-12, -6, 1.2],
       [12.5, -6.5, 1],
@@ -507,7 +459,6 @@ export default function Journey3DCanvas({
       tr.position.set(0, 0, 0);
       const c = new THREE.Mesh(new THREE.IcosahedronGeometry(1.6, 0), M.leaf);
       c.position.y = 3;
-      c.castShadow = true;
       t.add(c);
       add(t);
       items.push({
@@ -519,9 +470,9 @@ export default function Journey3DCanvas({
       });
     });
 
-    // ── Twilight Sky Dome Shader ──
+    // Twilight Sky Dome
     const sky = new THREE.Mesh(
-      new THREE.SphereGeometry(140, 32, 16),
+      new THREE.SphereGeometry(140, 24, 12),
       new THREE.ShaderMaterial({
         side: THREE.BackSide,
         depthWrite: false,
@@ -553,7 +504,6 @@ export default function Journey3DCanvas({
     sky.renderOrder = -1;
     add(sky);
 
-    // Dusk Lighting & Atmosphere Transition
     const hemiDay = { sky: new THREE.Color("#fffaf2"), gnd: new THREE.Color("#d8cbb8") };
     const hemiDusk = { sky: new THREE.Color("#5a6a8c"), gnd: new THREE.Color("#2a2018") };
 
@@ -566,7 +516,7 @@ export default function Journey3DCanvas({
         hemi.color.copy(hemiDay.sky).lerp(hemiDusk.sky, d);
         hemi.groundColor.copy(hemiDay.gnd).lerp(hemiDusk.gnd, d);
         hemi.intensity = lerp(1.5, 0.55, d);
-        sun.intensity = lerp(2.4, 0.25, d);
+        sun.intensity = lerp(2.2, 0.25, d);
         sun.color.set("#fff1dc").lerp(new THREE.Color("#ff9f5a"), d);
         M.glass.emissiveIntensity = 0.75 * on;
         M.water.emissiveIntensity = 0.9 * on;
@@ -578,18 +528,18 @@ export default function Journey3DCanvas({
       },
     });
 
-    // ── Smooth Cinematic Camera Spline Path ──
+    // ── Smooth Spline Camera Flight ──
     const V = (x: number, y: number, z: number) => new THREE.Vector3(x, y, z);
     const camPath = new THREE.CatmullRomCurve3(
       [
-        V(0.5, 40, 9),   // 0: Blueprint top-down overview
-        V(6, 34, 20),    // 1: Angling over site
-        V(22, 22, 28),   // 2: Sweeping around massing
-        V(28, 13, 24),   // 3: Technical elevation
-        V(6, 31, 24),    // 4: Groundbreaking overview
-        V(24, 12, 26),   // 5: Construction angle
-        V(23, 8.5, 22),  // 6: Eye level
-        V(23, 3.4, 29),  // 7: Ground level dusk looking up at villa standing proud
+        V(0.5, 40, 9),
+        V(6, 34, 20),
+        V(22, 22, 28),
+        V(28, 13, 24),
+        V(6, 31, 24),
+        V(24, 12, 26),
+        V(23, 8.5, 22),
+        V(23, 3.4, 29),
       ],
       false,
       "centripetal"
@@ -610,10 +560,9 @@ export default function Journey3DCanvas({
       "centripetal"
     );
 
-    // ── Loop, Resize & Pointer Controls ──
     let dirty = true;
     let drawn = -2;
-    let target = initialProgressRef.current;
+    let target = initialProgress;
     let shown = -1;
     let running = true;
     let visible = true;
@@ -662,17 +611,22 @@ export default function Journey3DCanvas({
 
       const dt = Math.min((now - (last || now)) / 1000, 0.05);
       last = now;
-      const k = 1 - Math.pow(0.0025, dt);
+      const k = 1 - Math.pow(0.001, dt);
       shown = shown < 0 ? target : shown + (target - shown) * k;
       if (Math.abs(target - shown) < 0.0005) shown = target;
 
       const lx = lean.x;
       const ly = lean.y;
       const before = drawn;
-      lean.x += (lean.tx - lean.x) * 0.05;
-      lean.y += (lean.ty - lean.y) * 0.05;
+      lean.x += (lean.tx - lean.x) * 0.08;
+      lean.y += (lean.ty - lean.y) * 0.08;
 
-      if (shown === before && Math.abs(lean.x - lx) < 1e-4 && Math.abs(lean.y - ly) < 1e-4 && !dirty) {
+      if (
+        shown === before &&
+        Math.abs(lean.x - lx) < 1e-4 &&
+        Math.abs(lean.y - ly) < 1e-4 &&
+        !dirty
+      ) {
         return;
       }
       dirty = false;
@@ -680,6 +634,7 @@ export default function Journey3DCanvas({
       draw();
     }
 
+    // Mouse Parallax Lean
     const onPointerMove = (e: PointerEvent) => {
       if (e.pointerType !== "mouse") return;
       const r = canvas.getBoundingClientRect();
@@ -698,22 +653,35 @@ export default function Journey3DCanvas({
     const ro = new ResizeObserver(resize);
     ro.observe(canvas);
     resize();
+
+    // IntersectionObserver: Pause rendering when off-screen to guarantee 0% idle CPU/GPU
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        visible = entry.isIntersecting;
+        if (visible) {
+          dirty = true;
+          if (!running) {
+            running = true;
+            last = 0;
+            raf = requestAnimationFrame(frame);
+          }
+        } else {
+          running = false;
+          cancelAnimationFrame(raf);
+        }
+      },
+      { rootMargin: "300px 0px" }
+    );
+    io.observe(canvas);
+
     raf = requestAnimationFrame(frame);
 
-    engineRef.current = {
+    // Expose engine handle to parent component
+    onInit?.({
       setProgress: (p: number) => {
         target = clamp(p, 0, 7);
-        // Callbacks for stamp, phase, and finale
-        const stepIdx = Math.min(Math.floor(p), 6);
-        onPhaseChange?.(PHASES[stepIdx], stepIdx);
-        onStampChange?.(p >= 3.35 && p <= 4.85);
-        onFinaleChange?.(p >= 6.5);
       },
-      setVisible: (v: boolean) => {
-        visible = v;
-        dirty = true;
-      },
-    };
+    });
 
     return () => {
       running = false;
@@ -721,9 +689,10 @@ export default function Journey3DCanvas({
       canvas.removeEventListener("pointermove", onPointerMove);
       canvas.removeEventListener("pointerleave", onPointerLeave);
       ro.disconnect();
+      io.disconnect();
       renderer.dispose();
     };
-  }, [onFinaleChange, onPhaseChange, onStampChange]);
+  }, [initialProgress, onInit]);
 
   return (
     <canvas

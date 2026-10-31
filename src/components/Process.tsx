@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import dynamic from "next/dynamic";
 import { ArrowRight, Compass, HardHat, FileCheck, Landmark, Hammer, Paintbrush, Key, CheckCircle2 } from "lucide-react";
 import { useReveal } from "@/lib/useReveal";
+import type { Journey3DHandle } from "./Journey3DCanvas";
 
 // Dynamically load the 3D Journey Canvas with ssr: false
 const Journey3DCanvas = dynamic(() => import("./Journey3DCanvas"), {
@@ -131,15 +132,19 @@ const JOURNEY_STEPS: StepData[] = [
 export default function Process() {
   const sectionRef = useReveal<HTMLElement>();
   const stepsContainerRef = useRef<HTMLOListElement | null>(null);
+  const journeyEngineRef = useRef<Journey3DHandle | null>(null);
 
-  // Scroll Progress (0.0 to 7.0 continuous)
-  const [scrollProgress, setScrollProgress] = useState<number>(0.0);
+  // Fast direct DOM refs to avoid 100+ React re-renders per second during scroll
+  const phaseLabelRef = useRef<HTMLSpanElement | null>(null);
+  const stepCounterRef = useRef<HTMLSpanElement | null>(null);
+  const stampRef = useRef<HTMLDivElement | null>(null);
+  const finaleRef = useRef<HTMLDivElement | null>(null);
+
+  // Active step index state (only updates when crossing step boundary, max 7 times total!)
   const [activeStepIndex, setActiveStepIndex] = useState<number>(0);
-  const [stampVisible, setStampVisible] = useState<boolean>(false);
-  const [finaleVisible, setFinaleVisible] = useState<boolean>(false);
-  const [currentPhaseLabel, setCurrentPhaseLabel] = useState<string>("Sheet 01 · Consultation");
+  const currentStepIdxRef = useRef<number>(0);
 
-  // Scroll tracking physics matching the Catmull-Rom spline scrubbing
+  // High-performance scroll tracking: decoupled from React re-renders
   useEffect(() => {
     let ticking = false;
 
@@ -159,13 +164,44 @@ export default function Process() {
       }
 
       const pClamped = Math.min(Math.max(calculatedProgress, 0), 7);
-      setScrollProgress(pClamped);
+
+      // 1. Direct WebGL update: Zero React re-renders
+      journeyEngineRef.current?.setProgress(pClamped);
 
       const activeIdx = Math.min(Math.floor(pClamped), 6);
-      setActiveStepIndex(activeIdx);
-      setCurrentPhaseLabel(JOURNEY_STEPS[activeIdx].phaseCode);
-      setStampVisible(pClamped >= 3.35 && pClamped <= 4.85);
-      setFinaleVisible(pClamped >= 6.5);
+
+      // 2. Direct DOM overlay updates: Zero React re-renders
+      if (phaseLabelRef.current) {
+        phaseLabelRef.current.textContent = JOURNEY_STEPS[activeIdx].phaseCode;
+      }
+      if (stepCounterRef.current) {
+        stepCounterRef.current.textContent = `Step 0${activeIdx + 1} / 07 · ${JOURNEY_STEPS[activeIdx].name}`;
+      }
+
+      // Stamp overlay (Step 04)
+      if (stampRef.current) {
+        const showStamp = pClamped >= 3.35 && pClamped <= 4.85;
+        stampRef.current.style.opacity = showStamp ? "1" : "0";
+        stampRef.current.style.transform = showStamp
+          ? "scale(1) rotate(-12deg)"
+          : "scale(0.85) rotate(-20deg)";
+        stampRef.current.style.pointerEvents = showStamp ? "auto" : "none";
+      }
+
+      // Finale overlay (Step 07)
+      if (finaleRef.current) {
+        const showFinale = pClamped >= 6.45;
+        finaleRef.current.style.opacity = showFinale ? "1" : "0";
+        finaleRef.current.style.transform = showFinale
+          ? "translateY(0)"
+          : "translateY(12px)";
+      }
+
+      // 3. React state ONLY updates when the step index actually changes (at most 7 times total!)
+      if (activeIdx !== currentStepIdxRef.current) {
+        currentStepIdxRef.current = activeIdx;
+        setActiveStepIndex(activeIdx);
+      }
     };
 
     const handleScroll = () => {
@@ -188,7 +224,7 @@ export default function Process() {
     };
   }, []);
 
-  // Click step to smoothly scroll to that phase
+  // Smooth scroll directly to target step
   const scrollToStep = useCallback((index: number) => {
     if (!stepsContainerRef.current) return;
     const stepItems = stepsContainerRef.current.querySelectorAll<HTMLElement>("[data-step-i]");
@@ -240,12 +276,8 @@ export default function Process() {
             <div className="relative w-full aspect-[4/3] sm:aspect-[16/11] lg:aspect-[4/3] rounded-3xl bg-[#ece6dc] border border-border shadow-2xl overflow-hidden group">
               {/* Three.js Engine Canvas */}
               <Journey3DCanvas
-                progress={scrollProgress}
-                onStampChange={setStampVisible}
-                onFinaleChange={setFinaleVisible}
-                onPhaseChange={(phase, idx) => {
-                  setCurrentPhaseLabel(phase);
-                  setActiveStepIndex(idx);
+                onInit={(engine) => {
+                  journeyEngineRef.current = engine;
                 }}
               />
 
@@ -253,48 +285,58 @@ export default function Process() {
               <div className="absolute top-4 left-4 z-20 pointer-events-none">
                 <div className="inline-flex items-center gap-2 bg-white/90 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-black/10 shadow-xs">
                   <span className="h-2 w-2 rounded-full bg-accent animate-pulse" />
-                  <span className="text-[10px] uppercase tracking-widest font-mono text-accent font-bold">
-                    {currentPhaseLabel}
+                  <span
+                    ref={phaseLabelRef}
+                    className="text-[10px] uppercase tracking-widest font-mono text-accent font-bold"
+                  >
+                    Sheet 01 · Consultation
                   </span>
                 </div>
               </div>
 
               {/* Official Signed & Sealed Architectural Stamp (Step 04) */}
-              {stampVisible && (
-                <div className="absolute right-6 bottom-8 sm:right-8 sm:bottom-10 z-20 pointer-events-none select-none animate-in zoom-in-75 duration-300">
-                  <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-full border-4 border-double border-[#9b2f24] text-[#9b2f24] flex flex-col items-center justify-center text-center p-2 rotate-[-12deg] bg-radial from-[#9b2f24]/10 to-transparent shadow-lg shadow-[#9b2f24]/10 backdrop-blur-2xs">
-                    <span className="text-[7.5px] uppercase tracking-[0.2em] font-mono font-bold">
-                      Signed &amp; Sealed
-                    </span>
-                    <span className="font-serif text-sm font-semibold tracking-wide my-0.5">
-                      PRC Licensed
-                    </span>
-                    <span className="text-[7px] uppercase tracking-[0.16em] font-mono font-bold">
-                      RBC Builders &middot; 2026
-                    </span>
-                    <span className="text-[6.5px] text-[#9b2f24]/80 tracking-widest mt-0.5">
-                      San Fernando, Pampanga
-                    </span>
-                  </div>
+              <div
+                ref={stampRef}
+                style={{ opacity: 0, transform: "scale(0.85) rotate(-20deg)" }}
+                className="absolute right-6 bottom-8 sm:right-8 sm:bottom-10 z-20 pointer-events-none select-none transition-all duration-300 ease-out"
+              >
+                <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-full border-4 border-double border-[#9b2f24] text-[#9b2f24] flex flex-col items-center justify-center text-center p-2 bg-radial from-[#9b2f24]/10 to-transparent shadow-lg shadow-[#9b2f24]/10 backdrop-blur-2xs">
+                  <span className="text-[7.5px] uppercase tracking-[0.2em] font-mono font-bold">
+                    Signed &amp; Sealed
+                  </span>
+                  <span className="font-serif text-sm font-semibold tracking-wide my-0.5">
+                    PRC Licensed
+                  </span>
+                  <span className="text-[7px] uppercase tracking-[0.16em] font-mono font-bold">
+                    RBC Builders &middot; 2026
+                  </span>
+                  <span className="text-[6.5px] text-[#9b2f24]/80 tracking-widest mt-0.5">
+                    San Fernando, Pampanga
+                  </span>
                 </div>
-              )}
+              </div>
 
               {/* Finale Landing Banner (Step 07 Turnover) */}
-              {finaleVisible && (
-                <div className="absolute inset-x-0 bottom-8 z-20 pointer-events-none flex flex-col items-center justify-center text-center px-4 animate-in fade-in slide-in-from-bottom-3 duration-700">
-                  <span className="font-serif italic text-xl sm:text-2xl text-amber-200 drop-shadow-md">
-                    This is RBC Builders.
-                  </span>
-                  <span className="text-xs uppercase tracking-[0.25em] text-white/90 font-mono mt-1 drop-shadow-sm">
-                    A dream built for a family. A home standing proud.
-                  </span>
-                </div>
-              )}
+              <div
+                ref={finaleRef}
+                style={{ opacity: 0, transform: "translateY(12px)" }}
+                className="absolute inset-x-0 bottom-8 z-20 pointer-events-none flex flex-col items-center justify-center text-center px-4 transition-all duration-700 ease-out"
+              >
+                <span className="font-serif italic text-xl sm:text-2xl text-amber-200 drop-shadow-md">
+                  This is RBC Builders.
+                </span>
+                <span className="text-xs uppercase tracking-[0.25em] text-white/90 font-mono mt-1 drop-shadow-sm">
+                  A dream built for a family. A home standing proud.
+                </span>
+              </div>
 
               {/* Bottom Step Status Bar */}
               <div className="absolute bottom-3 left-4 right-4 z-20 pointer-events-none flex items-center justify-between text-[10px] font-mono text-muted/90 bg-white/80 backdrop-blur-xs px-3.5 py-1.5 rounded-full border border-black/5">
-                <span className="text-accent font-semibold uppercase tracking-wider">
-                  Step 0{activeStepIndex + 1} / 07 &middot; {JOURNEY_STEPS[activeStepIndex].name}
+                <span
+                  ref={stepCounterRef}
+                  className="text-accent font-semibold uppercase tracking-wider"
+                >
+                  Step 01 / 07 &middot; Consultation
                 </span>
                 <span className="hidden sm:inline text-muted uppercase tracking-widest text-[9px]">
                   Parallax 3D &middot; Scroll to build ↓
@@ -315,7 +357,7 @@ export default function Process() {
                     key={step.num}
                     data-step-i={idx}
                     onClick={() => scrollToStep(idx)}
-                    className={`cursor-pointer min-h-[44vh] sm:min-h-[48vh] flex flex-col justify-center pl-6 sm:pl-8 border-l-2 transition-all duration-500 relative group ${
+                    className={`cursor-pointer min-h-[44vh] sm:min-h-[48vh] flex flex-col justify-center pl-6 sm:pl-8 border-l-2 transition-all duration-300 relative group ${
                       isActive
                         ? "border-accent opacity-100"
                         : "border-border/70 opacity-45 hover:opacity-80"
