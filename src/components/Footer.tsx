@@ -61,7 +61,7 @@ export default function Footer() {
   };
 
   return (
-    <footer id="footer" className="bg-[#08090a] border-t border-border relative overflow-hidden text-foreground">
+    <footer id="footer" className="bg-[#f8f6f0] border-t border-border relative overflow-hidden text-foreground">
       {/* Luxury Mansion Background Image with Deep Architectural Atmosphere */}
       <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
         <Image
@@ -69,16 +69,16 @@ export default function Footer() {
           alt="RBC Builders Luxury Mansion"
           fill
           quality={95}
-          className="object-cover object-center opacity-25 sm:opacity-30 scale-105 filter contrast-110 brightness-90"
+          className="object-cover object-center opacity-10 scale-105 filter contrast-105"
         />
         {/* Layered Architectural Gradients for Deep Contrast & High Legibility */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0c0c0b]/95 via-[#0c0c0b]/80 to-[#08090a]/98" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(12,12,11,0.7)_70%,rgba(8,9,10,0.95)_100%)]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#f8f6f0]/95 via-[#f8f6f0]/85 to-[#f0ece1]/98" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(248,246,240,0.6)_70%,rgba(240,236,225,0.95)_100%)]" />
       </div>
 
       <div className="relative z-10">
         {/* Top Section: Grand Architectural Invitation Bar */}
-        <div className="mx-auto max-w-7xl px-4 sm:px-8 pt-20 sm:pt-28 pb-16 sm:pb-20 border-b border-white/10">
+        <div className="mx-auto max-w-7xl px-4 sm:px-8 pt-20 sm:pt-28 pb-16 sm:pb-20 border-b border-border">
           <div data-reveal className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 sm:gap-12">
             <div className="max-w-3xl">
               <div className="inline-flex items-center gap-2 px-3.5 py-1 mb-5 border border-accent/40 rounded-full bg-accent/10">
@@ -98,7 +98,7 @@ export default function Footer() {
             <div className="flex flex-wrap items-center gap-4">
               <a
                 href="#contact"
-                className="inline-flex items-center gap-3 px-8 py-4 text-xs uppercase tracking-[0.2em] font-medium bg-accent text-[#0c0c0b] hover:bg-accent-light transition-all duration-300 rounded-full shadow-xl whitespace-nowrap"
+                className="inline-flex items-center gap-3 px-8 py-4 text-xs uppercase tracking-[0.2em] font-medium bg-accent text-white hover:bg-accent-dim transition-all duration-300 rounded-full shadow-xl whitespace-nowrap"
               >
                 <span>Request Consultation</span>
                 <ArrowRight size={14} />
@@ -106,7 +106,7 @@ export default function Footer() {
 
               <a
                 href="tel:+639772873075"
-                className="inline-flex items-center gap-2.5 px-7 py-4 text-xs uppercase tracking-[0.2em] font-medium text-foreground border border-white/20 hover:border-accent hover:text-accent transition-colors rounded-full font-mono bg-white/5 whitespace-nowrap"
+                className="inline-flex items-center gap-2.5 px-7 py-4 text-xs uppercase tracking-[0.2em] font-medium text-foreground border border-border hover:border-accent hover:text-accent transition-colors rounded-full font-mono bg-surface shadow-sm whitespace-nowrap"
               >
                 <Phone size={13} className="text-accent shrink-0" />
                 <span>0977 287 3075</span>
@@ -116,7 +116,7 @@ export default function Footer() {
         </div>
 
         {/* Main Monograph Directory: Spacious 4-Column Architectural Spread */}
-        <div ref={footerNavRef} className="mx-auto max-w-7xl px-4 sm:px-8 py-20 sm:py-28 border-b border-white/10">
+        <div ref={footerNavRef} className="mx-auto max-w-7xl px-4 sm:px-8 py-20 sm:py-28 border-b border-border">
           <div data-reveal className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
             {/* Column 1: Brand Authority, Mission & Real-Time PST Clock (Col-span 4) */}
             <div data-reveal data-reveal-delay="0.05" className="lg:col-span-4 flex flex-col gap-6">
@@ -125,7 +125,7 @@ export default function Footer() {
                 className="flex items-center gap-3.5 group/brand cursor-pointer w-fit"
                 title="RBC Builders - Architecture & Construction"
               >
-                <div className="relative h-12 w-12 overflow-hidden border border-accent/40 group-hover/brand:border-accent group-hover/brand:shadow-[0_0_20px_rgba(197,168,128,0.5)] rounded-full shrink-0 transition-all duration-500">
+                <div className="relative h-12 w-12 overflow-hidden border border-accent/40 group-hover/brand:border-accent group-hover/brand:shadow-[0_0_20px_rgba(154,116,66,0.3)] rounded-full shrink-0 transition-all duration-500">
                   <Image
                     src="/images/logo.jpg"
                     alt="RBC Builders"
@@ -136,7 +136,7 @@ export default function Footer() {
                   />
                 </div>
                 <div className="flex flex-col">
-                  <span className="font-serif text-2xl tracking-[0.06em] font-medium text-foreground leading-none transition-all duration-500 group-hover/brand:text-[#fff9f0] group-hover/brand:drop-shadow-[0_0_16px_rgba(197,168,128,0.9)]">
+                  <span className="font-serif text-2xl tracking-[0.06em] font-medium text-foreground leading-none transition-all duration-500 group-hover/brand:text-accent">
                     RBC BUILDERS
                   </span>
                   <span className="text-[9.5px] uppercase tracking-[0.25em] text-accent font-light mt-1 leading-none group-hover/brand:tracking-[0.28em] transition-all duration-500">
@@ -150,7 +150,7 @@ export default function Footer() {
               </p>
 
               {/* Status and Clock */}
-              <div className="p-4 bg-white/[0.02] border border-white/10 space-y-2.5">
+              <div className="p-4 bg-surface border border-border shadow-sm space-y-2.5">
                 <div className="flex items-center gap-2.5 text-xs text-muted font-mono">
                   <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
                   <span>Manila (PST): <strong className="text-foreground">{manilaTime || "12:00:00 PM"}</strong></span>
@@ -168,7 +168,7 @@ export default function Footer() {
 
             {/* Column 2: Navigation Directory (Col-span 2) */}
             <div data-reveal data-reveal-delay="0.1" className="lg:col-span-2 flex flex-col gap-4">
-              <p className="text-[10px] uppercase tracking-[0.25em] text-accent font-medium pb-2 border-b border-white/10">
+              <p className="text-[10px] uppercase tracking-[0.25em] text-accent font-medium pb-2 border-b border-border">
                 Navigation
               </p>
               <div className="flex flex-col gap-3">
@@ -187,7 +187,7 @@ export default function Footer() {
 
             {/* Column 3: Specialized Disciplines (Col-span 3) */}
             <div data-reveal data-reveal-delay="0.15" className="lg:col-span-3 flex flex-col gap-4">
-              <p className="text-[10px] uppercase tracking-[0.25em] text-accent font-medium pb-2 border-b border-white/10">
+              <p className="text-[10px] uppercase tracking-[0.25em] text-accent font-medium pb-2 border-b border-border">
                 Disciplines &amp; Standards
               </p>
               <ul className="flex flex-col gap-3 text-xs sm:text-[13px] text-foreground/75 font-light">
@@ -202,7 +202,7 @@ export default function Footer() {
 
             {/* Column 4: Regional Footprint & Direct Contacts (Col-span 3) */}
             <div data-reveal data-reveal-delay="0.2" className="lg:col-span-3 flex flex-col gap-4">
-              <p className="text-[10px] uppercase tracking-[0.25em] text-accent font-medium pb-2 border-b border-white/10">
+              <p className="text-[10px] uppercase tracking-[0.25em] text-accent font-medium pb-2 border-b border-border">
                 Active Territories
               </p>
               <ul className="flex flex-col gap-2.5 text-xs text-foreground/70 font-light">
@@ -215,10 +215,10 @@ export default function Footer() {
               </ul>
 
               {/* Direct Touchpoints Box */}
-              <div className="mt-4 pt-4 border-t border-white/10 flex flex-col gap-2.5">
+              <div className="mt-4 pt-4 border-t border-border flex flex-col gap-2.5">
                 <a
                   href="tel:+639772873075"
-                  className="p-3 bg-surface border border-border hover:border-accent text-xs flex items-center justify-between gap-3 transition-colors group"
+                  className="p-3 bg-surface border border-border hover:border-accent text-xs flex items-center justify-between gap-3 transition-colors group shadow-sm"
                 >
                   <span className="flex items-center gap-2 text-muted group-hover:text-foreground shrink-0">
                     <Phone size={13} className="text-accent shrink-0" />
@@ -229,7 +229,7 @@ export default function Footer() {
 
                 <a
                   href="mailto:rbcbuilders70@gmail.com"
-                  className="p-3 bg-surface border border-border hover:border-accent text-xs flex items-center justify-between gap-3 transition-colors group"
+                  className="p-3 bg-surface border border-border hover:border-accent text-xs flex items-center justify-between gap-3 transition-colors group shadow-sm"
                 >
                   <span className="flex items-center gap-2 text-muted group-hover:text-foreground shrink-0">
                     <Mail size={13} className="text-accent shrink-0" />
@@ -244,7 +244,7 @@ export default function Footer() {
                   href="https://www.facebook.com/profile.php?id=100088879215614"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-3 bg-surface border border-border hover:border-accent text-xs flex items-center justify-between gap-3 transition-colors group"
+                  className="p-3 bg-surface border border-border hover:border-accent text-xs flex items-center justify-between gap-3 transition-colors group shadow-sm"
                 >
                   <span className="flex items-center gap-2 text-muted group-hover:text-foreground shrink-0">
                     <svg className="w-3.5 h-3.5 fill-accent group-hover:fill-[#1877F2] transition-colors shrink-0" viewBox="0 0 24 24">
@@ -252,7 +252,7 @@ export default function Footer() {
                     </svg>
                     <span className="whitespace-nowrap">Facebook</span>
                   </span>
-                  <span className="text-accent group-hover:text-accent-light text-xs font-mono flex items-center gap-1.5 transition-colors whitespace-nowrap">
+                  <span className="text-accent group-hover:text-accent-dim text-xs font-mono flex items-center gap-1.5 transition-colors whitespace-nowrap">
                     <span>Follow Page</span>
                     <span className="group-hover:translate-x-0.5 transition-transform">&rarr;</span>
                   </span>
@@ -266,14 +266,14 @@ export default function Footer() {
         <div
           onClick={scrollToTop}
           title="Click to scroll back to top"
-          className="relative py-14 sm:py-20 select-none cursor-pointer text-center overflow-hidden border-b border-white/5 group transition-colors duration-700 hover:border-accent/40"
+          className="relative py-14 sm:py-20 select-none cursor-pointer text-center overflow-hidden border-b border-border group transition-colors duration-700 hover:border-accent/40"
         >
           {/* Ambient Warm Architectural Backlight that blooms on hover */}
           <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none">
-            <div className="w-[85vw] h-48 bg-[radial-gradient(ellipse_at_center,rgba(223,199,162,0.22)_0%,rgba(197,168,128,0.12)_45%,transparent_75%)] blur-2xl" />
+            <div className="w-[85vw] h-48 bg-[radial-gradient(ellipse_at_center,rgba(154,116,66,0.18)_0%,rgba(154,116,66,0.08)_45%,transparent_75%)] blur-2xl" />
           </div>
 
-          <span className="architectural-glow-hover relative z-10 font-serif text-[9vw] sm:text-[10vw] font-light text-white/[0.04] tracking-[0.2em] uppercase leading-none block whitespace-nowrap select-none">
+          <span className="architectural-glow-hover relative z-10 font-serif text-[9vw] sm:text-[10vw] font-light text-foreground/[0.07] tracking-[0.2em] uppercase leading-none block whitespace-nowrap select-none">
             RBC BUILDERS
           </span>
 

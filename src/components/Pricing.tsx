@@ -153,8 +153,8 @@ export default function Pricing() {
                 onClick={() => setActiveTier(grade)}
                 className={`group cursor-pointer flex flex-col bg-surface border transition-all duration-400 overflow-hidden ${
                   isSelected
-                    ? "border-accent shadow-xl shadow-black/50"
-                    : "border-border hover:border-white/30"
+                    ? "border-accent shadow-xl shadow-black/10 ring-1 ring-accent"
+                    : "border-border hover:border-accent/40 shadow-sm"
                 }`}
               >
                 {/* Visual Image Board */}
@@ -169,11 +169,11 @@ export default function Pricing() {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
                   <div className="absolute bottom-3 left-4 right-4 flex items-center justify-between">
-                    <span className="font-serif text-sm text-foreground/90 font-medium">
+                    <span className="font-serif text-sm text-white font-medium">
                       {grade.name}
                     </span>
                     {isSelected && (
-                      <span className="text-[9px] uppercase tracking-[0.15em] bg-accent text-[#0c0c0b] px-2 py-0.5 font-bold">
+                      <span className="text-[9px] uppercase tracking-[0.15em] bg-accent text-white px-2 py-0.5 font-bold shadow-sm">
                         Selected
                       </span>
                     )}
@@ -219,8 +219,8 @@ export default function Pricing() {
                     type="button"
                     className={`mt-6 w-full py-2.5 text-[11px] uppercase tracking-[0.2em] font-medium border transition-colors ${
                       isSelected
-                        ? "bg-accent text-[#0c0c0b] border-accent"
-                        : "border-border text-foreground/70 hover:border-accent hover:text-accent"
+                        ? "bg-accent text-white border-accent shadow-sm"
+                        : "border-border text-foreground/75 hover:border-accent hover:text-accent bg-surface shadow-sm"
                     }`}
                   >
                     {isSelected ? "Active Specification" : "Select Specification"}
@@ -361,7 +361,7 @@ export default function Pricing() {
 
               <a
                 href="#contact"
-                className="w-full text-center py-3.5 text-xs uppercase tracking-[0.2em] font-medium bg-accent text-[#0c0c0b] hover:bg-accent-light transition-colors flex items-center justify-center gap-2"
+                className="w-full text-center py-3.5 text-xs uppercase tracking-[0.2em] font-medium bg-accent text-white hover:bg-accent-dim transition-colors flex items-center justify-center gap-2 shadow-sm"
               >
                 <span>Request Itemized BOQ Breakdown</span>
                 <ArrowRight size={14} />

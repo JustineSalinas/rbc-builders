@@ -71,7 +71,7 @@ export default function ChatBot() {
             type="button"
             onClick={() => setOpen(true)}
             aria-label="Open architectural advisory chat"
-            className="flex items-center gap-2 px-3.5 py-2.5 rounded-full bg-[#141312]/95 hover:bg-[#1c1a18] border border-accent/50 hover:border-accent text-foreground shadow-2xl backdrop-blur-md transition-all duration-300 hover:scale-105 group cursor-pointer mb-0.5"
+            className="flex items-center gap-2 px-3.5 py-2.5 rounded-full bg-white/95 hover:bg-white border border-accent/50 hover:border-accent text-foreground shadow-xl backdrop-blur-md transition-all duration-300 hover:scale-105 group cursor-pointer mb-0.5"
           >
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75" />
@@ -92,10 +92,10 @@ export default function ChatBot() {
                 href="mailto:rbcbuilders70@gmail.com"
                 aria-label="Email RBC Builders at rbcbuilders70@gmail.com"
                 title="Official Email: rbcbuilders70@gmail.com"
-                className="relative h-11 w-11 rounded-full bg-[#f6f4ee] hover:bg-white text-[#0c0c0b] shadow-xl hover:scale-110 transition-all duration-300 flex items-center justify-center border border-black/10 group animate-in fade-in slide-in-from-bottom-2 duration-300"
+                className="relative h-11 w-11 rounded-full bg-white hover:bg-surface-raised text-[#151413] shadow-lg hover:scale-110 transition-all duration-300 flex items-center justify-center border border-border group animate-in fade-in slide-in-from-bottom-2 duration-300"
               >
-                <Mail size={18} className="text-[#0c0c0b] transition-transform duration-300 group-hover:scale-110" />
-                <span className="absolute right-full mr-3 px-2.5 py-1 bg-[#141312] border border-white/10 text-foreground text-[11px] font-mono whitespace-nowrap rounded-md opacity-0 pointer-events-none group-hover:opacity-100 group-hover:-translate-x-1 transition-all duration-200 shadow-xl">
+                <Mail size={18} className="text-[#151413] transition-transform duration-300 group-hover:scale-110" />
+                <span className="absolute right-full mr-3 px-2.5 py-1 bg-[#151413] border border-black/10 text-white text-[11px] font-mono whitespace-nowrap rounded-md opacity-0 pointer-events-none group-hover:opacity-100 group-hover:-translate-x-1 transition-all duration-200 shadow-xl">
                   rbcbuilders70@gmail.com
                 </span>
               </a>
@@ -105,10 +105,10 @@ export default function ChatBot() {
                 href="tel:+639772873075"
                 aria-label="Call RBC Builders at 0977 287 3075"
                 title="Hotline: 0977 287 3075"
-                className="relative h-11 w-11 rounded-full bg-[#f6f4ee] hover:bg-white text-[#0c0c0b] shadow-xl hover:scale-110 transition-all duration-300 flex items-center justify-center border border-black/10 group animate-in fade-in slide-in-from-bottom-2 duration-300"
+                className="relative h-11 w-11 rounded-full bg-white hover:bg-surface-raised text-[#151413] shadow-lg hover:scale-110 transition-all duration-300 flex items-center justify-center border border-border group animate-in fade-in slide-in-from-bottom-2 duration-300"
               >
-                <Phone size={18} className="text-[#0c0c0b] transition-transform duration-300 group-hover:scale-110" />
-                <span className="absolute right-full mr-3 px-2.5 py-1 bg-[#141312] border border-white/10 text-foreground text-[11px] font-mono whitespace-nowrap rounded-md opacity-0 pointer-events-none group-hover:opacity-100 group-hover:-translate-x-1 transition-all duration-200 shadow-xl">
+                <Phone size={18} className="text-[#151413] transition-transform duration-300 group-hover:scale-110" />
+                <span className="absolute right-full mr-3 px-2.5 py-1 bg-[#151413] border border-black/10 text-white text-[11px] font-mono whitespace-nowrap rounded-md opacity-0 pointer-events-none group-hover:opacity-100 group-hover:-translate-x-1 transition-all duration-200 shadow-xl">
                   0977 287 3075
                 </span>
               </a>
@@ -129,7 +129,7 @@ export default function ChatBot() {
                 >
                   <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
                 </svg>
-                <span className="absolute right-full mr-3 px-2.5 py-1 bg-[#141312] border border-white/10 text-foreground text-[11px] font-mono whitespace-nowrap rounded-md opacity-0 pointer-events-none group-hover:opacity-100 group-hover:-translate-x-1 transition-all duration-200 shadow-xl">
+                <span className="absolute right-full mr-3 px-2.5 py-1 bg-[#151413] border border-black/10 text-white text-[11px] font-mono whitespace-nowrap rounded-md opacity-0 pointer-events-none group-hover:opacity-100 group-hover:-translate-x-1 transition-all duration-200 shadow-xl">
                   Facebook Page
                 </span>
               </a>
@@ -140,14 +140,14 @@ export default function ChatBot() {
           <button
             onClick={() => setOpen((v) => !v)}
             aria-label="Toggle RBC Architectural Concierge"
-            className="h-12 w-12 sm:h-13 sm:w-13 rounded-full bg-[#141312] border border-accent/60 text-accent hover:border-accent hover:bg-accent hover:text-[#0c0c0b] shadow-2xl transition-all duration-300 flex items-center justify-center group shrink-0"
+            className="h-12 w-12 sm:h-13 sm:w-13 rounded-full bg-white border border-accent/60 text-accent hover:border-accent hover:bg-accent hover:text-white shadow-xl transition-all duration-300 flex items-center justify-center group shrink-0"
           >
             {open ? (
               <X size={20} />
             ) : (
               <div className="relative flex items-center justify-center">
                 <Compass size={22} className="group-hover:rotate-45 transition-transform duration-500" />
-                <span className="absolute -top-1 -right-1 h-2.5 w-2.5 rounded-full bg-accent ring-2 ring-[#0c0c0b]" />
+                <span className="absolute -top-1 -right-1 h-2.5 w-2.5 rounded-full bg-accent ring-2 ring-white" />
               </div>
             )}
           </button>
@@ -156,11 +156,11 @@ export default function ChatBot() {
 
       {/* Concierge Panel */}
       {open && (
-        <div className="fixed bottom-24 sm:bottom-24 right-4 sm:right-6 z-50 w-[calc(100vw-2rem)] sm:w-[400px] h-[520px] max-h-[78vh] luxury-glass border border-white/10 shadow-2xl flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-300">
+        <div className="fixed bottom-24 sm:bottom-24 right-4 sm:right-6 z-50 w-[calc(100vw-2rem)] sm:w-[400px] h-[520px] max-h-[78vh] bg-white/95 backdrop-blur-2xl border border-border shadow-2xl flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-300">
           {/* Header */}
-          <div className="p-4 sm:p-5 bg-background border-b border-border flex items-center justify-between">
+          <div className="p-4 sm:p-5 bg-surface-raised border-b border-border flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="relative h-8 w-8 overflow-hidden rounded-sm border border-white/10">
+              <div className="relative h-8 w-8 overflow-hidden rounded-sm border border-border">
                 <Image
                   src="/images/logo.jpg"
                   alt="RBC Builders"
@@ -206,7 +206,7 @@ export default function ChatBot() {
           {/* Messages Body */}
           <div
             ref={scrollRef}
-            className="flex-1 overflow-y-auto p-4 sm:p-5 space-y-4 text-xs font-light"
+            className="flex-1 overflow-y-auto p-4 sm:p-5 space-y-4 text-xs font-light bg-background"
           >
             {messages.map((m) => (
               <div
@@ -214,10 +214,10 @@ export default function ChatBot() {
                 className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}
               >
                 <div
-                  className={`max-w-[85%] p-3.5 leading-relaxed ${
+                  className={`max-w-[85%] p-3.5 leading-relaxed rounded-md ${
                     m.role === "user"
-                      ? "bg-accent text-[#0c0c0b] font-normal"
-                      : "bg-surface border border-border text-foreground/90 font-light"
+                      ? "bg-accent text-white font-normal shadow-sm"
+                      : "bg-surface border border-border text-foreground/90 font-light shadow-sm"
                   }`}
                 >
                   {m.text}
@@ -227,7 +227,7 @@ export default function ChatBot() {
 
             {typing && (
               <div className="flex justify-start">
-                <div className="p-3 bg-surface border border-border text-muted flex items-center gap-1.5">
+                <div className="p-3 bg-surface border border-border text-muted flex items-center gap-1.5 rounded-md">
                   <span className="h-1.5 w-1.5 rounded-full bg-accent animate-bounce" />
                   <span className="h-1.5 w-1.5 rounded-full bg-accent animate-bounce [animation-delay:0.2s]" />
                   <span className="h-1.5 w-1.5 rounded-full bg-accent animate-bounce [animation-delay:0.4s]" />
@@ -235,7 +235,6 @@ export default function ChatBot() {
               </div>
             )}
 
-            {/* Quick Suggestion Chips */}
             {chips.length > 0 && !typing && (
               <div className="pt-2 flex flex-col gap-1.5">
                 <span className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-1">
@@ -245,7 +244,7 @@ export default function ChatBot() {
                   <button
                     key={chip}
                     onClick={() => send(chip)}
-                    className="text-left p-2 border border-border bg-surface/40 hover:border-accent hover:text-accent text-[11px] text-foreground/80 transition-colors"
+                    className="text-left p-2 border border-border bg-surface hover:border-accent hover:text-accent text-[11px] text-foreground/80 transition-colors rounded-sm"
                   >
                     {chip}
                   </button>
@@ -260,7 +259,7 @@ export default function ChatBot() {
               e.preventDefault();
               send(input);
             }}
-            className="p-3 bg-background border-t border-border flex items-center gap-2"
+            className="p-3 bg-surface-raised border-t border-border flex items-center gap-2"
           >
             <input
               type="text"
@@ -268,13 +267,13 @@ export default function ChatBot() {
               onChange={(e) => setInput(e.target.value)}
               placeholder="Inquire on costs, permits, or timelines..."
               aria-label="Inquire on costs, permits, or timelines"
-              className="flex-1 bg-surface border border-border px-3.5 py-2.5 text-xs text-foreground placeholder:text-muted focus:border-accent focus:outline-none font-light"
+              className="flex-1 bg-surface border border-border px-3.5 py-2.5 text-xs text-foreground placeholder:text-muted focus:border-accent focus:outline-none font-light rounded-sm"
             />
             <button
               type="submit"
               disabled={!input.trim()}
               aria-label="Send message to concierge"
-              className="h-9 w-9 bg-accent text-[#0c0c0b] hover:bg-accent-light transition-colors flex items-center justify-center disabled:opacity-40"
+              className="h-9 w-9 bg-accent text-white hover:bg-accent-dim transition-colors flex items-center justify-center disabled:opacity-40 rounded-sm"
             >
               <Send size={14} />
             </button>

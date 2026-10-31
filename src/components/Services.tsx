@@ -106,8 +106,8 @@ export default function Services() {
                   onClick={() => setActiveTab(index)}
                   className={`text-left p-6 border transition-all duration-300 flex items-start gap-5 ${
                     isActive
-                      ? "bg-background border-accent/70 shadow-lg shadow-black/40"
-                      : "bg-background/40 border-border hover:border-white/20 hover:bg-background/70"
+                      ? "bg-surface border-accent shadow-md shadow-black/5 ring-1 ring-accent"
+                      : "bg-surface/60 border-border hover:border-accent/40 hover:bg-surface"
                   }`}
                 >
                   <span
@@ -140,7 +140,7 @@ export default function Services() {
           </div>
 
           {/* Active Detail Panel */}
-          <div data-reveal data-reveal-delay="0.18" className="lg:col-span-7 bg-background border border-border p-8 sm:p-12 relative overflow-hidden">
+          <div data-reveal data-reveal-delay="0.18" className="lg:col-span-7 bg-surface border border-border p-8 sm:p-12 relative overflow-hidden shadow-sm">
             <div className="absolute top-0 right-0 w-32 h-32 bg-accent/5 rounded-full blur-3xl pointer-events-none" />
 
             <div className="flex items-center justify-between border-b border-border pb-6 mb-8">

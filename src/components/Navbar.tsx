@@ -28,8 +28,8 @@ export default function Navbar() {
       <nav
         className={`mx-auto max-w-7xl flex items-center justify-between px-3 sm:px-6 h-14 sm:h-16 rounded-full pointer-events-auto transition-all duration-500 gap-3 sm:gap-4 ${
           scrolled
-            ? "bg-[#0c0c0b]/92 backdrop-blur-2xl border border-white/15 shadow-2xl shadow-black/80"
-            : "bg-[#0c0c0b]/65 backdrop-blur-xl border border-white/10 shadow-lg shadow-black/40"
+            ? "bg-white/90 backdrop-blur-2xl border border-black/10 shadow-xl shadow-black/5"
+            : "bg-white/75 backdrop-blur-xl border border-black/[0.06] shadow-md shadow-black/[0.03]"
         }`}
       >
         {/* Left: Brand Identity */}
@@ -80,7 +80,7 @@ export default function Navbar() {
 
           <a
             href="#contact"
-            className="hidden sm:inline-flex items-center gap-2 px-4 xl:px-5 py-2 xl:py-2.5 text-[10px] xl:text-[11px] uppercase tracking-[0.16em] xl:tracking-[0.18em] font-medium text-[#0c0c0b] bg-accent hover:bg-accent-light transition-all duration-300 rounded-full shadow-sm whitespace-nowrap"
+            className="hidden sm:inline-flex items-center gap-2 px-4 xl:px-5 py-2 xl:py-2.5 text-[10px] xl:text-[11px] uppercase tracking-[0.16em] xl:tracking-[0.18em] font-medium text-white bg-accent hover:bg-accent-dim transition-all duration-300 rounded-full shadow-sm whitespace-nowrap"
           >
             <span>Private Consultation</span>
             <ArrowUpRight size={13} className="shrink-0" />
@@ -89,7 +89,7 @@ export default function Navbar() {
           {/* Mobile Menu Trigger */}
           <button
             onClick={() => setMobileOpen((v) => !v)}
-            className="lg:hidden h-9 w-9 rounded-full border border-white/10 flex items-center justify-center text-foreground hover:text-accent hover:border-accent transition-colors shrink-0"
+            className="lg:hidden h-9 w-9 rounded-full border border-black/10 flex items-center justify-center text-foreground hover:text-accent hover:border-accent transition-colors shrink-0"
             aria-label="Toggle navigation menu"
           >
             {mobileOpen ? <X size={18} /> : <Menu size={18} />}
@@ -99,7 +99,7 @@ export default function Navbar() {
 
       {/* Mobile Drawer */}
       {mobileOpen && (
-        <div className="lg:hidden mt-2 mx-auto max-w-7xl rounded-3xl bg-[#0c0c0b]/95 backdrop-blur-2xl border border-white/15 p-6 shadow-2xl pointer-events-auto animate-in fade-in slide-in-from-top-3 duration-300">
+        <div className="lg:hidden mt-2 mx-auto max-w-7xl rounded-3xl bg-white/95 backdrop-blur-2xl border border-black/10 p-6 shadow-2xl pointer-events-auto animate-in fade-in slide-in-from-top-3 duration-300">
           <div className="flex flex-col gap-4">
             <span className="text-[9.5px] uppercase tracking-[0.25em] text-accent font-medium pb-2 border-b border-border/60">
               Navigation Index
@@ -120,7 +120,7 @@ export default function Navbar() {
               <a
                 href="#contact"
                 onClick={() => setMobileOpen(false)}
-                className="w-full text-center py-3 text-xs uppercase tracking-[0.2em] font-medium bg-accent text-[#0c0c0b] hover:bg-accent-light transition-colors rounded-full"
+                className="w-full text-center py-3 text-xs uppercase tracking-[0.2em] font-medium bg-accent text-white hover:bg-accent-dim transition-colors rounded-full"
               >
                 Request Private Consultation
               </a>

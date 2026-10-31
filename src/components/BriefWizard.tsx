@@ -177,7 +177,7 @@ export default function BriefWizard() {
                 className={`text-left p-4 border text-xs sm:text-sm transition-colors flex items-center justify-between ${
                   data.projectScope === scope
                     ? "border-accent bg-accent/10 text-accent font-medium"
-                    : "border-border text-foreground/80 hover:border-white/20"
+                    : "border-border text-foreground/80 hover:border-accent/40 bg-surface shadow-sm"
                 }`}
               >
                 <span>{scope}</span>
@@ -202,8 +202,8 @@ export default function BriefWizard() {
                 onClick={() => setField({ location: loc })}
                 className={`text-left p-4 border text-xs transition-colors flex items-center justify-between ${
                   data.location === loc
-                    ? "border-accent bg-accent/10 text-accent font-medium"
-                    : "border-border text-foreground/80 hover:border-white/20"
+                    ? "border-accent bg-accent/10 text-accent font-medium shadow-sm"
+                    : "border-border text-foreground/80 hover:border-accent/40 bg-surface shadow-sm"
                 }`}
               >
                 <span>{loc}</span>
@@ -229,8 +229,8 @@ export default function BriefWizard() {
                   onClick={() => setField({ floorArea: area })}
                   className={`text-left p-3.5 border text-xs transition-colors ${
                     data.floorArea === area
-                      ? "border-accent bg-accent/10 text-accent font-medium"
-                      : "border-border text-foreground/80 hover:border-white/20"
+                      ? "border-accent bg-accent/10 text-accent font-medium shadow-sm"
+                      : "border-border text-foreground/80 hover:border-accent/40 bg-surface shadow-sm"
                   }`}
                 >
                   {area}
@@ -403,9 +403,9 @@ export default function BriefWizard() {
             type="button"
             disabled={!canAdvance}
             onClick={() => setStep((s) => s + 1)}
-            className={`flex items-center gap-2 px-6 py-3 text-xs uppercase tracking-[0.2em] font-medium transition-all ${
+            className={`flex items-center gap-2 px-6 py-3 text-xs uppercase tracking-[0.2em] font-medium transition-all shadow-sm ${
               canAdvance
-                ? "bg-accent text-[#0c0c0b] hover:bg-accent-light"
+                ? "bg-accent text-white hover:bg-accent-dim"
                 : "bg-surface text-muted/50 border border-border cursor-not-allowed"
             }`}
           >
@@ -417,7 +417,7 @@ export default function BriefWizard() {
             type="button"
             disabled={!canAdvance || status === "sending"}
             onClick={submit}
-            className="flex items-center gap-2 px-8 py-3.5 text-xs uppercase tracking-[0.2em] font-medium bg-accent text-[#0c0c0b] hover:bg-accent-light transition-all disabled:opacity-50"
+            className="flex items-center gap-2 px-8 py-3.5 text-xs uppercase tracking-[0.2em] font-medium bg-accent text-white hover:bg-accent-dim transition-all disabled:opacity-50 shadow-md"
           >
             {status === "sending" ? (
               <>

@@ -65,20 +65,20 @@ export default function About() {
 
               {/* Monograph caption */}
               <div className="absolute bottom-6 inset-x-6">
-                <span className="text-[10px] uppercase tracking-[0.25em] text-accent font-medium block mb-1">
+                <span className="text-[10px] uppercase tracking-[0.25em] text-accent-light font-medium block mb-1">
                   Private Estate Execution
                 </span>
-                <p className="font-serif text-lg text-foreground font-normal">
+                <p className="font-serif text-lg text-white font-normal">
                   The Pavilioned Residence · San Fernando
                 </p>
-                <p className="text-xs text-foreground/70 font-light mt-1">
+                <p className="text-xs text-white/80 font-light mt-1">
                   240 m² floor area delivered turnkey with structural guarantee and private landscaped courtyard.
                 </p>
               </div>
             </div>
 
             {/* Quick firm badge overlay */}
-            <div className="mt-6 p-6 bg-surface border border-border flex items-center justify-between">
+            <div className="mt-6 p-6 bg-surface border border-border flex items-center justify-between shadow-sm">
               <div>
                 <p className="text-xs uppercase tracking-[0.2em] text-muted">Firm Headquarters</p>
                 <p className="font-serif text-base text-foreground mt-0.5">San Fernando, Pampanga, PH</p>
@@ -92,7 +92,7 @@ export default function About() {
 
           {/* Right Column: Architectural Narrative & 4 Pillars */}
           <div className="lg:col-span-7 flex flex-col justify-between h-full">
-            <div data-reveal data-reveal-delay="0.15" className="prose prose-invert max-w-none mb-10">
+            <div data-reveal data-reveal-delay="0.15" className="prose max-w-none mb-10">
               <p className="text-base sm:text-lg text-foreground/80 font-light leading-relaxed mb-6">
                 Most home building projects stumble over the historic disconnect between creative designers and general contractors. An independent architect drafts a vision without direct accountability for construction costs; the builder inherits plans they must interpret; and the homeowner absorbs the expensive fallout of variation orders and delayed permits.
               </p>

@@ -159,8 +159,8 @@ export default function Process() {
                     onClick={() => setActiveStep(i)}
                     className={`text-left p-6 border transition-all duration-300 flex flex-col justify-between min-h-[160px] group ${
                       isActive
-                        ? "bg-background border-accent shadow-xl shadow-black/80 ring-1 ring-accent"
-                        : "bg-background/40 border-border hover:border-white/25 hover:bg-background/70"
+                        ? "bg-surface border-accent shadow-md shadow-black/5 ring-1 ring-accent"
+                        : "bg-surface/60 border-border hover:border-accent/40 hover:bg-surface"
                     }`}
                   >
                     <div>
@@ -172,7 +172,7 @@ export default function Process() {
                         >
                           Phase {phase.step}
                         </span>
-                        <span className="text-[10px] uppercase tracking-wider font-mono text-muted/90 px-2 py-0.5 bg-white/5 border border-white/10">
+                        <span className="text-[10px] uppercase tracking-wider font-mono text-muted/90 px-2 py-0.5 bg-accent/10 border border-accent/20">
                           {phase.duration}
                         </span>
                       </div>
@@ -225,8 +225,8 @@ export default function Process() {
                     onClick={() => setActiveStep(actualIndex)}
                     className={`text-left p-6 border transition-all duration-300 flex flex-col justify-between min-h-[160px] group ${
                       isActive
-                        ? "bg-background border-accent shadow-xl shadow-black/80 ring-1 ring-accent"
-                        : "bg-background/40 border-border hover:border-white/25 hover:bg-background/70"
+                        ? "bg-surface border-accent shadow-md shadow-black/5 ring-1 ring-accent"
+                        : "bg-surface/60 border-border hover:border-accent/40 hover:bg-surface"
                     }`}
                   >
                     <div>
@@ -238,7 +238,7 @@ export default function Process() {
                         >
                           Phase {phase.step}
                         </span>
-                        <span className="text-[10px] uppercase tracking-wider font-mono text-muted/90 px-2 py-0.5 bg-white/5 border border-white/10">
+                        <span className="text-[10px] uppercase tracking-wider font-mono text-muted/90 px-2 py-0.5 bg-accent/10 border border-accent/20">
                           {phase.duration}
                         </span>
                       </div>
@@ -271,9 +271,9 @@ export default function Process() {
         </div>
 
         {/* Active Phase Details Card */}
-        <div data-reveal data-reveal-delay="0.14" className="p-8 sm:p-12 bg-background border border-border relative overflow-hidden">
+        <div data-reveal data-reveal-delay="0.14" className="p-8 sm:p-12 bg-surface border border-border relative overflow-hidden shadow-sm">
           {/* Subtle Background Watermark Number */}
-          <div className="absolute right-6 -bottom-6 font-serif text-[12rem] text-white/[0.02] select-none pointer-events-none leading-none">
+          <div className="absolute right-6 -bottom-6 font-serif text-[12rem] text-foreground/[0.03] select-none pointer-events-none leading-none">
             {PHASES[activeStep].step}
           </div>
 

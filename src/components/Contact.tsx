@@ -52,7 +52,7 @@ export default function Contact() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
           {/* Left Column: Office Coordinates & Map */}
           <div data-reveal data-reveal-delay="0.1" className="lg:col-span-5 flex flex-col gap-8">
-            <div className="p-8 bg-background border border-border flex flex-col gap-6">
+            <div className="p-8 bg-surface border border-border flex flex-col gap-6 shadow-sm">
               <h3 className="font-serif text-2xl text-foreground font-normal pb-4 border-b border-border">
                 Headquarters &amp; Direct Lines
               </h3>
@@ -115,7 +115,7 @@ export default function Contact() {
                   href="https://m.me/RBCBuilders"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex-1 text-center py-2.5 px-4 text-xs uppercase tracking-[0.18em] bg-accent/10 border border-accent/40 text-accent hover:bg-accent hover:text-[#0c0c0b] transition-all flex items-center justify-center gap-2"
+                  className="flex-1 text-center py-2.5 px-4 text-xs uppercase tracking-[0.18em] bg-accent/10 border border-accent/40 text-accent hover:bg-accent hover:text-white transition-all flex items-center justify-center gap-2"
                 >
                   <MessageCircle size={14} />
                   <span>Messenger</span>
@@ -144,7 +144,7 @@ export default function Contact() {
                 onClick={() => setMode("guided")}
                 className={`text-xs uppercase tracking-[0.2em] font-medium px-4 py-2 border transition-colors ${
                   mode === "guided"
-                    ? "bg-accent text-[#0c0c0b] border-accent"
+                    ? "bg-accent text-white border-accent shadow-sm"
                     : "border-border text-muted hover:text-foreground"
                 }`}
               >
@@ -154,7 +154,7 @@ export default function Contact() {
                 onClick={() => setMode("quick")}
                 className={`text-xs uppercase tracking-[0.2em] font-medium px-4 py-2 border transition-colors ${
                   mode === "quick"
-                    ? "bg-accent text-[#0c0c0b] border-accent"
+                    ? "bg-accent text-white border-accent shadow-sm"
                     : "border-border text-muted hover:text-foreground"
                 }`}
               >
@@ -236,7 +236,7 @@ export default function Contact() {
 
                     <button
                       type="submit"
-                      className="w-full py-3.5 text-xs uppercase tracking-[0.2em] font-medium bg-accent text-[#0c0c0b] hover:bg-accent-light transition-colors flex items-center justify-center gap-2"
+                      className="w-full py-3.5 text-xs uppercase tracking-[0.2em] font-medium bg-accent text-white hover:bg-accent-dim transition-colors flex items-center justify-center gap-2 shadow-sm"
                     >
                       <Send size={13} />
                       <span>Transmit Message</span>

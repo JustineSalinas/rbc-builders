@@ -49,7 +49,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${cormorant.variable} ${jakarta.variable} h-full antialiased selection:bg-[#c5a880] selection:text-[#0c0c0b]`}
+      className={`${cormorant.variable} ${jakarta.variable} h-full antialiased selection:bg-[#ecdcc4] selection:text-[#151413]`}
     >
       <body className="min-h-full flex flex-col bg-background text-foreground font-sans">
         <SmoothScroll>{children}</SmoothScroll>

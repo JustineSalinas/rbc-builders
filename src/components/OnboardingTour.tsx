@@ -277,7 +277,7 @@ export default function OnboardingTour() {
           }}
           aria-label="Start Guided Architectural Tour"
           title="Start Guided Architectural Tour"
-          className="fixed bottom-6 left-6 z-40 h-11 px-4 rounded-full bg-[#141312]/90 hover:bg-[#1c1a18] border border-accent/40 hover:border-accent text-accent shadow-xl backdrop-blur-md flex items-center gap-2.5 text-xs font-medium uppercase tracking-[0.16em] transition-all duration-300 hover:scale-105 group"
+          className="fixed bottom-6 left-6 z-40 h-11 px-4 rounded-full bg-white/95 hover:bg-white border border-accent/50 hover:border-accent text-accent shadow-xl backdrop-blur-md flex items-center gap-2.5 text-xs font-medium uppercase tracking-[0.16em] transition-all duration-300 hover:scale-105 group"
         >
           <Navigation size={14} className="text-accent group-hover:rotate-45 transition-transform duration-500" />
           <span className="hidden sm:inline text-[10.5px]">Guided Tour</span>
@@ -286,8 +286,8 @@ export default function OnboardingTour() {
 
       {/* State 1: Welcome & Name Prompt Modal */}
       {isOpen && !hasStarted && (
-        <div className="fixed inset-0 z-[80] flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-300">
-          <div className="relative w-full max-w-lg bg-[#141312] border border-accent/40 p-7 sm:p-10 shadow-2xl rounded-none text-foreground flex flex-col">
+        <div className="fixed inset-0 z-[80] flex items-center justify-center p-4 bg-black/60 backdrop-blur-md animate-in fade-in duration-300">
+          <div className="relative w-full max-w-lg bg-white border border-accent/50 p-7 sm:p-10 shadow-2xl rounded-none text-foreground flex flex-col">
             {/* Close / Skip button */}
             <button
               onClick={handleSkipTour}
@@ -329,14 +329,14 @@ export default function OnboardingTour() {
                   onChange={(e) => setName(e.target.value)}
                   placeholder="e.g. Arch. Justine, Engr. Santos, Dr. Garcia..."
                   autoFocus
-                  className="w-full bg-[#0c0c0b] border border-border px-4 py-3 text-xs sm:text-sm text-foreground placeholder:text-muted/60 focus:border-accent focus:outline-none transition-colors"
+                  className="w-full bg-[#fbfaf8] border border-border px-4 py-3 text-xs sm:text-sm text-foreground placeholder:text-muted/60 focus:border-accent focus:outline-none transition-colors"
                 />
               </div>
 
               <div className="flex flex-col sm:flex-row items-center gap-3 pt-2">
                 <button
                   type="submit"
-                  className="w-full sm:flex-1 py-3.5 px-6 text-xs uppercase tracking-[0.2em] font-medium bg-accent text-[#0c0c0b] hover:bg-accent-light transition-all flex items-center justify-center gap-2 shadow-lg"
+                  className="w-full sm:flex-1 py-3.5 px-6 text-xs uppercase tracking-[0.2em] font-medium bg-accent text-white hover:bg-accent-dim transition-all flex items-center justify-center gap-2 shadow-lg"
                 >
                   <span>Start Guided Tour</span>
                   <ArrowRight size={14} />
@@ -345,14 +345,14 @@ export default function OnboardingTour() {
                 <button
                   type="button"
                   onClick={handleSkipTour}
-                  className="w-full sm:w-auto py-3.5 px-5 text-xs uppercase tracking-[0.2em] font-medium border border-border text-muted hover:border-white/30 hover:text-foreground transition-colors text-center"
+                  className="w-full sm:w-auto py-3.5 px-5 text-xs uppercase tracking-[0.2em] font-medium border border-border text-muted hover:border-accent hover:text-accent transition-colors text-center"
                 >
                   Skip Tour
                 </button>
               </div>
             </form>
 
-            <div className="mt-6 pt-4 border-t border-white/5 flex items-center justify-between text-[10px] text-muted font-light">
+            <div className="mt-6 pt-4 border-t border-border flex items-center justify-between text-[10px] text-muted font-light">
               <span>PRC Accredited Design-Build Firm</span>
               <span>San Fernando, Pampanga</span>
             </div>
@@ -374,10 +374,10 @@ export default function OnboardingTour() {
         >
           {/* Main Glowing Architectural Box Frame */}
           <div
-            className="relative w-full h-full border-2 border-accent/90 ring-1 ring-accent/30 ring-offset-2 ring-offset-[#0c0c0b] rounded-sm"
+            className="relative w-full h-full border-2 border-accent/90 ring-1 ring-accent/30 ring-offset-2 ring-offset-white rounded-sm"
             style={{
               boxShadow:
-                "0 0 35px rgba(197, 168, 128, 0.4), 0 0 85px rgba(197, 168, 128, 0.2), inset 0 0 40px rgba(197, 168, 128, 0.05)",
+                "0 0 35px rgba(154, 116, 66, 0.35), 0 0 75px rgba(154, 116, 66, 0.15), inset 0 0 30px rgba(154, 116, 66, 0.04)",
             }}
           >
             {/* Architectural Crosshair Corners */}
@@ -387,7 +387,7 @@ export default function OnboardingTour() {
             <div className="absolute -bottom-1.5 -right-1.5 w-6 h-6 border-b-2 border-r-2 border-accent" />
 
             {/* Top Luminous Spotlight Badge */}
-            <div className="absolute -top-4 left-4 sm:left-8 px-3.5 py-1 bg-[#0c0c0b] border border-accent shadow-2xl flex items-center gap-2.5 rounded-full pointer-events-auto">
+            <div className="absolute -top-4 left-4 sm:left-8 px-3.5 py-1 bg-white border border-accent shadow-2xl flex items-center gap-2.5 rounded-full pointer-events-auto">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75" />
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-accent" />
@@ -398,7 +398,7 @@ export default function OnboardingTour() {
             </div>
 
             {/* Bottom Technical Specification Tag */}
-            <div className="hidden sm:flex absolute -bottom-3.5 right-6 sm:right-8 px-3 py-0.5 bg-[#0c0c0b] border border-accent/60 text-[9px] font-mono text-accent/90 uppercase tracking-[0.2em] items-center gap-2 shadow-lg">
+            <div className="hidden sm:flex absolute -bottom-3.5 right-6 sm:right-8 px-3 py-0.5 bg-white border border-accent/60 text-[9px] font-mono text-accent uppercase tracking-[0.2em] items-center gap-2 shadow-lg">
               <span>FEATURE #{stepData.id.toUpperCase()}</span>
               <span className="text-muted/60">&bull;</span>
               <span>SECTION {currentStep + 1} OF {TOUR_STEPS.length}</span>
@@ -409,7 +409,7 @@ export default function OnboardingTour() {
 
       {/* State 2B: Floating Tour Concierge Card (Active Walkthrough) */}
       {isOpen && hasStarted && (
-        <div className="fixed bottom-6 left-4 right-4 sm:left-6 sm:right-auto sm:w-[460px] z-[80] bg-[#121110]/95 backdrop-blur-2xl border border-accent/60 p-6 sm:p-7 shadow-2xl text-foreground animate-in slide-in-from-bottom-5 duration-300">
+        <div className="fixed bottom-6 left-4 right-4 sm:left-6 sm:right-auto sm:w-[460px] z-[80] bg-white/95 backdrop-blur-2xl border border-accent/60 p-6 sm:p-7 shadow-2xl text-foreground animate-in slide-in-from-bottom-5 duration-300">
           {/* Progress Header */}
           <div className="flex items-center justify-between gap-4 mb-3">
             <span className="text-[10px] uppercase tracking-[0.22em] text-accent font-medium font-mono">
@@ -426,7 +426,7 @@ export default function OnboardingTour() {
           </div>
 
           {/* Progress Bar */}
-          <div className="h-1 w-full bg-white/10 overflow-hidden mb-4">
+          <div className="h-1 w-full bg-stone-200 overflow-hidden mb-4">
             <div
               className="h-full bg-accent transition-all duration-500"
               style={{ width: `${((currentStep + 1) / TOUR_STEPS.length) * 100}%` }}
@@ -444,13 +444,13 @@ export default function OnboardingTour() {
           </p>
 
           {/* Action Hint */}
-          <div className="p-2.5 bg-white/[0.03] border border-white/10 text-[11px] text-accent/90 font-light flex items-start gap-2 mb-5">
+          <div className="p-2.5 bg-accent/5 border border-accent/20 text-[11px] text-accent font-normal flex items-start gap-2 mb-5">
             <Sparkles size={13} className="text-accent shrink-0 mt-0.5" />
             <span>{stepData.actionHint}</span>
           </div>
 
           {/* Navigation Controls */}
-          <div className="flex items-center justify-between gap-3 pt-3 border-t border-white/10">
+          <div className="flex items-center justify-between gap-3 pt-3 border-t border-border">
             <button
               onClick={handlePrev}
               disabled={currentStep === 0 || isScrolling}
@@ -467,7 +467,7 @@ export default function OnboardingTour() {
             <button
               onClick={handleNext}
               disabled={isScrolling}
-              className="px-5 py-2.5 bg-accent hover:bg-accent-light text-[#0c0c0b] text-xs uppercase tracking-wider font-medium transition-all flex items-center gap-2 shadow-md"
+              className="px-5 py-2.5 bg-accent hover:bg-accent-dim text-white text-xs uppercase tracking-wider font-medium transition-all flex items-center gap-2 shadow-md"
             >
               <span>{currentStep === TOUR_STEPS.length - 1 ? "Finish Tour" : "Next Section"}</span>
               {currentStep === TOUR_STEPS.length - 1 ? <Check size={14} /> : <ArrowRight size={13} />}

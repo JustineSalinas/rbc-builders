@@ -43,8 +43,8 @@ export default function Projects() {
               onClick={() => setFilter(cat)}
               className={`px-5 py-2.5 text-[11px] uppercase tracking-[0.2em] font-medium border transition-all duration-300 ${
                 filter === cat
-                  ? "bg-accent text-[#0c0c0b] border-accent"
-                  : "border-border text-foreground/70 hover:border-accent/50 hover:text-foreground bg-surface/40"
+                  ? "bg-accent text-white border-accent shadow-sm"
+                  : "border-border text-foreground/70 hover:border-accent hover:text-foreground bg-surface shadow-sm"
               }`}
             >
               {cat}
@@ -60,7 +60,7 @@ export default function Projects() {
               data-reveal
               data-reveal-delay={(0.06 + (i % 3) * 0.08).toString()}
               onClick={() => setActiveProject(project)}
-              className="group cursor-pointer flex flex-col bg-surface border border-border hover:border-accent/50 transition-all duration-500 overflow-hidden"
+              className="group cursor-pointer flex flex-col bg-surface border border-border hover:border-accent shadow-sm hover:shadow-xl hover:shadow-black/5 transition-all duration-500 overflow-hidden"
             >
               {/* Image Frame */}
               <div className="relative aspect-[16/11] w-full overflow-hidden bg-black/60">
@@ -72,17 +72,17 @@ export default function Projects() {
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   className="object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0c0c0b]/80 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity" />
 
                 {/* Floating Category Pill */}
                 <div className="absolute top-4 left-4">
-                  <span className="text-[9px] uppercase tracking-[0.2em] px-2.5 py-1 luxury-glass border border-white/10 text-foreground/90 font-medium">
+                  <span className="text-[9px] uppercase tracking-[0.2em] px-2.5 py-1 bg-black/50 backdrop-blur-md border border-white/20 text-white font-medium">
                     {project.category}
                   </span>
                 </div>
 
                 {/* Quick inspect button */}
-                <div className="absolute bottom-4 right-4 h-9 w-9 rounded-full luxury-glass border border-white/20 flex items-center justify-center text-foreground group-hover:text-accent group-hover:border-accent transition-colors">
+                <div className="absolute bottom-4 right-4 h-9 w-9 rounded-full bg-black/50 backdrop-blur-md border border-white/20 flex items-center justify-center text-white group-hover:text-accent group-hover:border-accent transition-colors">
                   <Plus size={16} />
                 </div>
               </div>
@@ -133,7 +133,7 @@ export default function Projects() {
           </div>
           <a
             href="#contact"
-            className="inline-flex items-center gap-2 px-7 py-3.5 text-xs uppercase tracking-[0.2em] font-medium bg-accent text-[#0c0c0b] hover:bg-accent-light transition-colors shrink-0"
+            className="inline-flex items-center gap-2 px-7 py-3.5 text-xs uppercase tracking-[0.2em] font-medium bg-accent text-white hover:bg-accent-dim transition-colors shrink-0 shadow-sm"
           >
             <span>Schedule Site Inspection</span>
             <ArrowUpRight size={14} />

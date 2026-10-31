@@ -110,7 +110,7 @@ export default function Hero() {
             <div className="hero-reveal flex flex-wrap items-center gap-4 mb-8">
               <a
                 href="#contact"
-                className="inline-flex items-center gap-2.5 px-7 py-3.5 text-[11px] uppercase tracking-[0.2em] font-medium bg-accent text-[#0c0c0b] hover:bg-accent-light transition-all duration-300 shadow-md"
+                className="inline-flex items-center gap-2.5 px-7 py-3.5 text-[11px] uppercase tracking-[0.2em] font-medium bg-accent text-white hover:bg-accent-dim transition-all duration-300 shadow-md"
               >
                 <span>Commission an Estate</span>
                 <ArrowRight size={14} />
@@ -118,7 +118,7 @@ export default function Hero() {
 
               <a
                 href="#projects"
-                className="inline-flex items-center gap-2 px-6 py-3.5 text-[11px] uppercase tracking-[0.2em] font-medium text-foreground/80 hover:text-accent border border-border hover:border-accent/50 transition-colors bg-surface/40"
+                className="inline-flex items-center gap-2 px-6 py-3.5 text-[11px] uppercase tracking-[0.2em] font-medium text-foreground hover:text-accent border border-border hover:border-accent transition-colors bg-surface shadow-sm"
               >
                 <span>Selected Works</span>
                 <ArrowDownRight size={14} className="text-muted" />
@@ -163,47 +163,47 @@ export default function Hero() {
                     sizes="(max-width: 1024px) 100vw, 58vw"
                     className="object-cover object-center scale-[1.01] transition-transform duration-[6500ms] ease-out"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0c0c0b]/90 via-[#0c0c0b]/20 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent" />
                 </div>
               ))}
 
               {/* Bottom Information & Controls Bar */}
               <div className="absolute bottom-5 inset-x-5 z-20 flex items-end justify-between gap-4">
                 <div className="max-w-md">
-                  <div className="flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-accent mb-1 font-medium">
-                    <MapPin size={11} className="text-accent" />
+                  <div className="flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-accent-light mb-1 font-medium">
+                    <MapPin size={11} className="text-accent-light" />
                     <span>{slide.location}</span>
-                    <span className="text-white/30">&middot;</span>
-                    <span className="text-foreground/70 flex items-center gap-1">
+                    <span className="text-white/40">&middot;</span>
+                    <span className="text-white/90 flex items-center gap-1">
                       <Maximize2 size={11} /> {slide.area}
                     </span>
                   </div>
-                  <h2 className="font-serif text-xl sm:text-2xl text-foreground font-normal leading-snug">
+                  <h2 className="font-serif text-xl sm:text-2xl text-white font-normal leading-snug">
                     {slide.title}
                   </h2>
-                  <p className="text-xs text-foreground/70 font-light mt-1 hidden sm:block line-clamp-1">
+                  <p className="text-xs text-white/80 font-light mt-1 hidden sm:block line-clamp-1">
                     {slide.caption}
                   </p>
                 </div>
 
                 {/* Slideshow Navigation Controls */}
                 <div className="flex items-center gap-3 shrink-0">
-                  <span className="font-serif text-xs tracking-widest text-foreground/80 tabular-nums">
+                  <span className="font-serif text-xs tracking-widest text-white/90 tabular-nums">
                     {String(current + 1).padStart(2, "0")}{" "}
-                    <span className="text-muted/60 font-sans font-light">/ {String(SLIDES.length).padStart(2, "0")}</span>
+                    <span className="text-white/60 font-sans font-light">/ {String(SLIDES.length).padStart(2, "0")}</span>
                   </span>
                   <div className="flex items-center gap-1">
                     <button
                       onClick={prev}
                       aria-label="Previous architectural build"
-                      className="h-8 w-8 sm:h-9 sm:w-9 flex items-center justify-center border border-white/20 bg-black/50 hover:border-accent hover:text-accent transition-colors text-foreground backdrop-blur-sm"
+                      className="h-8 w-8 sm:h-9 sm:w-9 flex items-center justify-center border border-white/30 bg-black/40 hover:border-accent hover:text-accent transition-colors text-white backdrop-blur-sm"
                     >
                       <ChevronLeft size={15} />
                     </button>
                     <button
                       onClick={next}
                       aria-label="Next architectural build"
-                      className="h-8 w-8 sm:h-9 sm:w-9 flex items-center justify-center border border-white/20 bg-black/50 hover:border-accent hover:text-accent transition-colors text-foreground backdrop-blur-sm"
+                      className="h-8 w-8 sm:h-9 sm:w-9 flex items-center justify-center border border-white/30 bg-black/40 hover:border-accent hover:text-accent transition-colors text-white backdrop-blur-sm"
                     >
                       <ChevronRight size={15} />
                     </button>

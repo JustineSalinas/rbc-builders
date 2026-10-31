@@ -86,7 +86,7 @@ export default function BeforeAfter() {
 
             {/* Divider Line & Knob */}
             <div
-              className="absolute top-0 bottom-0 w-[2px] bg-accent shadow-[0_0_12px_rgba(197,168,128,0.8)]"
+              className="absolute top-0 bottom-0 w-[2px] bg-accent shadow-[0_0_12px_rgba(154,116,66,0.8)]"
               style={{ left: `${pos}%` }}
             >
               <div
@@ -100,7 +100,7 @@ export default function BeforeAfter() {
                   if (e.key === "ArrowLeft") setPos((p) => Math.max(0, p - 5));
                   if (e.key === "ArrowRight") setPos((p) => Math.min(100, p + 5));
                 }}
-                className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 h-11 w-11 rounded-full luxury-glass border border-accent flex items-center justify-center text-accent shadow-xl focus:outline-none focus:ring-2 focus:ring-accent"
+                className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 h-11 w-11 rounded-full bg-white/95 border border-accent flex items-center justify-center text-accent shadow-xl focus:outline-none focus:ring-2 focus:ring-accent"
               >
                 <MoveHorizontal size={16} />
               </div>
@@ -108,13 +108,13 @@ export default function BeforeAfter() {
 
             {/* Phase Watermark Labels */}
             <div className="absolute top-6 left-6 pointer-events-none">
-              <span className="text-[10px] uppercase tracking-[0.25em] px-3 py-1.5 luxury-glass border border-white/10 text-foreground/90 font-medium">
+              <span className="text-[10px] uppercase tracking-[0.25em] px-3 py-1.5 bg-black/60 border border-white/20 text-white font-medium backdrop-blur-md">
                 Structural Execution (Phase 05)
               </span>
             </div>
 
             <div className="absolute top-6 right-6 pointer-events-none">
-              <span className="text-[10px] uppercase tracking-[0.25em] px-3 py-1.5 luxury-glass border border-accent/40 text-accent font-medium">
+              <span className="text-[10px] uppercase tracking-[0.25em] px-3 py-1.5 bg-black/60 border border-accent/50 text-accent font-medium backdrop-blur-md">
                 Turnkey Handover (Phase 07)
               </span>
             </div>

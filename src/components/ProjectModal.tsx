@@ -26,7 +26,7 @@ export default function ProjectModal({
 
   return (
     <div
-      className="fixed inset-0 z-[70] flex items-center justify-center bg-black/85 backdrop-blur-md px-4 py-6 sm:p-10 animate-in fade-in duration-300"
+      className="fixed inset-0 z-[70] flex items-center justify-center bg-black/60 backdrop-blur-md px-4 py-6 sm:p-10 animate-in fade-in duration-300"
       onClick={onClose}
     >
       <div
@@ -41,7 +41,7 @@ export default function ProjectModal({
         <button
           onClick={onClose}
           aria-label="Close project monograph"
-          className="absolute top-5 right-5 z-20 h-10 w-10 rounded-full bg-black/60 border border-white/20 text-foreground hover:text-accent hover:border-accent transition-colors flex items-center justify-center backdrop-blur-sm"
+          className="absolute top-5 right-5 z-20 h-10 w-10 rounded-full bg-white/90 border border-border text-foreground hover:text-accent hover:border-accent transition-colors flex items-center justify-center backdrop-blur-sm shadow-md"
         >
           <X size={18} />
         </button>
@@ -56,18 +56,18 @@ export default function ProjectModal({
             sizes="(max-width: 1280px) 100vw, 1200px"
             className="object-cover object-center"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
 
           <div className="absolute bottom-6 left-6 right-6 flex flex-wrap items-end justify-between gap-4">
             <div>
               <span className="text-[10px] uppercase tracking-[0.25em] text-accent font-medium block mb-1">
                 {project.category} · {project.year}
               </span>
-              <h3 id="modal-project-title" className="font-serif text-3xl sm:text-4xl text-foreground font-normal">
+              <h3 id="modal-project-title" className="font-serif text-3xl sm:text-4xl text-white font-normal">
                 {project.title}
               </h3>
             </div>
-            <span className="text-xs uppercase tracking-[0.2em] px-3.5 py-1.5 border border-accent/40 bg-accent/10 text-accent font-medium">
+            <span className="text-xs uppercase tracking-[0.2em] px-3.5 py-1.5 border border-accent/40 bg-black/60 text-accent font-medium backdrop-blur-sm">
               {project.finishTier}
             </span>
           </div>
@@ -148,7 +148,7 @@ export default function ProjectModal({
             <a
               href="#contact"
               onClick={onClose}
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-3 text-xs uppercase tracking-[0.2em] font-medium bg-accent text-[#0c0c0b] hover:bg-accent-light transition-colors"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-3 text-xs uppercase tracking-[0.2em] font-medium bg-accent text-white hover:bg-accent-dim transition-colors shadow-sm"
             >
               <span>Commission an Estate Like This</span>
               <ArrowRight size={13} />
