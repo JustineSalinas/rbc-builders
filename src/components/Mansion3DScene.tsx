@@ -638,8 +638,8 @@ export default function Mansion3DScene({ progress }: { progress: number }) {
   return (
     <div className="relative w-full h-full cursor-grab active:cursor-grabbing select-none">
       <Canvas
-        shadows
-        dpr={[1, 2]}
+        shadows={false}
+        dpr={[1, 1.25]}
         gl={{ antialias: true, powerPreference: "high-performance" }}
         // Zoomed-out camera framed for side-by-side architectural dossier layout
         camera={{ position: [5.7, 2.9, 6.3], fov: 33 }}

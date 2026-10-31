@@ -283,8 +283,8 @@ export default function Pricing() {
       {/* Once 100% complete, it naturally scrolls down to next sections */}
       {/* ============================================================== */}
       <div ref={pinTrackRef} className="relative h-[380vh]">
-        {/* Sticky Viewport Stage: Pinned on Screen */}
-        <div className="sticky top-0 h-screen w-full flex flex-col justify-between overflow-hidden bg-background px-4 sm:px-8 py-3 sm:py-4 z-20">
+        {/* Sticky Viewport Stage: Pinned on Screen with navbar safe top padding */}
+        <div className="sticky top-0 h-screen w-full flex flex-col justify-between overflow-hidden bg-background px-3 sm:px-8 pt-20 sm:pt-22 lg:pt-24 pb-3 sm:pb-4 z-20">
           <div className="mx-auto max-w-7xl w-full flex flex-col h-full justify-between">
             {/* Top Bar: Section Title, Progress Track & 01-04 Stage Tabs */}
             <div>
@@ -319,8 +319,8 @@ export default function Pricing() {
                 </div>
               </div>
 
-              {/* 01 till 04 Stage Selection Bar */}
-              <div className="grid grid-cols-4 gap-2 sm:gap-3">
+              {/* 01 till 04 Stage Selection Bar (Matching Image 2 Specification Standards) */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3">
                 {FINISH_GRADES.map((grade, idx) => {
                   const isActive = currentTierIndex === idx;
                   return (
@@ -335,29 +335,33 @@ export default function Pricing() {
                       }`}
                     >
                       {grade.popular && (
-                        <span className="absolute -top-1.5 right-2 hidden md:inline-flex items-center gap-0.5 text-[7.5px] uppercase tracking-widest bg-accent text-white px-2 py-0.2 font-semibold rounded-full shadow-2xs">
+                        <span className="absolute -top-2 right-2 inline-flex items-center gap-0.5 text-[7px] uppercase tracking-widest bg-accent text-white px-2 py-0.5 font-bold rounded-full shadow-2xs">
                           <Sparkles size={7} />
-                          <span>Popular</span>
+                          <span>Most Popular</span>
                         </span>
                       )}
 
-                      <div className="flex items-center gap-1.5">
-                        <span className="font-mono text-xs uppercase tracking-widest text-accent font-bold">
-                          {grade.number}
+                      <div className="flex flex-col gap-0.5">
+                        <span className="font-mono text-[9px] uppercase tracking-widest text-muted">
+                          {grade.number} &middot; {grade.subtitle}
                         </span>
-                        <span className="text-[9.5px] uppercase tracking-wider text-foreground font-medium hidden sm:inline truncate">
+                        <h4 className="font-serif text-sm sm:text-base text-foreground font-normal tracking-tight">
                           {grade.name}
+                        </h4>
+                      </div>
+
+                      <div className="font-serif text-xs sm:text-sm text-accent font-medium mt-1 truncate">
+                        {grade.rateDisplay}{" "}
+                        <span className="text-[9px] text-muted font-sans font-light">/ m&sup2;</span>
+                      </div>
+
+                      <div className="flex items-center justify-between pt-1.5 mt-1 border-t border-border/50 text-[8.5px] uppercase tracking-wider font-mono">
+                        <span className={isActive ? "text-accent font-bold" : "text-muted"}>
+                          {isActive ? "Active Grade \u2713" : "Select Tier"}
                         </span>
-                      </div>
-
-                      <div className="font-serif text-xs sm:text-sm text-accent font-medium mt-0.5 truncate">
-                        {grade.rateDisplay}
-                      </div>
-
-                      <div className="w-full bg-border/60 h-1 rounded-full mt-1.5 overflow-hidden">
                         <div
-                          className={`h-full transition-all duration-300 ${
-                            isActive ? "bg-accent" : "bg-transparent"
+                          className={`h-1.5 w-1.5 rounded-full ${
+                            isActive ? "bg-accent" : "bg-border"
                           }`}
                         />
                       </div>
@@ -398,34 +402,34 @@ export default function Pricing() {
 
               {/* Right Column (5 cols): Live Specifications & Price Dossier Beside the Mansion */}
               <div className="lg:col-span-5 xl:col-span-5 relative w-full h-full rounded-2xl sm:rounded-3xl bg-surface/95 backdrop-blur-md border border-border shadow-xl p-3.5 sm:p-5 flex flex-col justify-between overflow-y-auto lg:overflow-hidden min-h-0">
-                {/* Header: Stage Code, Name, Price, and Tagline */}
+                {/* Header: Stage Code, Name, Price, and Tagline (Matching Image 2 Specification Standard) */}
                 <div>
-                  <div className="flex items-center justify-between gap-2 mb-1">
-                    <div className="flex items-center gap-1.5">
-                      <span className="text-[9.5px] uppercase tracking-widest font-mono font-bold px-2 py-0.5 rounded-md bg-accent/15 text-accent border border-accent/30">
-                        {activeTier.code}
-                      </span>
-                      <span className="text-[10px] uppercase tracking-wider font-mono text-muted">
-                        {activeTier.subtitle}
-                      </span>
+                  <div className="flex items-center justify-between gap-2 mb-1.5">
+                    <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-accent/10 border border-accent/25 text-accent text-[9px] uppercase tracking-[0.18em] font-mono font-medium">
+                      <span>@ Specification Standards &middot; Central Luzon</span>
                     </div>
 
                     {activeTier.popular ? (
-                      <span className="inline-flex items-center gap-1 text-[8px] uppercase tracking-widest bg-accent text-white px-2 py-0.5 font-bold rounded-full shadow-2xs">
+                      <span className="inline-flex items-center gap-1 text-[8px] uppercase tracking-widest bg-accent text-white px-2.5 py-0.5 font-bold rounded-full shadow-2xs">
                         <Sparkles size={8} />
                         <span>Most Popular</span>
                       </span>
                     ) : (
                       <span className="text-[9.5px] font-mono text-muted uppercase tracking-wider">
-                        Stage {activeTier.stageNum} of 04
+                        {activeTier.code} &middot; Stage {activeTier.stageNum} of 04
                       </span>
                     )}
                   </div>
 
                   <div className="flex items-baseline justify-between gap-2 mt-1">
-                    <h3 className="font-serif text-xl sm:text-2xl text-foreground font-normal tracking-tight">
-                      {activeTier.name}
-                    </h3>
+                    <div>
+                      <h3 className="font-serif text-xl sm:text-2xl text-foreground font-normal tracking-tight">
+                        {activeTier.name}
+                      </h3>
+                      <span className="text-[11px] text-muted font-light font-sans">
+                        ({activeTier.subtitle})
+                      </span>
+                    </div>
                     <div className="text-right">
                       <span className="font-serif text-xl sm:text-2xl text-accent font-semibold tracking-tight">
                         {activeTier.rateDisplay}

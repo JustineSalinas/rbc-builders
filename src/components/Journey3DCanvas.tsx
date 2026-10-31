@@ -39,60 +39,64 @@ export default function Journey3DCanvas({
       return;
     }
 
-    // Performance-tuned pixel ratio: caps at 1.25x for buttery 60 FPS without GPU strain
+    // Performance-tuned pixel ratio (1.25x max) for buttery 60 FPS
     const dpr = Math.min(window.devicePixelRatio || 1, 1.25);
     renderer.setPixelRatio(dpr);
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.05;
-    // Shadows disabled for maximum 60fps frame rate on all laptops & mobile devices
+    renderer.toneMappingExposure = 1.08;
     renderer.shadowMap.enabled = false;
 
-    const PAPER = new THREE.Color("#ece6dc");
-    const DUSK = new THREE.Color("#1c2230");
+    const PAPER = new THREE.Color("#ebe5da");
+    const DUSK = new THREE.Color("#181e2b");
     const bgColor = new THREE.Color().copy(PAPER);
     const scene = new THREE.Scene();
     scene.background = bgColor;
-    scene.fog = new THREE.Fog(PAPER.clone(), 70, 140);
-    const camera = new THREE.PerspectiveCamera(30, 1, 0.5, 300);
+    scene.fog = new THREE.Fog(PAPER.clone(), 45, 95);
+    const camera = new THREE.PerspectiveCamera(32, 1, 0.5, 200);
 
     // ── Architectural Directional & Ambient Lighting ──
-    const hemi = new THREE.HemisphereLight("#fffaf2", "#d8cbb8", 1.5);
-    const sun = new THREE.DirectionalLight("#fff1dc", 2.2);
-    sun.position.set(-18, 30, 22);
+    const hemi = new THREE.HemisphereLight("#fffcf5", "#d4c8b5", 1.6);
+    const sun = new THREE.DirectionalLight("#fff3e0", 2.2);
+    sun.position.set(-16, 26, 20);
 
-    // Interior Warm Lighting
-    const warmA = new THREE.PointLight("#ffb867", 0, 22, 1.6);
-    warmA.position.set(-2, 2.6, 6.5);
-    const warmB = new THREE.PointLight("#ffb867", 0, 20, 1.6);
-    warmB.position.set(4, 6.2, 5.5);
-    scene.add(hemi, sun, warmA, warmB);
+    // Interior Warm Sconces & Chandelier Glow
+    const warmA = new THREE.PointLight("#ffb867", 0, 20, 1.8);
+    warmA.position.set(-1.8, 2.8, 3.2);
+    const warmB = new THREE.PointLight("#ffb867", 0, 18, 1.8);
+    warmB.position.set(3.5, 5.5, 3.0);
+    const waterGlow = new THREE.PointLight("#2fd6eb", 0, 12, 2.0);
+    waterGlow.position.set(-4.5, 0.4, 6.5);
+    scene.add(hemi, sun, warmA, warmB, waterGlow);
 
     // ── Material Palette ──
     const std = (color: string, o = {}) =>
       new THREE.MeshStandardMaterial({ color, roughness: 0.85, metalness: 0, ...o });
 
     const M = {
-      ground: std("#e9e2d6", { roughness: 1 }),
-      earth: std("#7a6450", { roughness: 1, transparent: true, opacity: 0 }),
-      concrete: std("#d6cfc4"),
-      plaster: std("#efe9df"),
-      charcoal: std("#3d3a37", { roughness: 0.7 }),
-      stone: std("#ded7cb", { roughness: 0.95 }), // Travertine Portal Tower
-      timber: std("#9c6a3c", { roughness: 0.6 }),
-      soffit: std("#b8834f", { roughness: 0.55 }),
-      glass: std("#25303a", {
+      ground: std("#e5ded2", { roughness: 1 }),
+      board: std("#dfd7c8", { roughness: 0.95 }),
+      blueprintWall: std("#2c241d", { roughness: 0.9 }),
+      earth: std("#69513d", { roughness: 1, transparent: true, opacity: 0 }),
+      concrete: std("#cfc7bc"),
+      plaster: std("#f3ede2"),
+      charcoal: std("#36322e", { roughness: 0.7 }),
+      travertine: std("#d8d0c2", { roughness: 0.95 }), // Signature Travertine Portal
+      mahogany: std("#2b180d", { roughness: 0.75 }),
+      timber: std("#946237", { roughness: 0.6 }),
+      soffit: std("#b57e47", { roughness: 0.55 }),
+      glass: std("#212b36", {
         roughness: 0.08,
-        metalness: 0.3,
+        metalness: 0.35,
         emissive: new THREE.Color("#ffc983"),
         emissiveIntensity: 0,
       }),
-      rail: std("#9fb2bd", { roughness: 0.05, metalness: 0.2, transparent: true, opacity: 0.35 }),
-      massing: std("#fbf8f3", { roughness: 0.9, transparent: true, opacity: 0 }),
-      lawn: std("#7f8f60", { roughness: 1, transparent: true, opacity: 0 }),
-      drive: std("#cbc3b6", { roughness: 0.95, transparent: true, opacity: 0 }),
-      deck: std("#a87a4e", { roughness: 0.7, transparent: true, opacity: 0 }),
-      water: std("#3f9fb0", {
+      rail: std("#9fb2bd", { roughness: 0.05, metalness: 0.2, transparent: true, opacity: 0.4 }),
+      massing: std("#fbf7ee", { roughness: 0.9, transparent: true, opacity: 0 }),
+      lawn: std("#778759", { roughness: 1, transparent: true, opacity: 0 }),
+      drive: std("#c7bfb1", { roughness: 0.95, transparent: true, opacity: 0 }),
+      deck: std("#9e7146", { roughness: 0.7, transparent: true, opacity: 0 }),
+      water: std("#369caa", {
         roughness: 0.05,
         metalness: 0.1,
         emissive: new THREE.Color("#2fb6c9"),
@@ -100,11 +104,11 @@ export default function Journey3DCanvas({
         transparent: true,
         opacity: 0,
       }),
-      leaf: std("#617552", { roughness: 0.9, flatShading: true }),
-      trunk: std("#6d5440"),
-      stake: std("#c9a47a"),
-      led: new THREE.MeshBasicMaterial({ color: "#ffd9a3", transparent: true, opacity: 0 }),
-      sunball: new THREE.MeshBasicMaterial({ color: "#c9a47a", transparent: true, opacity: 0 }),
+      leaf: std("#586b4a", { roughness: 0.9, flatShading: true }),
+      trunk: std("#614937"),
+      stake: std("#c49f75"),
+      led: new THREE.MeshBasicMaterial({ color: "#ffe0b2", transparent: true, opacity: 0 }),
+      sunball: new THREE.MeshBasicMaterial({ color: "#d4a76a", transparent: true, opacity: 0 }),
     };
 
     const ink = (color: string, opacity = 0) =>
@@ -167,13 +171,12 @@ export default function Journey3DCanvas({
       });
     };
 
-    // Drafting strokes with drawRange reveals
     const strokes = (
       edges: [number, number, number, number, number?, number?][],
       mat: THREE.LineBasicMaterial,
       a: number,
       b: number,
-      { jitter = 0, piece = 0.35, y = 0.04 } = {}
+      { jitter = 0, piece = 0.35, y = 0.05, alwaysVisible = false } = {}
     ) => {
       const pos: number[] = [];
       const j = () => (Math.random() - 0.5) * jitter;
@@ -199,9 +202,9 @@ export default function Journey3DCanvas({
       const total = pos.length / 3;
       items.push({
         update: (p) => {
-          const e = seg(p, a, b);
-          l.visible = e > 0;
-          g.setDrawRange(0, Math.floor((total * e) / 2) * 2);
+          const e = alwaysVisible ? 1 : seg(p, a, b);
+          l.visible = alwaysVisible || e > 0;
+          g.setDrawRange(0, Math.floor((total * (alwaysVisible ? 1 : e)) / 2) * 2);
         },
       });
       return l;
@@ -214,49 +217,84 @@ export default function Journey3DCanvas({
       [x0, z1 + over, x0, z0 - over],
     ];
 
-    // ── The Ground Site ──
-    add(flat(-60, 60, -60, 60, 0, M.ground));
-    const grid = add(new THREE.GridHelper(40, 40, "#bfb3a3", "#d3c9bb"));
-    grid.position.set(0, 0.01, 2);
-    (grid.material as THREE.Material).transparent = true;
-    (grid.material as THREE.Material).opacity = 0;
+    // ── The Ground Site & Drafting Board Base ──
+    add(flat(-50, 50, -50, 50, 0, M.ground));
+
+    // Raised Architectural Blueprint Board (Visible immediately right in front of camera)
+    const draftingBoard = add(box(-12, 13, -0.04, 0.02, -8, 8, M.board));
     items.push({
       update: (p) => {
-        const op = 0.55 * seg(p, 1, 1.5) * (1 - seg(p, 4.4, 5.2));
-        (grid.material as THREE.Material).opacity = op;
+        // Subtle presence at start, blends into landscape later
+        draftingBoard.visible = p < 6.2;
+      },
+    });
+
+    const grid = add(new THREE.GridHelper(30, 30, "#b8aa97", "#d0c5b4"));
+    grid.position.set(0, 0.03, 0);
+    (grid.material as THREE.Material).transparent = true;
+    (grid.material as THREE.Material).opacity = 0.65;
+    items.push({
+      update: (p) => {
+        const op = 0.65 * (1 - seg(p, 4.4, 5.2));
+        (grid.material as THREE.Material).opacity = Math.max(op, 0);
         grid.visible = op > 0.01;
       },
     });
 
-    // ── 01 · Consultation: Pencil Drafted Footprint ──
-    const pencil = ink("#7d6d5d");
-    fade(pencil, 0, 0.15, 0.9, [4.3, 5.1]);
+    // ── 01 · Consultation: Authentic Architectural Blueprint Plan with Visible Walls ──
+    // Solid 3D wall footprints that are visible IMMEDIATELY from p = 0.0 (no blank void!)
+    const bpWall1 = add(box(-7.6, -7.2, 0.03, 0.28, -3.8, 3.2, M.blueprintWall));
+    const bpWall2 = add(box(-7.2, 3.4, 0.03, 0.28, -3.8, -3.4, M.blueprintWall));
+    const bpWall3 = add(box(-7.2, 3.4, 0.03, 0.28, 2.8, 3.2, M.blueprintWall));
+    const bpWall4 = add(box(3.0, 3.4, 0.03, 0.28, -3.8, 3.2, M.blueprintWall));
+    const bpWall5 = add(box(3.4, 9.4, 0.03, 0.28, -3.8, -3.4, M.blueprintWall)); // Carport wall
+    const bpWall6 = add(box(3.4, 9.4, 0.03, 0.28, 3.8, 4.2, M.blueprintWall));
+
+    // Interior room partition walls
+    const bpWall7 = add(box(-2.5, -2.2, 0.03, 0.22, -3.8, 0.5, M.blueprintWall));
+    const bpWall8 = add(box(-2.5, 3.2, 0.03, 0.22, 0.2, 0.5, M.blueprintWall));
+
+    [bpWall1, bpWall2, bpWall3, bpWall4, bpWall5, bpWall6, bpWall7, bpWall8].forEach((w) => {
+      items.push({
+        update: (p) => {
+          // Immediately solid at p=0, fades out gracefully when massing rises at p=2.2-2.6
+          const e = 1 - seg(p, 2.2, 2.6);
+          w.visible = e > 0.01;
+          w.scale.y = Math.max(e, 0.01);
+        },
+      });
+    });
+
+    // Drafted Pencil Ink Lines on top of walls (always visible from p = 0.0)
+    const pencil = ink("#4a3e33", 0.95);
+    fade(pencil, 0, 0.05, 0.95, [4.2, 5.0]);
     const sketch = [
-      ...rect(-8, 3.6, -4, 3.6, 0.7),
-      ...rect(3.6, 9.6, -4, 4.4, 0.5),
-      ...rect(-6.2, 6.4, -4.2, 3.0, 0.6),
+      ...rect(-7.8, 3.6, -4, 3.4, 0.6),
+      ...rect(3.4, 9.6, -4, 4.4, 0.5),
+      ...rect(-6.4, 6.4, -4.2, 3.0, 0.6),
+      ...rect(-2.5, 3.2, 0.2, 3.2, 0.3),
     ];
-    strokes(sketch, pencil, 0.05, 0.85, { jitter: 0.06 });
-    strokes(sketch, pencil, 0.3, 0.98, { jitter: 0.12 });
+    strokes(sketch, pencil, 0, 0.5, { jitter: 0.03, alwaysVisible: true });
 
-    // ── 02 · Site Visit: Lot Line, Stakes, North Arrow, Sun Path ──
-    const lotMat = ink("#2a211a");
-    fade(lotMat, 1.0, 1.1, 0.7, [6.2, 6.8]);
-    strokes(rect(-14, 14, -8, 12), lotMat, 1.0, 1.55, { piece: 0.5 });
+    // ── 02 · Site Visit: Property Boundary Stakes, North Arrow & Sun Path Arc ──
+    const lotMat = ink("#1f1711");
+    fade(lotMat, 1.0, 1.15, 0.85, [6.0, 6.6]);
+    strokes(rect(-12, 13, -7, 10), lotMat, 1.0, 1.5, { piece: 0.4 });
 
+    // 4 Corner Survey Stakes with Flags
     [
-      [-14, -8],
-      [14, -8],
-      [14, 12],
-      [-14, 12],
+      [-12, -7],
+      [13, -7],
+      [13, 10],
+      [-12, 10],
     ].forEach(([x, z], i) => {
       const s = new THREE.Group();
       s.position.set(x, 0, z);
-      const post = box(-0.12, 0.12, 0, 1.4, -0.12, 0.12, M.stake);
+      const post = box(-0.12, 0.12, 0, 1.5, -0.12, 0.12, M.stake);
       post.position.set(0, 0, 0);
       s.add(post);
-      const flag = box(0, 0.6, 1.05, 1.35, -0.02, 0.02, std("#a07a55"));
-      flag.position.set(0.3, 1.05, 0);
+      const flag = box(0, 0.6, 1.1, 1.45, -0.02, 0.02, std("#b38152"));
+      flag.position.set(0.3, 1.1, 0);
       s.add(flag);
       add(s);
       items.push({
@@ -268,9 +306,9 @@ export default function Journey3DCanvas({
       });
     });
 
-    // North Compass
+    // North Compass on Ground
     const northShape = new THREE.Shape([
-      new THREE.Vector2(0, 1.4),
+      new THREE.Vector2(0, 1.5),
       new THREE.Vector2(0.7, -0.8),
       new THREE.Vector2(0, -0.3),
       new THREE.Vector2(-0.7, -0.8),
@@ -278,25 +316,25 @@ export default function Journey3DCanvas({
     const north = new THREE.Mesh(
       new THREE.ShapeGeometry(northShape),
       new THREE.MeshBasicMaterial({
-        color: "#2a211a",
+        color: "#211a14",
         transparent: true,
         opacity: 0,
         side: THREE.DoubleSide,
       })
     );
     north.rotation.x = -Math.PI / 2;
-    north.position.set(11.5, 0.05, -5.5);
+    north.position.set(10.5, 0.06, -5.0);
     add(north);
-    fade(north.material as THREE.Material & { opacity: number }, 1.3, 1.6, 0.85, [4.4, 5]);
+    fade(north.material as THREE.Material & { opacity: number }, 1.25, 1.55, 0.9, [4.4, 5.0]);
 
     // Sun Arc Across the Sky
     const arcPts: THREE.Vector3[] = [];
     for (let i = 0; i <= 36; i++) {
       const a = (Math.PI * i) / 36;
-      arcPts.push(new THREE.Vector3(Math.cos(a) * 17, Math.sin(a) * 13 + 0.2, -3));
+      arcPts.push(new THREE.Vector3(Math.cos(a) * 15, Math.sin(a) * 11 + 0.3, -2));
     }
-    const arcMat = ink("#a07a55");
-    fade(arcMat, 1.2, 1.3, 0.8, [3.2, 3.8]);
+    const arcMat = ink("#a67c52");
+    fade(arcMat, 1.2, 1.3, 0.85, [3.2, 3.8]);
     const arcEdges: [number, number, number, number, number?, number?][] = [];
     for (let i = 0; i < arcPts.length - 1; i++) {
       arcEdges.push([
@@ -308,11 +346,11 @@ export default function Journey3DCanvas({
         arcPts[i + 1].y,
       ]);
     }
-    strokes(arcEdges, arcMat, 1.25, 1.85, { piece: 0.6 });
+    strokes(arcEdges, arcMat, 1.25, 1.85, { piece: 0.5 });
 
-    // Glowing Sun Ball
-    const sunBall = add(new THREE.Mesh(new THREE.SphereGeometry(0.45, 12, 12), M.sunball));
-    fade(M.sunball, 1.35, 1.5, 0.9, [3.0, 3.5]);
+    // Glowing Golden Sun Ball
+    const sunBall = add(new THREE.Mesh(new THREE.SphereGeometry(0.5, 12, 12), M.sunball));
+    fade(M.sunball, 1.35, 1.5, 0.95, [3.0, 3.5]);
     items.push({
       update: (p) => {
         const t = seg(p, 1.3, 2.0);
@@ -321,7 +359,7 @@ export default function Journey3DCanvas({
       },
     });
 
-    // ── 03 · Design Development: Massing Volumes ──
+    // ── 03 · Design Development: 3D Architectural Massing Volumes ──
     rise(box(-7.6, 3.4, 0, 3.4, -3.8, 3.2, M.massing), 2.05, 2.45);
     rise(box(3.4, 9.4, 0, 3.4, -3.8, 4.2, M.massing), 2.2, 2.6);
     rise(box(-6.2, 6.4, 3.4, 6.8, -4.2, 3.0, M.massing), 2.4, 2.85);
@@ -338,16 +376,16 @@ export default function Journey3DCanvas({
 
     // ── 04 · Plans & Permits: Technical Blueprint Dimensions ──
     const dimMat = ink("#9b2f24");
-    fade(dimMat, 3.0, 3.15, 0.85, [4.4, 4.9]);
+    fade(dimMat, 3.0, 3.15, 0.9, [4.4, 4.9]);
     const dims: [number, number, number, number][] = [
-      [-7.6, 5.0, 3.4, 5.0],
-      [3.4, 5.0, 9.4, 5.0],
-      [10.8, -3.8, 10.8, 4.2],
-      [-9.0, -3.8, -9.0, 3.2],
+      [-7.6, 4.6, 3.4, 4.6],
+      [3.4, 4.6, 9.4, 4.6],
+      [10.4, -3.8, 10.4, 4.2],
+      [-8.6, -3.8, -8.6, 3.2],
     ];
     strokes(dims, dimMat, 3.05, 3.65, { piece: 0.35 });
 
-    // ── 05 · Groundbreaking: Earth Excavation & Rebar Pins ──
+    // ── 05 · Groundbreaking: Excavated Soil Trenches & Rebar Pins ──
     const earthBox = box(-8.6, 9.8, -0.45, 0.05, -4.6, 4.6, M.earth);
     add(earthBox);
     fade(M.earth, 4.0, 4.2, 0.95, [5.1, 5.4]);
@@ -376,7 +414,7 @@ export default function Journey3DCanvas({
           pad.scale.y = Math.max(e, 0.01);
         },
       });
-      const bar = box(x - 0.05, x + 0.05, 0.35, 1.9, z - 0.05, z + 0.05, M.stone);
+      const bar = box(x - 0.06, x + 0.06, 0.35, 1.9, z - 0.06, z + 0.06, M.charcoal);
       add(bar);
       items.push({
         update: (p) => {
@@ -387,21 +425,24 @@ export default function Journey3DCanvas({
       });
     });
 
-    // ── 06 · Construction: Structural Framing, Travertine Portal & Glass ──
+    // ── 06 · Construction: Concrete Columns, Travertine Portal & Luxury Villa Structure ──
     COLS.forEach(([x, z], i) =>
       rise(box(x - 0.22, x + 0.22, 0.35, 3.4, z - 0.22, z + 0.22, M.concrete), 5.0 + i * 0.02, 5.25 + i * 0.02)
     );
-    rise(box(-8.4, 9.6, 0, 0.3, -4.4, 4.4, M.concrete), 5.0, 5.15);
-    rise(box(-7.6, 3.4, 0.3, 3.4, -3.8, 3.2, M.plaster), 5.22, 5.45);
-    rise(box(-9, 9.8, 3.4, 3.75, -4.6, 4.8, M.concrete), 5.4, 5.5);
-    rise(box(-8.8, 9.6, 3.36, 3.4, -4.4, 4.6, M.soffit), 5.45, 5.52);
-    rise(box(-6.2, 6.4, 3.75, 6.8, -4.2, 3.0, M.charcoal), 5.5, 5.72);
-    rise(box(-7.4, 8.0, 6.8, 7.15, -5.2, 4.4, M.concrete), 5.7, 5.8);
-    rise(box(-7.2, 7.8, 6.76, 6.8, -5.0, 4.2, M.soffit), 5.74, 5.8);
-    // Travertine Entrance Portal Tower
-    rise(box(-1.6, -0.3, 0, 7.0, 3.0, 3.9, M.stone), 5.3, 5.7);
+    rise(box(-8.4, 9.6, 0, 0.3, -4.4, 4.4, M.concrete), 5.0, 5.15); // Foundation plinth
+    rise(box(-7.6, 3.4, 0.3, 3.4, -3.8, 3.2, M.plaster), 5.22, 5.45); // GF Stucco walls
+    rise(box(-9, 9.8, 3.4, 3.75, -4.6, 4.8, M.concrete), 5.4, 5.5); // 2F Transfer slab
+    rise(box(-8.8, 9.6, 3.36, 3.4, -4.4, 4.6, M.soffit), 5.45, 5.52); // Timber under-soffit
+    rise(box(-6.2, 6.4, 3.75, 6.8, -4.2, 3.0, M.charcoal), 5.5, 5.72); // 2F Upper pavilion
+    rise(box(-7.4, 8.0, 6.8, 7.15, -5.2, 4.4, M.concrete), 5.7, 5.8); // Continuous roof slab
+    rise(box(-7.2, 7.8, 6.76, 6.8, -5.0, 4.2, M.soffit), 5.74, 5.8); // Timber batten under-soffit
 
-    // Glass Fenestration
+    // Signature Travertine Stone Entrance Portal Tower (Prominent 2-story shaft)
+    rise(box(-1.6, -0.2, 0, 7.0, 2.8, 4.0, M.travertine), 5.3, 5.7);
+    // Grand Oversized Mahogany Pivot Door
+    rise(box(-1.3, -0.5, 0.3, 4.2, 3.96, 4.04, M.mahogany), 5.6, 5.85);
+
+    // Panoramic Floor-to-Ceiling Glass Fenestration
     [
       [-7.3, -1.9, 0.5, 3.2, 3.2, 3.26],
       [-0.1, 3.2, 0.5, 3.2, 3.2, 3.26],
@@ -413,17 +454,17 @@ export default function Journey3DCanvas({
       rise(box(x0, x1, y0, y1, z0, z1, M.glass), 5.72 + i * 0.03, 5.85 + i * 0.03)
     );
 
-    // Acoustic Timber Louvers
+    // Acoustic Vertical Timber Louvers on 2F
     for (let i = 0; i < 18; i++) {
       const x = 1.7 + i * 0.26;
       rise(box(x, x + 0.09, 3.85, 6.7, 3.06, 3.22, M.timber), 5.78 + i * 0.008, 5.9 + i * 0.008);
     }
 
-    // Balustrades
+    // Frameless Glass Balustrades
     rise(box(9.5, 9.56, 3.75, 4.85, -4.4, 4.6, M.rail), 5.85, 5.95);
     rise(box(6.4, 9.56, 3.75, 4.85, 4.54, 4.6, M.rail), 5.85, 5.95);
 
-    // ── 07 · Turnover: Soffit Lights, Reflection Pool & Twilight Atmosphere ──
+    // ── 07 · Turnover: Dusk Illumination, Cascading Waterfall Pool & Twilight Atmosphere ──
     [
       [-9, 9.8, 3.24, 3.36, 4.66, 4.82],
       [-7.4, 8.0, 6.64, 6.76, 4.26, 4.42],
@@ -470,7 +511,7 @@ export default function Journey3DCanvas({
       });
     });
 
-    // Twilight Sky Dome
+    // Twilight Sky Dome Shader
     const sky = new THREE.Mesh(
       new THREE.SphereGeometry(140, 24, 12),
       new THREE.ShaderMaterial({
@@ -491,9 +532,9 @@ export default function Journey3DCanvas({
           uniform float uO;
           void main(){
             float h = clamp(vP.y, -0.1, 1.0);
-            vec3 top = vec3(0.07, 0.09, 0.16);
-            vec3 mid = vec3(0.20, 0.24, 0.38);
-            vec3 hor = vec3(0.93, 0.56, 0.34);
+            vec3 top = vec3(0.06, 0.08, 0.15);
+            vec3 mid = vec3(0.18, 0.22, 0.35);
+            vec3 hor = vec3(0.92, 0.55, 0.32);
             vec3 c = mix(hor, mid, smoothstep(0.0, 0.16, h));
             c = mix(c, top, smoothstep(0.16, 0.7, h));
             gl_FragColor = vec4(c, uO);
@@ -504,8 +545,8 @@ export default function Journey3DCanvas({
     sky.renderOrder = -1;
     add(sky);
 
-    const hemiDay = { sky: new THREE.Color("#fffaf2"), gnd: new THREE.Color("#d8cbb8") };
-    const hemiDusk = { sky: new THREE.Color("#5a6a8c"), gnd: new THREE.Color("#2a2018") };
+    const hemiDay = { sky: new THREE.Color("#fffcf5"), gnd: new THREE.Color("#d4c8b5") };
+    const hemiDusk = { sky: new THREE.Color("#566485"), gnd: new THREE.Color("#251c14") };
 
     items.push({
       update: (p) => {
@@ -515,31 +556,32 @@ export default function Journey3DCanvas({
         if (scene.fog) scene.fog.color.copy(bgColor);
         hemi.color.copy(hemiDay.sky).lerp(hemiDusk.sky, d);
         hemi.groundColor.copy(hemiDay.gnd).lerp(hemiDusk.gnd, d);
-        hemi.intensity = lerp(1.5, 0.55, d);
+        hemi.intensity = lerp(1.6, 0.55, d);
         sun.intensity = lerp(2.2, 0.25, d);
-        sun.color.set("#fff1dc").lerp(new THREE.Color("#ff9f5a"), d);
-        M.glass.emissiveIntensity = 0.75 * on;
-        M.water.emissiveIntensity = 0.9 * on;
+        sun.color.set("#fff3e0").lerp(new THREE.Color("#ff9f5a"), d);
+        M.glass.emissiveIntensity = 0.8 * on;
+        M.water.emissiveIntensity = 0.95 * on;
         warmA.intensity = 70 * on;
         warmB.intensity = 55 * on;
+        waterGlow.intensity = 40 * on;
         sky.material.uniforms.uO.value = d;
         sky.visible = d > 0.01;
-        M.ground.color.set("#e9e2d6").lerp(new THREE.Color("#5b5348"), d);
+        M.ground.color.set("#e5ded2").lerp(new THREE.Color("#4a4238"), d);
       },
     });
 
-    // ── Smooth Spline Camera Flight ──
+    // ── Intimate Close-Up Camera Spline Path (House always prominent and visible!) ──
     const V = (x: number, y: number, z: number) => new THREE.Vector3(x, y, z);
     const camPath = new THREE.CatmullRomCurve3(
       [
-        V(0.5, 40, 9),
-        V(6, 34, 20),
-        V(22, 22, 28),
-        V(28, 13, 24),
-        V(6, 31, 24),
-        V(24, 12, 26),
-        V(23, 8.5, 22),
-        V(23, 3.4, 29),
+        V(9.5, 12.5, 12.5),  // 0: Blueprint drafting axonometric view (close & crisp!)
+        V(11.0, 11.0, 13.5), // 1: Sweeping around site stakes & sun arc
+        V(12.5, 9.0, 12.5),  // 2: Massing volumes rising
+        V(11.8, 7.8, 12.0),  // 3: Technical elevation with stamp
+        V(11.0, 8.5, 12.5),  // 4: Excavation & concrete footings
+        V(10.8, 6.2, 11.8),  // 5: Construction of columns, travertine portal & louvers
+        V(10.2, 3.8, 11.2),  // 6: Dusk eye level looking up at villa standing proud!
+        V(10.2, 3.8, 11.2),  // 7: Clamped at final beauty angle
       ],
       false,
       "centripetal"
@@ -547,14 +589,14 @@ export default function Journey3DCanvas({
 
     const lookPath = new THREE.CatmullRomCurve3(
       [
-        V(0, 0, 1.5),
-        V(0, 0, 2),
-        V(0, 1.5, 1.5),
-        V(0, 3, 0.5),
-        V(0, 0.5, 1.5),
-        V(0, 1.5, 1),
-        V(0, 3, 0),
-        V(0.5, 4.4, 0),
+        V(0, 0.4, 0),        // 0: Center of blueprint
+        V(0, 0.8, 0.5),      // 1: Center of site
+        V(0, 1.8, 0.8),      // 2: Massing center
+        V(0, 2.0, 0.8),      // 3: Elevation center
+        V(0, 1.2, 0.5),      // 4: Footing center
+        V(0, 2.2, 0.8),      // 5: Travertine portal center
+        V(0.2, 2.4, 0.8),    // 6: Completed villa facade
+        V(0.2, 2.4, 0.8),    // 7: Completed villa facade
       ],
       false,
       "centripetal"
@@ -578,7 +620,7 @@ export default function Journey3DCanvas({
       const h = canvas.clientHeight || 1;
       renderer.setSize(w, h, false);
       camera.aspect = w / h;
-      camera.fov = w / h < 1.2 ? 38 : 30;
+      camera.fov = w / h < 1.2 ? 36 : 30;
       camera.updateProjectionMatrix();
       dirty = true;
     }
@@ -588,14 +630,14 @@ export default function Journey3DCanvas({
       camPath.getPoint(t, pos);
       lookPath.getPoint(t, look);
 
-      const drift = lean.x * 0.05;
+      const drift = lean.x * 0.04;
       const dx = pos.x - look.x;
       const dz = pos.z - look.z;
       const c = Math.cos(drift);
       const s = Math.sin(drift);
       pos.x = look.x + dx * c - dz * s;
       pos.z = look.z + dx * s + dz * c;
-      pos.y += lean.y * 0.7;
+      pos.y += lean.y * 0.6;
 
       camera.position.copy(pos);
       camera.lookAt(look);
@@ -654,7 +696,7 @@ export default function Journey3DCanvas({
     ro.observe(canvas);
     resize();
 
-    // IntersectionObserver: Pause rendering when off-screen to guarantee 0% idle CPU/GPU
+    // IntersectionObserver: Pause rendering when off-screen (0% idle CPU/GPU)
     const io = new IntersectionObserver(
       ([entry]) => {
         visible = entry.isIntersecting;
