@@ -629,7 +629,8 @@ export default function Journey3DCanvas({
       const h = canvas.clientHeight || 1;
       renderer.setSize(w, h, false);
       camera.aspect = w / h;
-      camera.fov = w / h < 1.2 ? 36 : 30;
+      // Adaptive FOV: Wider framing on mobile screens so villa is never cropped
+      camera.fov = w < 768 ? 39 : w / h < 1.35 ? 35 : 30;
       camera.updateProjectionMatrix();
       dirty = true;
     }
@@ -662,15 +663,16 @@ export default function Journey3DCanvas({
 
       const dt = Math.min((now - (last || now)) / 1000, 0.05);
       last = now;
-      const k = 1 - Math.pow(0.001, dt);
+      // Critically damped follow: zero sluggish lag, tracks scroll wheel with 60fps fluidity
+      const k = Math.min(1, dt * 26);
       shown = shown < 0 ? target : shown + (target - shown) * k;
-      if (Math.abs(target - shown) < 0.0005) shown = target;
+      if (Math.abs(target - shown) < 0.0002) shown = target;
 
       const lx = lean.x;
       const ly = lean.y;
       const before = drawn;
-      lean.x += (lean.tx - lean.x) * 0.08;
-      lean.y += (lean.ty - lean.y) * 0.08;
+      lean.x += (lean.tx - lean.x) * 0.12;
+      lean.y += (lean.ty - lean.y) * 0.12;
 
       if (
         shown === before &&
@@ -731,6 +733,7 @@ export default function Journey3DCanvas({
     const handle: Journey3DHandle = {
       setProgress: (p: number) => {
         target = clamp(p, 0, 7);
+        dirty = true;
       },
     };
     engineRef.current = handle;
