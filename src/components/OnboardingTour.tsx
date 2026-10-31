@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import Image from "next/image";
 import { X, ArrowRight, ArrowLeft, Check, Sparkles, Navigation } from "lucide-react";
 
@@ -101,7 +101,83 @@ export default function OnboardingTour() {
   const [name, setName] = useState("");
   const [currentStep, setCurrentStep] = useState(0);
   const [isScrolling, setIsScrolling] = useState(false);
+  const [boxRect, setBoxRect] = useState<{
+    top: number;
+    left: number;
+    width: number;
+    height: number;
+  } | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
+
+  // Helper to retrieve the prominent inner container or fallback to section
+  const getTargetContentEl = (stepId: string): HTMLElement | null => {
+    const targetEl = document.getElementById(stepId);
+    if (!targetEl) return null;
+    if (stepId === "footer") {
+      const maxWContainers = targetEl.querySelectorAll(".max-w-7xl");
+      return (maxWContainers[1] as HTMLElement) || (maxWContainers[0] as HTMLElement) || targetEl;
+    }
+    return (targetEl.querySelector(".max-w-7xl") as HTMLElement) || targetEl;
+  };
+
+  // Smooth unhurried scroll helper
+  const scrollToStep = useCallback((stepIndex: number) => {
+    const targetStep = TOUR_STEPS[stepIndex];
+    if (!targetStep) return;
+
+    setIsScrolling(true);
+    const contentEl = getTargetContentEl(targetStep.id);
+    if (contentEl) {
+      const topOffset = contentEl.getBoundingClientRect().top + window.scrollY - 100;
+      window.scrollTo({
+        top: Math.max(0, topOffset),
+        behavior: "smooth",
+      });
+    }
+
+    setTimeout(() => {
+      setIsScrolling(false);
+    }, 900);
+  }, []);
+
+  const handleSkipTour = useCallback(() => {
+    sessionStorage.setItem("rbc_tour_seen", "true");
+    setIsOpen(false);
+    setHasStarted(false);
+    setBoxRect(null);
+  }, []);
+
+  const handleNext = useCallback(() => {
+    if (currentStep < TOUR_STEPS.length - 1) {
+      const nextStep = currentStep + 1;
+      setCurrentStep(nextStep);
+      scrollToStep(nextStep);
+    } else {
+      // Finished tour
+      setIsOpen(false);
+      setHasStarted(false);
+      setBoxRect(null);
+    }
+  }, [currentStep, scrollToStep]);
+
+  const handlePrev = useCallback(() => {
+    if (currentStep > 0) {
+      const prevStep = currentStep - 1;
+      setCurrentStep(prevStep);
+      scrollToStep(prevStep);
+    }
+  }, [currentStep, scrollToStep]);
+
+  const handleStartTour = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    const finalName = name.trim() || "Distinguished Guest";
+    setName(finalName);
+    localStorage.setItem("rbc_viewer_name", finalName);
+    sessionStorage.setItem("rbc_tour_seen", "true");
+    setHasStarted(true);
+    setCurrentStep(0);
+    scrollToStep(0);
+  };
 
   // Check if tour should prompt on initial mount
   useEffect(() => {
@@ -120,62 +196,72 @@ export default function OnboardingTour() {
     }
   }, []);
 
-  // Smooth unhurried scroll helper
-  const scrollToStep = (stepIndex: number) => {
-    const targetStep = TOUR_STEPS[stepIndex];
-    if (!targetStep) return;
+  // Recalculate highlighted box bounds when step changes or window resizes
+  useEffect(() => {
+    if (!isOpen || !hasStarted) {
+      return;
+    }
 
-    setIsScrolling(true);
-    const el = document.getElementById(targetStep.id);
-    if (el) {
-      const topOffset = el.getBoundingClientRect().top + window.scrollY - 84;
-      window.scrollTo({
-        top: Math.max(0, topOffset),
-        behavior: "smooth",
+    const updateRect = () => {
+      const step = TOUR_STEPS[currentStep];
+      if (!step) return;
+      const contentEl = getTargetContentEl(step.id);
+      if (!contentEl) return;
+
+      const rect = contentEl.getBoundingClientRect();
+      const pad = window.innerWidth < 640 ? 10 : 20;
+
+      setBoxRect({
+        top: Math.round(rect.top + window.scrollY - pad),
+        left: Math.round(Math.max(6, rect.left + window.scrollX - pad)),
+        width: Math.round(Math.min(window.innerWidth - 12, rect.width + pad * 2)),
+        height: Math.round(rect.height + pad * 2),
       });
+    };
+
+    // Immediate calculation + settling updates after scroll animation finishes
+    const timer1 = setTimeout(updateRect, 100);
+    const timer2 = setTimeout(updateRect, 950);
+
+    window.addEventListener("resize", updateRect);
+
+    // Observe size changes of target element (e.g. tab switches, filters)
+    const step = TOUR_STEPS[currentStep];
+    const contentEl = step ? getTargetContentEl(step.id) : null;
+    let observer: ResizeObserver | null = null;
+    if (contentEl && typeof ResizeObserver !== "undefined") {
+      observer = new ResizeObserver(() => {
+        updateRect();
+      });
+      observer.observe(contentEl);
     }
 
-    setTimeout(() => {
-      setIsScrolling(false);
-    }, 900);
-  };
+    return () => {
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+      window.removeEventListener("resize", updateRect);
+      if (observer) observer.disconnect();
+    };
+  }, [isOpen, hasStarted, currentStep]);
 
-  const handleStartTour = (e?: React.FormEvent) => {
-    if (e) e.preventDefault();
-    const finalName = name.trim() || "Distinguished Guest";
-    setName(finalName);
-    localStorage.setItem("rbc_viewer_name", finalName);
-    sessionStorage.setItem("rbc_tour_seen", "true");
-    setHasStarted(true);
-    setCurrentStep(0);
-    scrollToStep(0);
-  };
-
-  const handleSkipTour = () => {
-    sessionStorage.setItem("rbc_tour_seen", "true");
-    setIsOpen(false);
-    setHasStarted(false);
-  };
-
-  const handleNext = () => {
-    if (currentStep < TOUR_STEPS.length - 1) {
-      const nextStep = currentStep + 1;
-      setCurrentStep(nextStep);
-      scrollToStep(nextStep);
-    } else {
-      // Finished tour
-      setIsOpen(false);
-      setHasStarted(false);
-    }
-  };
-
-  const handlePrev = () => {
-    if (currentStep > 0) {
-      const prevStep = currentStep - 1;
-      setCurrentStep(prevStep);
-      scrollToStep(prevStep);
-    }
-  };
+  // Keyboard navigation support (ArrowRight, ArrowLeft, Escape)
+  useEffect(() => {
+    if (!isOpen || !hasStarted) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "ArrowRight") {
+        e.preventDefault();
+        handleNext();
+      } else if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        handlePrev();
+      } else if (e.key === "Escape") {
+        e.preventDefault();
+        handleSkipTour();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, hasStarted, handleNext, handlePrev, handleSkipTour]);
 
   const stepData = TOUR_STEPS[currentStep];
   const displayName = name.trim() || "Distinguished Guest";
@@ -274,7 +360,54 @@ export default function OnboardingTour() {
         </div>
       )}
 
-      {/* State 2: Floating Tour Concierge Card (Active Walkthrough) */}
+      {/* State 2A: Active Feature Highlighting Box */}
+      {isOpen && hasStarted && boxRect && (
+        <div
+          aria-hidden="true"
+          className="absolute z-40 pointer-events-none transition-all duration-700 ease-out"
+          style={{
+            top: `${boxRect.top}px`,
+            left: `${boxRect.left}px`,
+            width: `${boxRect.width}px`,
+            height: `${boxRect.height}px`,
+          }}
+        >
+          {/* Main Glowing Architectural Box Frame */}
+          <div
+            className="relative w-full h-full border-2 border-accent/90 ring-1 ring-accent/30 ring-offset-2 ring-offset-[#0c0c0b] rounded-sm"
+            style={{
+              boxShadow:
+                "0 0 35px rgba(197, 168, 128, 0.4), 0 0 85px rgba(197, 168, 128, 0.2), inset 0 0 40px rgba(197, 168, 128, 0.05)",
+            }}
+          >
+            {/* Architectural Crosshair Corners */}
+            <div className="absolute -top-1.5 -left-1.5 w-6 h-6 border-t-2 border-l-2 border-accent" />
+            <div className="absolute -top-1.5 -right-1.5 w-6 h-6 border-t-2 border-r-2 border-accent" />
+            <div className="absolute -bottom-1.5 -left-1.5 w-6 h-6 border-b-2 border-l-2 border-accent" />
+            <div className="absolute -bottom-1.5 -right-1.5 w-6 h-6 border-b-2 border-r-2 border-accent" />
+
+            {/* Top Luminous Spotlight Badge */}
+            <div className="absolute -top-4 left-4 sm:left-8 px-3.5 py-1 bg-[#0c0c0b] border border-accent shadow-2xl flex items-center gap-2.5 rounded-full pointer-events-auto">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-accent" />
+              </span>
+              <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.24em] text-accent font-mono font-medium whitespace-nowrap">
+                ✦ Highlighted Feature &middot; {stepData.title}
+              </span>
+            </div>
+
+            {/* Bottom Technical Specification Tag */}
+            <div className="hidden sm:flex absolute -bottom-3.5 right-6 sm:right-8 px-3 py-0.5 bg-[#0c0c0b] border border-accent/60 text-[9px] font-mono text-accent/90 uppercase tracking-[0.2em] items-center gap-2 shadow-lg">
+              <span>FEATURE #{stepData.id.toUpperCase()}</span>
+              <span className="text-muted/60">&bull;</span>
+              <span>SECTION {currentStep + 1} OF {TOUR_STEPS.length}</span>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* State 2B: Floating Tour Concierge Card (Active Walkthrough) */}
       {isOpen && hasStarted && (
         <div className="fixed bottom-6 left-4 right-4 sm:left-6 sm:right-auto sm:w-[460px] z-[80] bg-[#121110]/95 backdrop-blur-2xl border border-accent/60 p-6 sm:p-7 shadow-2xl text-foreground animate-in slide-in-from-bottom-5 duration-300">
           {/* Progress Header */}
