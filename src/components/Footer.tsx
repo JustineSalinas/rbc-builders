@@ -359,9 +359,18 @@ export default function Footer() {
             <span>15-Year Structural Warranty &middot; PRC Licensed Architectural &amp; Engineering Practice</span>
           </div>
 
-          <p className="text-[11px] text-muted/70 text-center md:text-right">
-            &copy; 2026 RBC Builders Design-Build &amp; Construction Services. All rights reserved.
-          </p>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => window.dispatchEvent(new CustomEvent("rbc:open-tour"))}
+              className="inline-flex items-center gap-1.5 text-xs text-muted hover:text-accent transition-colors underline underline-offset-4 cursor-pointer"
+            >
+              <span>Take a Tour of This Site</span>
+            </button>
+            <span>&middot;</span>
+            <p className="text-[11px] text-muted/70">
+              &copy; 2026 RBC Builders. All rights reserved.
+            </p>
+          </div>
 
           <button
             onClick={scrollToTop}

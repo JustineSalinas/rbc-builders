@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { Menu, X, ArrowUpRight, Phone } from "lucide-react";
+import { Menu, X, ArrowUpRight, Phone, Compass } from "lucide-react";
 
 const NAV_LINKS = [
   { href: "#about", label: "About" },
@@ -78,9 +78,18 @@ export default function Navbar() {
             <span>0977 287 3075</span>
           </a>
 
+          <button
+            onClick={() => window.dispatchEvent(new CustomEvent("rbc:open-tour"))}
+            className="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 text-[10.5px] uppercase tracking-[0.16em] text-foreground/75 hover:text-accent border border-black/10 hover:border-accent/40 rounded-full transition-all cursor-pointer bg-white/60"
+            title="Take interactive tour of this website"
+          >
+            <Compass size={12} className="text-accent" />
+            <span>Site Tour</span>
+          </button>
+
           <a
             href="#contact"
-            className="hidden sm:inline-flex items-center gap-2 px-5 py-2.5 text-[10.5px] xl:text-[11.5px] uppercase tracking-[0.18em] font-medium text-white bg-accent hover:bg-accent-dim transition-all duration-300 shadow-sm whitespace-nowrap"
+            className="hidden sm:inline-flex items-center gap-2 px-5 py-2.5 text-[10.5px] xl:text-[11.5px] uppercase tracking-[0.18em] font-medium text-white bg-accent hover:bg-accent-dim transition-all duration-300 shadow-sm whitespace-nowrap rounded-full"
           >
             <span>Start a Project</span>
             <ArrowUpRight size={13} className="shrink-0" />
@@ -117,12 +126,22 @@ export default function Navbar() {
             ))}
 
             <div className="pt-4 border-t border-border flex flex-col gap-3">
+              <button
+                onClick={() => {
+                  setMobileOpen(false);
+                  window.dispatchEvent(new CustomEvent("rbc:open-tour"));
+                }}
+                className="w-full text-center py-2.5 text-xs uppercase tracking-[0.18em] font-medium border border-border text-foreground hover:text-accent hover:border-accent/50 transition-colors rounded-full flex items-center justify-center gap-2 cursor-pointer bg-surface"
+              >
+                <Compass size={13} className="text-accent" />
+                <span>Take Site Tour</span>
+              </button>
               <a
                 href="#contact"
                 onClick={() => setMobileOpen(false)}
                 className="w-full text-center py-3 text-xs uppercase tracking-[0.2em] font-medium bg-accent text-white hover:bg-accent-dim transition-colors rounded-full"
               >
-                Request Private Consultation
+                Start Your Project
               </a>
               <div className="flex items-center justify-between text-xs text-muted pt-1">
                 <span>San Fernando, Pampanga</span>

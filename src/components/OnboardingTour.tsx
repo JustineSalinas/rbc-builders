@@ -196,6 +196,17 @@ export default function OnboardingTour() {
     }
   }, []);
 
+  // Allow triggering the tour anytime via custom event
+  useEffect(() => {
+    const handleTriggerTour = () => {
+      setIsOpen(true);
+      setHasStarted(false);
+      setCurrentStep(0);
+    };
+    window.addEventListener("rbc:open-tour", handleTriggerTour);
+    return () => window.removeEventListener("rbc:open-tour", handleTriggerTour);
+  }, []);
+
   // Recalculate highlighted box bounds when step changes or window resizes
   useEffect(() => {
     if (!isOpen || !hasStarted) {

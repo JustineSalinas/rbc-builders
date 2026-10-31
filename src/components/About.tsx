@@ -66,7 +66,7 @@ export default function About() {
               {/* Monograph caption */}
               <div className="absolute bottom-6 inset-x-6">
                 <span className="text-[10px] uppercase tracking-[0.25em] text-accent-light font-medium block mb-1">
-                  Private Estate Execution
+                  Featured Turnkey Residence
                 </span>
                 <p className="font-serif text-lg text-white font-normal">
                   The Pavilioned Residence · San Fernando
