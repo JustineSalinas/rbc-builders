@@ -124,7 +124,7 @@ export default function Contact() {
             </div>
 
             {/* Map Frame */}
-            <div className="relative aspect-[16/9] w-full overflow-hidden border border-border bg-black grayscale contrast-125 opacity-80 hover:grayscale-0 hover:opacity-100 transition-all duration-700">
+            <div className="relative aspect-[16/9] w-full overflow-hidden border border-border bg-surface shadow-sm rounded-lg">
               <iframe
                 title="RBC Builders San Fernando Pampanga Location"
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d123348.97677457723!2d120.61286948572458!3d15.03407675713437!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3396f79024f227b7%3A0xe54e58bca15a3a4c!2sCity%20of%20San%20Fernando%2C%20Pampanga!5e0!3m2!1sen!2sph!4v1700000000000!5m2!1sen!2sph"
