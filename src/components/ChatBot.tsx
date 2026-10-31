@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { X, Send, Compass, Phone } from "lucide-react";
+import { X, Send, Compass, Phone, Mail } from "lucide-react";
 import { matchIntent, FALLBACK_REPLY } from "@/lib/chatbot-knowledge";
 
 type Message = {
@@ -63,25 +63,58 @@ export default function ChatBot() {
 
   return (
     <>
-      {/* Floating Action Buttons Stack (Facebook + Chatbot) */}
+      {/* Floating Action Buttons Stack (Email + Phone + Facebook + Chatbot) */}
       <div className="fixed bottom-6 right-6 z-50 flex flex-col items-center gap-2.5">
-        {/* Facebook Page Button (stacked on top of the chatbot) */}
-        <a
-          href="https://www.facebook.com/profile.php?id=100088879215614"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Visit RBC Builders on Facebook"
-          title="Visit our Facebook Page"
-          className="h-11 w-11 rounded-full bg-[#1877F2] hover:bg-[#166FE5] text-white shadow-xl hover:scale-110 transition-all duration-300 flex items-center justify-center border border-white/20 group"
-        >
-          <svg
-            className="w-5 h-5 fill-current transition-transform duration-300 group-hover:scale-110"
-            viewBox="0 0 24 24"
-            aria-hidden="true"
-          >
-            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
-          </svg>
-        </a>
+        {!open && (
+          <>
+            {/* Email Button (on top of phone) */}
+            <a
+              href="mailto:rbcbuilders70@gmail.com"
+              aria-label="Email RBC Builders at rbcbuilders70@gmail.com"
+              title="Official Email: rbcbuilders70@gmail.com"
+              className="relative h-11 w-11 rounded-full bg-[#f6f4ee] hover:bg-white text-[#0c0c0b] shadow-xl hover:scale-110 transition-all duration-300 flex items-center justify-center border border-black/10 group animate-in fade-in slide-in-from-bottom-2 duration-300"
+            >
+              <Mail size={18} className="text-[#0c0c0b] transition-transform duration-300 group-hover:scale-110" />
+              <span className="absolute right-full mr-3 px-2.5 py-1 bg-[#141312] border border-white/10 text-foreground text-[11px] font-mono whitespace-nowrap rounded-md opacity-0 pointer-events-none group-hover:opacity-100 group-hover:-translate-x-1 transition-all duration-200 shadow-xl">
+                rbcbuilders70@gmail.com
+              </span>
+            </a>
+
+            {/* Direct Phone / Number Button (on top of facebook) */}
+            <a
+              href="tel:+639772873075"
+              aria-label="Call RBC Builders at 0977 287 3075"
+              title="Hotline: 0977 287 3075"
+              className="relative h-11 w-11 rounded-full bg-[#f6f4ee] hover:bg-white text-[#0c0c0b] shadow-xl hover:scale-110 transition-all duration-300 flex items-center justify-center border border-black/10 group animate-in fade-in slide-in-from-bottom-2 duration-300"
+            >
+              <Phone size={18} className="text-[#0c0c0b] transition-transform duration-300 group-hover:scale-110" />
+              <span className="absolute right-full mr-3 px-2.5 py-1 bg-[#141312] border border-white/10 text-foreground text-[11px] font-mono whitespace-nowrap rounded-md opacity-0 pointer-events-none group-hover:opacity-100 group-hover:-translate-x-1 transition-all duration-200 shadow-xl">
+                0977 287 3075
+              </span>
+            </a>
+
+            {/* Facebook Page Button */}
+            <a
+              href="https://www.facebook.com/profile.php?id=100088879215614"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Visit RBC Builders on Facebook"
+              title="Visit our Facebook Page"
+              className="relative h-11 w-11 rounded-full bg-[#1877F2] hover:bg-[#166FE5] text-white shadow-xl hover:scale-110 transition-all duration-300 flex items-center justify-center border border-white/20 group animate-in fade-in slide-in-from-bottom-2 duration-300"
+            >
+              <svg
+                className="w-5 h-5 fill-current transition-transform duration-300 group-hover:scale-110"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+              </svg>
+              <span className="absolute right-full mr-3 px-2.5 py-1 bg-[#141312] border border-white/10 text-foreground text-[11px] font-mono whitespace-nowrap rounded-md opacity-0 pointer-events-none group-hover:opacity-100 group-hover:-translate-x-1 transition-all duration-200 shadow-xl">
+                Facebook Page
+              </span>
+            </a>
+          </>
+        )}
 
         {/* Chatbot Trigger Button */}
         <button
