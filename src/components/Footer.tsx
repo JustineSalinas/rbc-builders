@@ -215,39 +215,47 @@ export default function Footer() {
               </ul>
 
               {/* Direct Touchpoints Box */}
-              <div className="mt-4 pt-4 border-t border-white/10 flex flex-col gap-3">
+              <div className="mt-4 pt-4 border-t border-white/10 flex flex-col gap-2.5">
                 <a
                   href="tel:+639772873075"
-                  className="p-3 bg-surface border border-border hover:border-accent text-xs flex items-center justify-between transition-colors group"
+                  className="p-3 bg-surface border border-border hover:border-accent text-xs flex items-center justify-between gap-3 transition-colors group"
                 >
-                  <span className="text-muted group-hover:text-foreground">Direct Hotline</span>
-                  <span className="text-accent font-mono font-medium">0977 287 3075</span>
+                  <span className="flex items-center gap-2 text-muted group-hover:text-foreground shrink-0">
+                    <Phone size={13} className="text-accent shrink-0" />
+                    <span className="whitespace-nowrap">Direct Hotline</span>
+                  </span>
+                  <span className="text-accent font-mono font-medium text-xs whitespace-nowrap">0977 287 3075</span>
                 </a>
 
                 <a
                   href="mailto:rbcbuilders70@gmail.com"
-                  className="p-3 bg-surface border border-border hover:border-accent text-xs flex items-center justify-between transition-colors group"
+                  className="p-3 bg-surface border border-border hover:border-accent text-xs flex items-center justify-between gap-3 transition-colors group"
                 >
-                  <span className="flex items-center gap-2 text-muted group-hover:text-foreground">
+                  <span className="flex items-center gap-2 text-muted group-hover:text-foreground shrink-0">
                     <Mail size={13} className="text-accent shrink-0" />
-                    <span>Official Email</span>
+                    <span className="whitespace-nowrap">Email</span>
                   </span>
-                  <span className="text-accent font-mono text-[11px]">rbcbuilders70@gmail.com</span>
+                  <span className="text-accent font-mono text-[11px] whitespace-nowrap truncate" title="rbcbuilders70@gmail.com">
+                    rbcbuilders70@gmail.com
+                  </span>
                 </a>
 
                 <a
                   href="https://www.facebook.com/profile.php?id=100088879215614"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-3 bg-[#1877F2]/10 border border-[#1877F2]/30 hover:border-[#1877F2] text-xs flex items-center justify-between transition-colors group text-[#1877F2]"
+                  className="p-3 bg-surface border border-border hover:border-accent text-xs flex items-center justify-between gap-3 transition-colors group"
                 >
-                  <span className="flex items-center gap-2">
-                    <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+                  <span className="flex items-center gap-2 text-muted group-hover:text-foreground shrink-0">
+                    <svg className="w-3.5 h-3.5 fill-accent group-hover:fill-[#1877F2] transition-colors shrink-0" viewBox="0 0 24 24">
                       <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
                     </svg>
-                    <span>Facebook Official Page</span>
+                    <span className="whitespace-nowrap">Facebook</span>
                   </span>
-                  <span>&rarr;</span>
+                  <span className="text-accent group-hover:text-accent-light text-xs font-mono flex items-center gap-1.5 transition-colors whitespace-nowrap">
+                    <span>Follow Page</span>
+                    <span className="group-hover:translate-x-0.5 transition-transform">&rarr;</span>
+                  </span>
                 </a>
               </div>
             </div>
