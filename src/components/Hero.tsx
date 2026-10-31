@@ -88,39 +88,39 @@ export default function Hero() {
             {/* Accreditation Badge */}
             <div className="hero-reveal inline-flex items-center gap-2.5 px-3 py-1 mb-4 border border-accent/40 bg-accent/5 w-fit">
               <span className="h-1.5 w-1.5 rounded-full bg-accent animate-pulse" />
-              <span className="text-[10px] uppercase tracking-[0.26em] text-accent font-medium">
-                Architects &middot; Design &middot; Builders &middot; Central Luzon
+              <span className="text-[10px] uppercase tracking-[0.24em] text-accent font-medium">
+                San Fernando, Pampanga &middot; PRC Licensed Design-Build Practice
               </span>
             </div>
 
             {/* Editorial Main Headline */}
             <h1 className="hero-reveal font-serif text-4xl sm:text-5xl lg:text-[3.7rem] font-light leading-[1.06] tracking-tight text-foreground mb-6">
-              Architecture engineered with permanence.{" "}
+              The Architecture of Permanence.{" "}
               <span className="italic font-normal text-accent block mt-1">
-                Built for generations.
+                Built for Generations.
               </span>
             </h1>
 
             {/* Core Narrative Paragraph */}
             <p className="hero-reveal text-sm sm:text-[15px] text-foreground/75 leading-relaxed font-light mb-8 max-w-lg">
-              Headquartered in the City of San Fernando, Pampanga, RBC Builders unifies architectural planning, seismic structural calculations, LGU municipal permitting, and master general contracting under single-source accountability.
+              Headquartered in the City of San Fernando, Pampanga, RBC Builders unifies bespoke architectural planning, seismic structural calculations, LGU municipal permitting, and turnkey master construction across Central Luzon.
             </p>
 
             {/* Call to Actions */}
             <div className="hero-reveal flex flex-wrap items-center gap-3.5 mb-8">
               <a
                 href="#contact"
-                className="btn btn--accent shadow-md"
+                className="btn btn--accent shadow-md rounded-full px-7"
               >
-                <span>Start a Project</span>
+                <span>Commission an Estate</span>
                 <ArrowRight size={14} />
               </a>
 
               <a
                 href="#projects"
-                className="btn btn--line"
+                className="btn btn--line rounded-full px-6"
               >
-                <span>Explore Works</span>
+                <span>Selected Works</span>
                 <ArrowDownRight size={14} />
               </a>
             </div>

@@ -62,61 +62,80 @@ export default function Footer() {
 
   return (
     <footer id="footer" className="bg-[#f8f6f0] border-t border-border relative overflow-hidden text-foreground">
-      {/* 1. Tamayo-Revisa Finale: Grand Architectural House Stage */}
-      <section className="finale" aria-labelledby="finale-title">
-        <p className="finale__verse font-serif">
-          &ldquo;A planning and design-build practice that creates human lifestyle beyond limitation.&rdquo;
-        </p>
+      {/* 1. RBC Builders Twilight Estate Stage: House Behind Footer */}
+      <section className="rbc-estate-stage" aria-labelledby="estate-finale-title">
+        <div className="py-12 sm:py-16 px-4 text-center max-w-4xl mx-auto">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 mb-4 border border-accent/40 rounded-full bg-accent/10">
+            <span className="h-1.5 w-1.5 rounded-full bg-accent animate-pulse" />
+            <span className="text-[10px] uppercase tracking-[0.26em] text-accent font-medium">
+              San Fernando, Pampanga &middot; Central Luzon
+            </span>
+          </div>
+          <p className="font-serif text-xl sm:text-2xl lg:text-3xl font-light text-[#f5f2eb] leading-snug">
+            &ldquo;Architecture with permanence. Built with precision for generations.&rdquo;
+          </p>
+        </div>
 
-        <div className="finale__stage">
-          {/* House Image with dusk lighting */}
+        <div className="rbc-estate-canvas">
+          {/* Flagship Luxury Villa lit at dusk */}
           <div className="absolute inset-0 overflow-hidden">
             <Image
               src="/images/hero.jpg"
-              alt="RBC Builders bespoke luxury estate lit at dusk"
+              alt="RBC Builders completed luxury estate in Pampanga"
               fill
               quality={95}
               sizes="100vw"
-              className="object-cover object-[50%_25%] finale__sky filter contrast-110 brightness-95"
+              className="object-cover object-[50%_25%] rbc-estate-sky filter contrast-110 brightness-95"
             />
           </div>
 
-          {/* Large Architectural Monograph Watermark Text layered over the sky behind the house */}
-          <p className="finale__word font-serif select-none" aria-hidden="true">
-            BUILDERS
+          {/* Majestic Architectural Watermark in the twilight sky */}
+          <p className="rbc-estate-watermark select-none" aria-hidden="true">
+            RBC BUILDERS
           </p>
 
-          {/* Bottom dusk vignette shade fading smoothly into the cap */}
-          <div className="finale__shade" />
+          {/* Deep dusk ground vignette */}
+          <div className="rbc-estate-shade" />
         </div>
 
-        {/* Finale Cap: Call to Action Bar */}
-        <div className="finale__cap">
-          <div>
-            <p className="text-[10.5px] uppercase tracking-[0.28em] text-[#c8a483] font-medium mb-2">
-              Designed &amp; Built by RBC Builders
+        {/* Estate Consultation Action Bar */}
+        <div className="rbc-estate-cap">
+          <div className="max-w-xl">
+            <p className="text-[10.5px] uppercase tracking-[0.26em] text-accent font-medium mb-2">
+              Bespoke Residential Commission
             </p>
-            <h2 id="finale-title" className="finale__title font-serif">
-              Let&apos;s create your dream into reality.
+            <h2 id="estate-finale-title" className="font-serif text-3xl sm:text-4xl lg:text-5xl font-light text-[#f5f2eb] leading-[1.1]">
+              Every dream residence begins with a conversation.
             </h2>
+            <p className="text-xs sm:text-sm text-[#ded8cd] font-light mt-3 leading-relaxed">
+              Schedule a private design-build consultation with our chief architects and structural engineers.
+            </p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-4 sm:gap-6">
+          <div className="flex flex-wrap items-center gap-3 sm:gap-4">
             <a
               href="#contact"
-              className="btn btn--accent shadow-2xl"
+              className="btn btn--accent shadow-2xl rounded-full px-7"
             >
-              <span>Start your project</span>
+              <span>Commission an Estate</span>
               <ArrowRight size={14} />
+            </a>
+
+            <a
+              href="tel:+639772873075"
+              className="inline-flex items-center gap-2 px-5 py-3.5 text-xs uppercase tracking-[0.16em] font-mono text-[#f5f2eb] border border-white/20 hover:border-accent hover:text-accent transition-colors rounded-full bg-white/5 backdrop-blur-sm"
+            >
+              <Phone size={13} className="text-accent shrink-0" />
+              <span>0977 287 3075</span>
             </a>
 
             <button
               onClick={scrollToTop}
               aria-label="Back to top"
-              className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-[#a8adb6] hover:text-white transition-colors"
+              className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-[#ded8cd]/70 hover:text-white transition-colors py-2 px-1"
             >
-              <span>Back to top</span>
-              <ArrowUp size={14} />
+              <span>Top</span>
+              <ArrowUp size={13} />
             </button>
           </div>
         </div>
@@ -281,11 +300,11 @@ export default function Footer() {
             <div className="w-[85vw] h-48 bg-[radial-gradient(ellipse_at_center,rgba(154,116,66,0.18)_0%,rgba(154,116,66,0.08)_45%,transparent_75%)] blur-2xl" />
           </div>
 
-          <span className="architectural-glow-hover wordmark wordmark--xl relative z-10 font-light text-foreground/[0.08] tracking-[0.2em] uppercase leading-none inline-flex items-center justify-center whitespace-nowrap select-none">
-            RBC<i></i>BUILDERS
+          <span className="architectural-glow-hover font-serif text-[8.5vw] font-light text-foreground/[0.08] tracking-[0.2em] uppercase leading-none block whitespace-nowrap select-none">
+            RBC BUILDERS
           </span>
           <p className="text-[11px] sm:text-xs uppercase tracking-[0.3em] text-accent font-light mt-3">
-            Architects &middot; Design &middot; Builders &middot; Central Luzon
+            Design &middot; Build &middot; Architecture &middot; San Fernando, Pampanga
           </p>
 
           {/* Architectural illuminated subline that blooms with the signature */}

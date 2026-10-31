@@ -32,9 +32,9 @@ export default function Navbar() {
             : "bg-white/75 backdrop-blur-xl border border-black/[0.06] shadow-md shadow-black/[0.03]"
         }`}
       >
-        {/* Left: Brand Identity with Tamayo-Revisa architectural wordmark */}
-        <a href="#top" className="flex items-center gap-3 group shrink-0" aria-label="RBC Builders - Architects · Design · Builders">
-          <div className="relative h-8 w-8 sm:h-9 sm:w-9 overflow-hidden rounded-full border border-accent/40 group-hover:border-accent transition-colors shrink-0">
+        {/* Left: Brand Identity */}
+        <a href="#top" className="flex items-center gap-3 group shrink-0" aria-label="RBC Builders - Design & Build Architecture">
+          <div className="relative h-8 w-8 sm:h-9 sm:w-9 overflow-hidden rounded-full border border-accent/40 group-hover:border-accent group-hover:shadow-[0_0_12px_rgba(154,116,66,0.3)] transition-all duration-300 shrink-0">
             <Image
               src="/images/logo.jpg"
               alt="RBC Builders"
@@ -45,11 +45,11 @@ export default function Navbar() {
             />
           </div>
           <div className="flex flex-col justify-center">
-            <span className="wordmark text-[14px] sm:text-[15.5px] font-medium text-foreground group-hover:text-accent transition-colors leading-none tracking-[0.24em]">
-              RBC<i></i>BUILDERS
+            <span className="font-serif text-[15px] sm:text-[17px] font-medium tracking-[0.12em] text-foreground group-hover:text-accent transition-colors leading-none uppercase">
+              RBC BUILDERS
             </span>
-            <span className="text-[7.5px] sm:text-[8.5px] uppercase tracking-[0.22em] text-muted font-light mt-1 leading-none">
-              Architects &middot; Design &middot; Builders
+            <span className="text-[7.5px] sm:text-[8.5px] uppercase tracking-[0.22em] text-muted font-sans font-light mt-1 leading-none">
+              Design &middot; Build &middot; Architecture
             </span>
           </div>
         </a>

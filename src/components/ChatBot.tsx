@@ -65,7 +65,7 @@ export default function ChatBot() {
     <>
       {/* Floating Action Elements (Pill on left + Vertical Button Stack on right) */}
       <div className="fixed bottom-6 right-6 z-50 flex items-end gap-3">
-        {/* 'Planning a build? Ask us.' teaser pill from Tamayo-Revisa dock */}
+        {/* RBC Architectural Concierge Teaser Pill */}
         {!open && (
           <button
             type="button"
@@ -78,7 +78,7 @@ export default function ChatBot() {
               <span className="relative inline-flex rounded-full h-2 w-2 bg-accent" />
             </span>
             <span className="text-xs font-normal tracking-tight text-foreground group-hover:text-accent transition-colors whitespace-nowrap">
-              Planning a build? <strong className="font-medium text-accent">Ask us.</strong>
+              RBC Concierge &middot; <strong className="font-medium text-accent">Ask Us Anything</strong>
             </span>
           </button>
         )}
@@ -136,7 +136,7 @@ export default function ChatBot() {
             </>
           )}
 
-          {/* Chatbot Trigger Button (bottom anchor) with Tamayo-Revisa architectural mark */}
+          {/* Chatbot Trigger Button (bottom anchor) */}
           <button
             onClick={() => setOpen((v) => !v)}
             aria-label="Toggle RBC Architectural Concierge"
@@ -146,8 +146,8 @@ export default function ChatBot() {
               <X size={20} />
             ) : (
               <div className="relative flex items-center justify-center">
-                <span className="font-mono text-[13px] font-medium tracking-tight text-accent group-hover:text-white transition-colors">
-                  R|B
+                <span className="font-serif text-[12px] font-semibold tracking-wider text-accent group-hover:text-white transition-colors">
+                  RBC
                 </span>
                 <span className="absolute -top-1.5 -right-1.5 h-2 w-2 rounded-full bg-accent ring-2 ring-white" />
               </div>
