@@ -116,21 +116,41 @@ export default function ChatBot() {
           </>
         )}
 
-        {/* Chatbot Trigger Button */}
-        <button
-          onClick={() => setOpen((v) => !v)}
-          aria-label="Toggle RBC Architectural Concierge"
-          className="h-12 w-12 sm:h-13 sm:w-13 rounded-full bg-[#141312] border border-accent/60 text-accent hover:border-accent hover:bg-accent hover:text-[#0c0c0b] shadow-2xl transition-all duration-300 flex items-center justify-center group"
-        >
-          {open ? (
-            <X size={20} />
-          ) : (
-            <div className="relative flex items-center justify-center">
-              <Compass size={22} className="group-hover:rotate-45 transition-transform duration-500" />
-              <span className="absolute -top-1 -right-1 h-2.5 w-2.5 rounded-full bg-accent ring-2 ring-[#0c0c0b]" />
-            </div>
+        {/* Chatbot Trigger Row (Text Pill + Circular Trigger Button) */}
+        <div className="flex items-center gap-2.5">
+          {!open && (
+            <button
+              type="button"
+              onClick={() => setOpen(true)}
+              aria-label="Open architectural advisory chat"
+              className="flex items-center gap-2 px-3.5 py-2 rounded-full bg-[#141312]/95 hover:bg-[#1c1a18] border border-accent/50 hover:border-accent text-foreground shadow-2xl backdrop-blur-md transition-all duration-300 hover:scale-105 group cursor-pointer"
+            >
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-accent" />
+              </span>
+              <span className="text-xs font-medium tracking-tight text-foreground group-hover:text-accent transition-colors whitespace-nowrap">
+                Ask us anything
+              </span>
+            </button>
           )}
-        </button>
+
+          {/* Chatbot Trigger Button */}
+          <button
+            onClick={() => setOpen((v) => !v)}
+            aria-label="Toggle RBC Architectural Concierge"
+            className="h-12 w-12 sm:h-13 sm:w-13 rounded-full bg-[#141312] border border-accent/60 text-accent hover:border-accent hover:bg-accent hover:text-[#0c0c0b] shadow-2xl transition-all duration-300 flex items-center justify-center group shrink-0"
+          >
+            {open ? (
+              <X size={20} />
+            ) : (
+              <div className="relative flex items-center justify-center">
+                <Compass size={22} className="group-hover:rotate-45 transition-transform duration-500" />
+                <span className="absolute -top-1 -right-1 h-2.5 w-2.5 rounded-full bg-accent ring-2 ring-[#0c0c0b]" />
+              </div>
+            )}
+          </button>
+        </div>
       </div>
 
       {/* Concierge Panel */}
