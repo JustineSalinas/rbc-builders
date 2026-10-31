@@ -1,285 +1,167 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
-import { ArrowUp, ArrowUpRight } from "lucide-react";
-import { gsap } from "@/lib/gsap";
+import { ArrowUp } from "lucide-react";
 import { useReveal } from "@/lib/useReveal";
 
-const EXPLORE = [
-  { href: "#about", label: "About" },
-  { href: "#services", label: "Services" },
-  { href: "#process", label: "Process" },
-  { href: "#projects", label: "Portfolio" },
-  { href: "#pricing", label: "Pricing" },
-  { href: "#contact", label: "Contact" },
+const EXPLORE_LINKS = [
+  { href: "#about", label: "The Practice" },
+  { href: "#services", label: "Disciplines" },
+  { href: "#projects", label: "Selected Works" },
+  { href: "#specifications", label: "Specifications & Cost" },
+  { href: "#methodology", label: "Design-Build Methodology" },
+  { href: "#contact", label: "Commission An Estate" },
 ];
 
-const AREAS = [
-  "San Fernando",
-  "Tarlac",
-  "Angeles City",
-  "Olongapo",
-  "Balanga",
-  "Mariveles",
+const SERVICE_REGIONS = [
+  "San Fernando (Headquarters)",
+  "Angeles City & Clark",
+  "Tarlac City & Province",
+  "Balanga & Mariveles (Bataan)",
+  "Olongapo & Subic (Zambales)",
+  "Guagua, Lubao & Mexico (Pampanga)",
 ];
-
-const TICKER_WORDS = Array(6).fill("RBC BUILDERS");
 
 export default function Footer() {
-  const ref = useReveal<HTMLDivElement>();
-  const magnetRef = useRef<HTMLSpanElement | null>(null);
-  const magnetBtnRef = useRef<HTMLAnchorElement | null>(null);
-  const [progress, setProgress] = useState(0);
-  const [time, setTime] = useState<string | null>(null);
-  const circumference = 2 * Math.PI * 17;
+  const footerNavRef = useReveal<HTMLDivElement>();
+  const [manilaTime, setManilaTime] = useState<string>("");
 
-  // Live Philippine time
   useEffect(() => {
-    const update = () =>
-      setTime(
+    const updateTime = () => {
+      const now = new Date();
+      setManilaTime(
         new Intl.DateTimeFormat("en-PH", {
-          hour: "numeric",
-          minute: "2-digit",
           timeZone: "Asia/Manila",
-        }).format(new Date())
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+          hour12: true,
+        }).format(now)
       );
-    update();
-    const id = setInterval(update, 30_000);
-    return () => clearInterval(id);
+    };
+    updateTime();
+    const interval = setInterval(updateTime, 1000);
+    return () => clearInterval(interval);
   }, []);
 
-  // Magnetic pull on the footer CTA icon
-  useEffect(() => {
-    const btn = magnetBtnRef.current;
-    const icon = magnetRef.current;
-    if (!btn || !icon) return;
-
-    const moveX = gsap.quickTo(icon, "x", { duration: 0.5, ease: "power3.out" });
-    const moveY = gsap.quickTo(icon, "y", { duration: 0.5, ease: "power3.out" });
-
-    const onMove = (e: MouseEvent) => {
-      const rect = btn.getBoundingClientRect();
-      const relX = e.clientX - (rect.left + rect.width / 2);
-      const relY = e.clientY - (rect.top + rect.height / 2);
-      moveX(relX * 0.35);
-      moveY(relY * 0.35);
-    };
-    const onLeave = () => {
-      moveX(0);
-      moveY(0);
-    };
-
-    btn.addEventListener("mousemove", onMove);
-    btn.addEventListener("mouseleave", onLeave);
-    return () => {
-      btn.removeEventListener("mousemove", onMove);
-      btn.removeEventListener("mouseleave", onLeave);
-    };
-  }, []);
-
-  // Scroll progress for the back-to-top ring
-  useEffect(() => {
-    let raf = 0;
-    const update = () => {
-      const scrollTop = window.scrollY;
-      const max = document.documentElement.scrollHeight - window.innerHeight;
-      setProgress(max > 0 ? Math.min(1, scrollTop / max) : 0);
-      raf = requestAnimationFrame(update);
-    };
-    raf = requestAnimationFrame(update);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   return (
-    <footer className="relative bg-surface border-t border-border overflow-hidden">
-      {/* Blueprint grid texture */}
-      <div
-        className="absolute inset-0 opacity-[0.025] pointer-events-none"
-        style={{
-          backgroundImage:
-            "linear-gradient(var(--accent) 1px, transparent 1px), linear-gradient(90deg, var(--accent) 1px, transparent 1px)",
-          backgroundSize: "48px 48px",
-        }}
-      />
-
-      {/* Giant background wordmark ticker */}
-      <div className="absolute inset-x-0 top-10 sm:top-16 pointer-events-none select-none overflow-hidden">
-        <div className="flex whitespace-nowrap animate-marquee">
-          {[...TICKER_WORDS, ...TICKER_WORDS].map((word, i) => (
-            <span
-              key={i}
-              className="text-outline font-display text-[18vw] sm:text-[11vw] leading-none px-6 opacity-[0.07]"
-            >
-              {word}
-            </span>
-          ))}
-        </div>
+    <footer className="bg-[#08090a] border-t border-border relative overflow-hidden text-foreground">
+      {/* Luxury Mansion Background Image with Deep Architectural Atmosphere */}
+      <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
+        <Image
+          src="/images/hero.jpg"
+          alt="RBC Builders Luxury Mansion"
+          fill
+          quality={95}
+          className="object-cover object-center opacity-25 sm:opacity-30 scale-105 filter contrast-110 brightness-90"
+        />
+        {/* Layered Architectural Gradients for Deep Contrast & High Legibility */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0c0c0b]/95 via-[#0c0c0b]/80 to-[#08090a]/98" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(12,12,11,0.7)_70%,rgba(8,9,10,0.95)_100%)]" />
       </div>
 
-      <div ref={ref} className="relative px-4 sm:px-6">
-        {/* CTA strip */}
-        <div className="mx-auto max-w-7xl pt-24 pb-20 sm:pt-32 sm:pb-28">
-          <p data-reveal className="flex items-center gap-2 text-xs uppercase tracking-[0.3em] text-accent mb-6">
-            <span className="relative flex h-1.5 w-1.5">
-              <span className="absolute inline-flex h-full w-full rounded-full bg-accent opacity-75 animate-ping [animation-duration:2.5s]" />
-              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-accent" />
-            </span>
-            San Fernando, PH{time ? ` · ${time}` : ""} &middot; Open for new projects
-          </p>
-          <a
-            ref={magnetBtnRef}
-            href="tel:+639772873075"
-            data-reveal
-            data-reveal-delay="0.08"
-            data-cursor-label="Call"
-            className="group inline-flex flex-wrap items-center gap-x-5 font-display text-4xl sm:text-6xl md:text-7xl leading-[1.05]"
-          >
-            Let&apos;s build it right.
-            <span className="inline-flex h-12 w-12 sm:h-16 sm:w-16 items-center justify-center rounded-full bg-accent text-background group-hover:bg-foreground transition-colors">
-              <span ref={magnetRef} className="inline-flex">
-                <ArrowUpRight size={26} />
-              </span>
-            </span>
-          </a>
-          <p data-reveal data-reveal-delay="0.14" className="mt-6 text-sm text-foreground/60 max-w-sm">
-            Call, text, or send an inquiry below. We typically respond within
-            one business day.
-          </p>
-        </div>
+      <div className="relative z-10">
+        {/* Top Monograph Bar */}
+        <div ref={footerNavRef} className="mx-auto max-w-7xl px-4 sm:px-8 py-16 sm:py-20 border-b border-white/10">
+          <div data-reveal className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+            {/* Brand & Mission */}
+            <div data-reveal data-reveal-delay="0.05" className="lg:col-span-5 flex flex-col gap-6">
+              <div className="flex items-center gap-3">
+                <div className="relative h-10 w-10 overflow-hidden border border-white/10 rounded-sm">
+                  <Image
+                    src="/images/logo.jpg"
+                    alt="RBC Builders"
+                    fill
+                    quality={95}
+                    sizes="40px"
+                    className="object-cover"
+                  />
+                </div>
+                <div className="flex flex-col">
+                  <span className="font-serif text-xl tracking-wider font-normal text-foreground">
+                    RBC BUILDERS
+                  </span>
+                  <span className="text-[9px] uppercase tracking-[0.25em] text-accent font-light">
+                    Architecture &amp; Construction
+                  </span>
+                </div>
+              </div>
 
-        {/* Link columns */}
-        <div className="mx-auto max-w-7xl grid grid-cols-2 sm:grid-cols-4 gap-10 sm:gap-8 pb-16 border-t border-border pt-16">
-          <div data-reveal className="col-span-2 sm:col-span-1">
-            <div className="flex items-center gap-3 mb-5">
-              <Image
-                src="/images/logo.jpg"
-                alt="RBC Builders"
-                width={36}
-                height={36}
-                className="rounded-sm"
-              />
-              <span className="font-display text-base tracking-wide">
-                RBC BUILDERS
-              </span>
+              <p className="text-xs sm:text-sm text-foreground/75 font-light leading-relaxed max-w-sm">
+                A premier design-build architecture and general contracting firm based in San Fernando, Pampanga. We unify architectural design, structural engineering, government permitting, and turnkey master construction across Central Luzon.
+              </p>
+
+              <div className="flex items-center gap-2.5 text-xs text-muted font-mono">
+                <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+                <span>Manila (PST): {manilaTime || "12:00:00 PM"}</span>
+              </div>
             </div>
-            <p className="text-sm text-foreground/60 leading-relaxed max-w-[26ch]">
-              Design-build construction across Central Luzon, from permits to
-              key turnover.
-            </p>
-          </div>
 
-          <div data-reveal data-reveal-delay="0.06">
-            <p className="text-xs uppercase tracking-wider text-muted mb-5">
-              Explore
-            </p>
-            <ul className="flex flex-col gap-3">
-              {EXPLORE.map((link) => (
-                <li key={link.href}>
+            {/* Navigation Links */}
+            <div className="lg:col-span-3 flex flex-col gap-3">
+              <p className="text-[10px] uppercase tracking-[0.25em] text-accent font-medium mb-1">
+                Architecture &amp; Works
+              </p>
+              <div className="flex flex-col gap-2.5">
+                {EXPLORE_LINKS.map((link) => (
                   <a
+                    key={link.href}
                     href={link.href}
-                    className="text-sm text-foreground/80 hover:text-accent transition-colors"
+                    className="text-xs text-foreground/75 hover:text-accent font-light transition-colors"
                   >
                     {link.label}
                   </a>
-                </li>
-              ))}
-            </ul>
-          </div>
+                ))}
+              </div>
+            </div>
 
-          <div data-reveal data-reveal-delay="0.12">
-            <p className="text-xs uppercase tracking-wider text-muted mb-5">
-              Service Areas
-            </p>
-            <ul className="flex flex-col gap-3">
-              {AREAS.map((area) => (
-                <li key={area} className="text-sm text-foreground/80">
-                  {area}
-                </li>
-              ))}
-            </ul>
-          </div>
+            {/* Regions Served */}
+            <div className="lg:col-span-4 flex flex-col gap-3">
+              <p className="text-[10px] uppercase tracking-[0.25em] text-accent font-medium mb-1">
+                Active Regional Footprint
+              </p>
+              <ul className="grid grid-cols-1 gap-2 text-xs text-foreground/70 font-light">
+                {SERVICE_REGIONS.map((region) => (
+                  <li key={region} className="flex items-center gap-2">
+                    <span className="h-1 w-1 rounded-full bg-accent" />
+                    <span>{region}</span>
+                  </li>
+                ))}
+              </ul>
 
-          <div data-reveal data-reveal-delay="0.18">
-            <p className="text-xs uppercase tracking-wider text-muted mb-5">
-              Contact
-            </p>
-            <ul className="flex flex-col gap-3 text-sm">
-              <li>
-                <a
-                  href="tel:+639772873075"
-                  className="text-foreground/80 hover:text-accent transition-colors"
-                >
+              <div className="mt-4 pt-4 border-t border-border flex items-center justify-between text-xs text-muted">
+                <span>Direct Inquiries:</span>
+                <a href="tel:+639772873075" className="text-accent hover:underline">
                   0977 287 3075
                 </a>
-              </li>
-              <li>
-                <a
-                  href="tel:+639627863202"
-                  className="text-foreground/80 hover:text-accent transition-colors"
-                >
-                  0962 786 3202
-                </a>
-              </li>
-              <li>
-                <a
-                  href="mailto:rbcbuilders70@gmail.com"
-                  className="text-foreground/80 hover:text-accent transition-colors break-all"
-                >
-                  rbcbuilders70@gmail.com
-                </a>
-              </li>
-              <li className="text-foreground/60 pt-1">
-                San Fernando, Pampanga, PH 2005
-              </li>
-            </ul>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Legal bar */}
-      <div className="relative border-t border-border px-4 sm:px-6 py-6">
-        <div className="mx-auto max-w-7xl flex items-center justify-between gap-4">
-          <p className="text-xs text-muted">
-            &copy; 2026 RBC Builders. All rights reserved.
+        {/* Legal & Back-to-Top Bar */}
+        <div className="mx-auto max-w-7xl px-4 sm:px-8 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-muted font-light">
+          <p>
+            &copy; 2026 RBC Builders Design-Build &amp; Construction Services. All rights reserved.
           </p>
 
-          <a
-            href="#top"
-            aria-label="Back to top"
-            className="group relative flex h-11 w-11 items-center justify-center shrink-0"
+          <p className="text-[11px] text-muted/70 text-center sm:text-right">
+            Licensed Civil Engineering &amp; Architectural Practice · San Fernando, Pampanga
+          </p>
+
+          <button
+            onClick={scrollToTop}
+            aria-label="Scroll back to top"
+            className="flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-foreground/80 hover:text-accent transition-colors"
           >
-            <svg
-              className="absolute inset-0 -rotate-90"
-              viewBox="0 0 40 40"
-              width="44"
-              height="44"
-            >
-              <circle
-                cx="20"
-                cy="20"
-                r="17"
-                fill="none"
-                stroke="var(--border)"
-                strokeWidth="1.5"
-              />
-              <circle
-                cx="20"
-                cy="20"
-                r="17"
-                fill="none"
-                stroke="var(--accent)"
-                strokeWidth="1.5"
-                strokeDasharray={circumference}
-                strokeDashoffset={circumference * (1 - progress)}
-                strokeLinecap="round"
-              />
-            </svg>
-            <ArrowUp
-              size={16}
-              className="relative text-foreground group-hover:text-accent group-hover:-translate-y-0.5 transition-all"
-            />
-          </a>
+            <span>Top of Monograph</span>
+            <ArrowUp size={14} className="text-accent" />
+          </button>
         </div>
       </div>
     </footer>

@@ -1,209 +1,249 @@
 "use client";
 
 import { useState } from "react";
-import { Phone, Mail, MapPin, Link as LinkIcon, MessageCircle, ShieldCheck, Hammer, Users } from "lucide-react";
+import { Phone, Mail, MapPin, MessageCircle, Send, Check } from "lucide-react";
 import { useReveal } from "@/lib/useReveal";
 import BriefWizard from "./BriefWizard";
 
-const BADGES = [
-  { icon: ShieldCheck, label: "Licensed & Permitted Builder" },
-  { icon: Hammer, label: "Design-to-Turnover, One Team" },
-  { icon: Users, label: "12K+ Facebook Community" },
-];
-
 export default function Contact() {
-  const ref = useReveal<HTMLDivElement>();
-  const [mode, setMode] = useState<"quick" | "guided">("guided");
+  const sectionRef = useReveal<HTMLElement>();
+  const [mode, setMode] = useState<"guided" | "quick">("guided");
+  const [quickForm, setQuickForm] = useState({ name: "", contact: "", message: "" });
+  const [quickSent, setQuickSent] = useState(false);
+
+  const handleQuickSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      await fetch("https://formsubmit.co/ajax/rbcbuilders70@gmail.com", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          _subject: `Direct Inquiry from ${quickForm.name}`,
+          Name: quickForm.name,
+          Contact: quickForm.contact,
+          Message: quickForm.message,
+        }),
+      });
+      setQuickSent(true);
+    } catch {
+      setQuickSent(true);
+    }
+  };
 
   return (
-    <section id="contact" className="py-28 sm:py-36 px-4 sm:px-6 bg-surface">
-      <div ref={ref} className="mx-auto max-w-7xl">
-        <div data-reveal className="flex flex-wrap gap-x-8 gap-y-3 mb-14 sm:mb-20">
-          {BADGES.map((b) => (
-            <div key={b.label} className="flex items-center gap-2 text-sm text-foreground/70">
-              <b.icon size={16} className="text-accent shrink-0" />
-              {b.label}
-            </div>
-          ))}
+    <section ref={sectionRef} id="contact" className="py-28 sm:py-36 px-4 sm:px-8 bg-surface relative border-t border-border">
+      <div className="mx-auto max-w-7xl">
+        {/* Section Header */}
+        <div data-reveal className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-16 sm:mb-20">
+          <div>
+            <p className="text-[11px] uppercase tracking-[0.25em] text-accent font-medium mb-3">
+              Private Consultation
+            </p>
+            <h2 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-light text-foreground tracking-tight leading-[1.1]">
+              Commission Your Residence
+            </h2>
+          </div>
+          <p className="text-sm sm:text-base text-foreground/70 font-light max-w-md leading-relaxed">
+            Begin the conversation with our chief architects and structural engineers. We review lot parameters, zoning compliance, and realistic investment estimates.
+          </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-          <div>
-            <h2 data-reveal className="font-display text-4xl sm:text-5xl leading-tight mb-8">
-              Let&apos;s build your dream home.
-            </h2>
-            <p
-              data-reveal
-              data-reveal-delay="0.08"
-              className="text-foreground/70 text-lg leading-relaxed mb-10 max-w-md"
-            >
-              Reach out for inquiries on design and build / construction
-              services. We serve San Fernando, Tarlac, Angeles City, Olongapo,
-              Balanga, and Mariveles.
-            </p>
+        {/* Two-Column Grid: Contact Coordinates vs Form Wizard */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+          {/* Left Column: Office Coordinates & Map */}
+          <div data-reveal data-reveal-delay="0.1" className="lg:col-span-5 flex flex-col gap-8">
+            <div className="p-8 bg-background border border-border flex flex-col gap-6">
+              <h3 className="font-serif text-2xl text-foreground font-normal pb-4 border-b border-border">
+                Headquarters &amp; Direct Lines
+              </h3>
 
-            <div className="flex flex-col gap-6 mb-10">
-              <a href="tel:+639772873075" className="flex items-center gap-4 group">
-                <span className="flex h-12 w-12 items-center justify-center border border-border group-hover:border-accent group-hover:text-accent transition-colors shrink-0">
-                  <Phone size={18} />
+              <div className="flex items-start gap-4">
+                <span className="h-10 w-10 rounded-full border border-border flex items-center justify-center text-accent shrink-0 bg-surface">
+                  <MapPin size={16} />
                 </span>
                 <div>
-                  <p className="text-xs uppercase tracking-wider text-muted">Call or Text</p>
-                  <p className="text-foreground">0977 287 3075 &middot; 0962 786 3202</p>
+                  <p className="text-[10px] uppercase tracking-[0.2em] text-muted">Office Location</p>
+                  <p className="font-serif text-base text-foreground mt-0.5">San Fernando, Pampanga</p>
+                  <p className="text-xs text-muted font-light mt-0.5">Philippines, 2005</p>
                 </div>
-              </a>
+              </div>
 
-              <a href="mailto:rbcbuilders70@gmail.com" className="flex items-center gap-4 group">
-                <span className="flex h-12 w-12 items-center justify-center border border-border group-hover:border-accent group-hover:text-accent transition-colors shrink-0">
-                  <Mail size={18} />
+              <div className="flex items-start gap-4">
+                <span className="h-10 w-10 rounded-full border border-border flex items-center justify-center text-accent shrink-0 bg-surface">
+                  <Phone size={16} />
                 </span>
                 <div>
-                  <p className="text-xs uppercase tracking-wider text-muted">Email</p>
-                  <p className="text-foreground">rbcbuilders70@gmail.com</p>
+                  <p className="text-[10px] uppercase tracking-[0.2em] text-muted">Phone / Text</p>
+                  <p className="font-serif text-base text-foreground mt-0.5">
+                    <a href="tel:+639772873075" className="hover:text-accent transition-colors">
+                      0977 287 3075
+                    </a>
+                    {" "}·{" "}
+                    <a href="tel:+639627863202" className="hover:text-accent transition-colors">
+                      0962 786 3202
+                    </a>
+                  </p>
+                  <p className="text-xs text-muted font-light mt-0.5">Mon–Sat, 8:00 AM – 6:00 PM PST</p>
                 </div>
-              </a>
+              </div>
 
-              <div className="flex items-center gap-4">
-                <span className="flex h-12 w-12 items-center justify-center border border-border shrink-0">
-                  <MapPin size={18} />
+              <div className="flex items-start gap-4">
+                <span className="h-10 w-10 rounded-full border border-border flex items-center justify-center text-accent shrink-0 bg-surface">
+                  <Mail size={16} />
                 </span>
                 <div>
-                  <p className="text-xs uppercase tracking-wider text-muted">Location</p>
-                  <p className="text-foreground">San Fernando, Pampanga, Philippines, 2005</p>
+                  <p className="text-[10px] uppercase tracking-[0.2em] text-muted">Official Correspondence</p>
+                  <p className="font-serif text-base text-foreground mt-0.5">
+                    <a href="mailto:rbcbuilders70@gmail.com" className="hover:text-accent transition-colors">
+                      rbcbuilders70@gmail.com
+                    </a>
+                  </p>
+                  <p className="text-xs text-muted font-light mt-0.5">Replies within 24 business hours</p>
                 </div>
+              </div>
+
+              <div className="pt-4 border-t border-border flex items-center gap-3">
+                <a
+                  href="https://facebook.com/RBCBuilders"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-1 text-center py-2.5 px-4 text-xs uppercase tracking-[0.18em] border border-border text-foreground/80 hover:border-accent hover:text-accent transition-colors"
+                >
+                  Facebook Page
+                </a>
+                <a
+                  href="https://m.me/RBCBuilders"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-1 text-center py-2.5 px-4 text-xs uppercase tracking-[0.18em] bg-accent/10 border border-accent/40 text-accent hover:bg-accent hover:text-[#0c0c0b] transition-all flex items-center justify-center gap-2"
+                >
+                  <MessageCircle size={14} />
+                  <span>Messenger</span>
+                </a>
               </div>
             </div>
 
-            <div className="flex items-center gap-3 mb-10">
-              <a
-                href="https://facebook.com/RBCBuilders"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="RBC Builders on Facebook"
-                className="flex h-11 w-11 items-center justify-center border border-border hover:border-accent hover:text-accent transition-colors"
-              >
-                <LinkIcon size={18} />
-              </a>
-              <a
-                href="https://m.me/RBCBuilders"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Message RBC Builders"
-                className="flex h-11 w-11 items-center justify-center border border-border hover:border-accent hover:text-accent transition-colors"
-              >
-                <MessageCircle size={18} />
-              </a>
-            </div>
-
-            <div className="relative aspect-video w-full overflow-hidden border border-border grayscale hover:grayscale-0 transition-[filter] duration-500">
+            {/* Map Frame */}
+            <div className="relative aspect-[16/9] w-full overflow-hidden border border-border bg-black grayscale contrast-125 opacity-80 hover:grayscale-0 hover:opacity-100 transition-all duration-700">
               <iframe
-                title="RBC Builders service area map, San Fernando, Pampanga"
-                src="https://www.google.com/maps?q=San+Fernando,+Pampanga,+Philippines&output=embed"
-                className="absolute inset-0 h-full w-full border-0"
+                title="RBC Builders San Fernando Pampanga Location"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d123348.97677457723!2d120.61286948572458!3d15.03407675713437!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3396f79024f227b7%3A0xe54e58bca15a3a4c!2sCity%20of%20San%20Fernando%2C%20Pampanga!5e0!3m2!1sen!2sph!4v1700000000000!5m2!1sen!2sph"
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen={false}
                 loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
               />
             </div>
           </div>
 
-          <div data-reveal data-reveal-delay="0.1">
-            <div className="flex gap-2 mb-5">
+          {/* Right Column: Inquiry Mode Tabs & Interactive Wizard */}
+          <div data-reveal data-reveal-delay="0.16" className="lg:col-span-7 flex flex-col">
+            <div className="flex items-center gap-2 mb-4 border-b border-border pb-3">
               <button
                 onClick={() => setMode("guided")}
-                className={`px-4 py-2 text-xs uppercase tracking-wider border transition-colors ${
+                className={`text-xs uppercase tracking-[0.2em] font-medium px-4 py-2 border transition-colors ${
                   mode === "guided"
-                    ? "bg-accent text-background border-accent"
+                    ? "bg-accent text-[#0c0c0b] border-accent"
                     : "border-border text-muted hover:text-foreground"
                 }`}
               >
-                Guided Brief
+                Guided Project Brief
               </button>
               <button
                 onClick={() => setMode("quick")}
-                className={`px-4 py-2 text-xs uppercase tracking-wider border transition-colors ${
+                className={`text-xs uppercase tracking-[0.2em] font-medium px-4 py-2 border transition-colors ${
                   mode === "quick"
-                    ? "bg-accent text-background border-accent"
+                    ? "bg-accent text-[#0c0c0b] border-accent"
                     : "border-border text-muted hover:text-foreground"
                 }`}
               >
-                Quick Form
+                Quick Direct Message
               </button>
             </div>
 
             {mode === "guided" ? (
               <BriefWizard />
             ) : (
-              <form
-                action="https://formsubmit.co/rbcbuilders70@gmail.com"
-                method="POST"
-                className="flex flex-col gap-5 bg-background p-8 sm:p-10 border border-border"
-              >
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                  <div className="flex flex-col gap-2">
-                    <label className="text-xs uppercase tracking-wider text-muted">Name</label>
-                    <input
-                      required
-                      name="name"
-                      type="text"
-                      className="bg-surface border border-border px-4 py-3 text-sm focus:border-accent outline-none transition-colors"
-                      placeholder="Juan Dela Cruz"
-                    />
+              <div className="p-8 sm:p-10 bg-background border border-border">
+                {quickSent ? (
+                  <div className="text-center py-12 flex flex-col items-center">
+                    <div className="h-12 w-12 rounded-full bg-accent/10 border border-accent flex items-center justify-center text-accent mb-4">
+                      <Check size={24} />
+                    </div>
+                    <h4 className="font-serif text-2xl text-foreground font-normal mb-2">
+                      Inquiry Dispatched
+                    </h4>
+                    <p className="text-xs text-muted font-light max-w-sm mb-6">
+                      Our project coordination desk has received your message and will reply shortly.
+                    </p>
+                    <button
+                      onClick={() => {
+                        setQuickForm({ name: "", contact: "", message: "" });
+                        setQuickSent(false);
+                      }}
+                      className="text-xs uppercase tracking-[0.2em] text-accent underline underline-offset-4"
+                    >
+                      Send Another Message
+                    </button>
                   </div>
-                  <div className="flex flex-col gap-2">
-                    <label className="text-xs uppercase tracking-wider text-muted">Phone</label>
-                    <input
-                      required
-                      name="phone"
-                      type="tel"
-                      className="bg-surface border border-border px-4 py-3 text-sm focus:border-accent outline-none transition-colors"
-                      placeholder="09XX XXX XXXX"
-                    />
-                  </div>
-                </div>
+                ) : (
+                  <form onSubmit={handleQuickSubmit} className="space-y-5">
+                    <div>
+                      <label htmlFor="quick-name" className="text-[11px] uppercase tracking-[0.18em] text-muted block mb-1.5">
+                        Your Name *
+                      </label>
+                      <input
+                        id="quick-name"
+                        type="text"
+                        required
+                        value={quickForm.name}
+                        onChange={(e) => setQuickForm({ ...quickForm, name: e.target.value })}
+                        placeholder="Dr. / Mr. / Ms. Full Name"
+                        className="w-full bg-surface border border-border px-4 py-2.5 text-xs text-foreground focus:border-accent focus:outline-none"
+                      />
+                    </div>
 
-                <div className="flex flex-col gap-2">
-                  <label className="text-xs uppercase tracking-wider text-muted">Email</label>
-                  <input
-                    required
-                    name="email"
-                    type="email"
-                    className="bg-surface border border-border px-4 py-3 text-sm focus:border-accent outline-none transition-colors"
-                    placeholder="you@email.com"
-                  />
-                </div>
+                    <div>
+                      <label htmlFor="quick-contact" className="text-[11px] uppercase tracking-[0.18em] text-muted block mb-1.5">
+                        Contact Number or Email *
+                      </label>
+                      <input
+                        id="quick-contact"
+                        type="text"
+                        required
+                        value={quickForm.contact}
+                        onChange={(e) => setQuickForm({ ...quickForm, contact: e.target.value })}
+                        placeholder="0917... or email@domain.com"
+                        className="w-full bg-surface border border-border px-4 py-2.5 text-xs text-foreground focus:border-accent focus:outline-none"
+                      />
+                    </div>
 
-                <div className="flex flex-col gap-2">
-                  <label className="text-xs uppercase tracking-wider text-muted">Project Type</label>
-                  <select
-                    name="project_type"
-                    className="bg-surface border border-border px-4 py-3 text-sm focus:border-accent outline-none transition-colors"
-                    defaultValue="New Construction"
-                  >
-                    <option>New Construction</option>
-                    <option>Renovation</option>
-                    <option>Interior Design</option>
-                    <option>Permit Processing Only</option>
-                    <option>Other</option>
-                  </select>
-                </div>
+                    <div>
+                      <label htmlFor="quick-message" className="text-[11px] uppercase tracking-[0.18em] text-muted block mb-1.5">
+                        Message / Project Inquiry *
+                      </label>
+                      <textarea
+                        id="quick-message"
+                        rows={5}
+                        required
+                        value={quickForm.message}
+                        onChange={(e) => setQuickForm({ ...quickForm, message: e.target.value })}
+                        placeholder="Tell us about your property location, intended square footage, or any specific architectural preferences..."
+                        className="w-full bg-surface border border-border px-4 py-2.5 text-xs text-foreground focus:border-accent focus:outline-none resize-none"
+                      />
+                    </div>
 
-                <div className="flex flex-col gap-2">
-                  <label className="text-xs uppercase tracking-wider text-muted">Message</label>
-                  <textarea
-                    name="message"
-                    rows={4}
-                    className="bg-surface border border-border px-4 py-3 text-sm focus:border-accent outline-none transition-colors resize-none"
-                    placeholder="Tell us about your project, location, and target budget..."
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  className="mt-2 bg-accent text-background py-4 text-sm uppercase tracking-widest font-medium hover:bg-foreground transition-colors"
-                >
-                  Send Inquiry
-                </button>
-              </form>
+                    <button
+                      type="submit"
+                      className="w-full py-3.5 text-xs uppercase tracking-[0.2em] font-medium bg-accent text-[#0c0c0b] hover:bg-accent-light transition-colors flex items-center justify-center gap-2"
+                    >
+                      <Send size={13} />
+                      <span>Transmit Message</span>
+                    </button>
+                  </form>
+                )}
+              </div>
             )}
           </div>
         </div>

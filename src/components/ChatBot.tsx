@@ -2,8 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { X, Send, Sparkles } from "lucide-react";
-import { gsap } from "@/lib/gsap";
+import { X, Send, Compass, Phone } from "lucide-react";
 import { matchIntent, FALLBACK_REPLY } from "@/lib/chatbot-knowledge";
 
 type Message = {
@@ -15,13 +14,14 @@ type Message = {
 const OPENING: Message = {
   id: 0,
   role: "bot",
-  text: "Hi, I am the RBC Builders assistant. Ask me about pricing, services, timelines, or how to reach the team.",
+  text: "Welcome to RBC Builders Architectural Concierge. How may I assist you with your residence or commercial construction project in Central Luzon today?",
 };
 
 const STARTER_CHIPS = [
-  "What are your finish tiers?",
-  "What areas do you serve?",
-  "How do I get a quote?",
+  "Construction rates per m²?",
+  "Which regions do you build in?",
+  "How does bank financing work?",
+  "Do you handle LGU building permits?",
 ];
 
 export default function ChatBot() {
@@ -30,20 +30,8 @@ export default function ChatBot() {
   const [input, setInput] = useState("");
   const [typing, setTyping] = useState(false);
   const [chips, setChips] = useState(STARTER_CHIPS);
-  const panelRef = useRef<HTMLDivElement | null>(null);
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const idRef = useRef(1);
-
-  useEffect(() => {
-    if (!panelRef.current) return;
-    if (open) {
-      gsap.fromTo(
-        panelRef.current,
-        { opacity: 0, y: 28, scale: 0.94 },
-        { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: "expo.out" }
-      );
-    }
-  }, [open]);
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
@@ -60,60 +48,87 @@ export default function ChatBot() {
     setTyping(true);
 
     const intent = matchIntent(text);
-    const delay = 450 + Math.random() * 350;
+    const replyText = intent ? intent.reply : FALLBACK_REPLY;
+    const nextChips = intent?.followUps ?? [];
 
     setTimeout(() => {
-      const reply = intent?.reply ?? FALLBACK_REPLY;
-      setMessages((prev) => [...prev, { id: idRef.current++, role: "bot", text: reply }]);
-      setChips(intent?.followUps ?? []);
       setTyping(false);
-    }, delay);
+      setMessages((prev) => [
+        ...prev,
+        { id: idRef.current++, role: "bot", text: replyText },
+      ]);
+      setChips(nextChips);
+    }, 450);
   };
 
   return (
-    <div className="fixed bottom-5 right-5 sm:bottom-7 sm:right-7 z-[60] flex flex-col items-end">
+    <>
+      {/* Floating Trigger Button */}
+      <button
+        onClick={() => setOpen((v) => !v)}
+        aria-label="Toggle RBC Architectural Concierge"
+        className="fixed bottom-6 right-6 z-50 h-13 w-13 rounded-full bg-[#141312] border border-accent/60 text-accent hover:border-accent hover:bg-accent hover:text-[#0c0c0b] shadow-2xl transition-all duration-300 flex items-center justify-center group"
+      >
+        {open ? (
+          <X size={20} />
+        ) : (
+          <div className="relative flex items-center justify-center">
+            <Compass size={22} className="group-hover:rotate-45 transition-transform duration-500" />
+            <span className="absolute -top-1 -right-1 h-2.5 w-2.5 rounded-full bg-accent ring-2 ring-[#0c0c0b]" />
+          </div>
+        )}
+      </button>
+
+      {/* Concierge Panel */}
       {open && (
-        <div
-          ref={panelRef}
-          className="mb-4 flex h-[34rem] max-h-[75vh] w-[23rem] max-w-[calc(100vw-2.5rem)] flex-col overflow-hidden rounded-[28px] border border-border bg-background/95 backdrop-blur-2xl shadow-[0_30px_80px_-20px_rgba(0,0,0,0.7)] ring-1 ring-accent/10"
-        >
+        <div className="fixed bottom-22 right-4 sm:right-6 z-50 w-[calc(100vw-2rem)] sm:w-[400px] h-[520px] max-h-[80vh] luxury-glass border border-white/10 shadow-2xl flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-300">
           {/* Header */}
-          <div className="relative flex items-center justify-between gap-3 bg-gradient-to-b from-surface to-background px-5 py-4 border-b border-border">
+          <div className="p-4 sm:p-5 bg-background border-b border-border flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="relative shrink-0">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full overflow-hidden ring-2 ring-accent/30">
-                  <Image src="/images/logo.jpg" alt="RBC Builders" width={40} height={40} className="object-cover" />
-                </div>
-                <span className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full bg-accent ring-2 ring-background" />
+              <div className="relative h-8 w-8 overflow-hidden rounded-sm border border-white/10">
+                <Image
+                  src="/images/logo.jpg"
+                  alt="RBC Builders"
+                  fill
+                  quality={95}
+                  sizes="32px"
+                  className="object-cover"
+                />
               </div>
               <div>
-                <p className="font-display text-sm tracking-wide leading-none">RBC Builders</p>
-                <p className="text-[11px] text-accent mt-1.5">Usually replies instantly</p>
+                <span className="font-serif text-base text-foreground font-normal block leading-tight">
+                  RBC Architectural Concierge
+                </span>
+                <span className="text-[9px] uppercase tracking-[0.2em] text-accent font-light">
+                  Live Technical &amp; Cost Advisory
+                </span>
               </div>
             </div>
+
             <button
               onClick={() => setOpen(false)}
-              aria-label="Close chat"
-              className="flex h-8 w-8 items-center justify-center rounded-full text-muted hover:text-foreground hover:bg-surface transition-colors"
+              aria-label="Close concierge"
+              className="text-muted hover:text-foreground p-1 transition-colors"
             >
-              <X size={16} />
+              <X size={18} />
             </button>
           </div>
 
-          {/* Messages */}
-          <div ref={scrollRef} className="flex-1 overflow-y-auto px-5 py-5 flex flex-col gap-3.5">
+          {/* Messages Body */}
+          <div
+            ref={scrollRef}
+            className="flex-1 overflow-y-auto p-4 sm:p-5 space-y-4 text-xs font-light"
+          >
             {messages.map((m) => (
-              <div key={m.id} className={`flex items-end gap-2 ${m.role === "user" ? "self-end flex-row-reverse" : "self-start"}`}>
-                {m.role === "bot" && (
-                  <span className="mb-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent/15 text-accent">
-                    <Sparkles size={12} />
-                  </span>
-                )}
+              <div
+                key={m.id}
+                className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}
+              >
                 <div
-                  className={`max-w-[15.5rem] text-[13.5px] leading-relaxed px-4 py-3 ${
-                    m.role === "bot"
-                      ? "rounded-2xl rounded-bl-sm bg-surface border border-border text-foreground/90"
-                      : "rounded-2xl rounded-br-sm bg-accent text-background font-medium"
+                  className={`max-w-[85%] p-3.5 leading-relaxed ${
+                    m.role === "user"
+                      ? "bg-accent text-[#0c0c0b] font-normal"
+                      : "bg-surface border border-border text-foreground/90 font-light"
                   }`}
                 >
                   {m.text}
@@ -122,25 +137,26 @@ export default function ChatBot() {
             ))}
 
             {typing && (
-              <div className="self-start flex items-end gap-2">
-                <span className="mb-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent/15 text-accent">
-                  <Sparkles size={12} />
-                </span>
-                <div className="flex items-center gap-1.5 rounded-2xl rounded-bl-sm bg-surface border border-border px-4 py-3.5">
-                  <span className="h-1.5 w-1.5 rounded-full bg-muted animate-type-pulse [animation-delay:0s]" />
-                  <span className="h-1.5 w-1.5 rounded-full bg-muted animate-type-pulse [animation-delay:0.15s]" />
-                  <span className="h-1.5 w-1.5 rounded-full bg-muted animate-type-pulse [animation-delay:0.3s]" />
+              <div className="flex justify-start">
+                <div className="p-3 bg-surface border border-border text-muted flex items-center gap-1.5">
+                  <span className="h-1.5 w-1.5 rounded-full bg-accent animate-bounce" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-accent animate-bounce [animation-delay:0.2s]" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-accent animate-bounce [animation-delay:0.4s]" />
                 </div>
               </div>
             )}
 
-            {!typing && chips.length > 0 && (
-              <div className="flex flex-wrap gap-2 pt-1 pl-8">
+            {/* Quick Suggestion Chips */}
+            {chips.length > 0 && !typing && (
+              <div className="pt-2 flex flex-col gap-1.5">
+                <span className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-1">
+                  Suggested Inquiries
+                </span>
                 {chips.map((chip) => (
                   <button
                     key={chip}
                     onClick={() => send(chip)}
-                    className="rounded-full text-xs border border-border px-3.5 py-2 hover:border-accent hover:text-accent transition-colors text-left"
+                    className="text-left p-2 border border-border bg-surface/40 hover:border-accent hover:text-accent text-[11px] text-foreground/80 transition-colors"
                   >
                     {chip}
                   </button>
@@ -149,48 +165,41 @@ export default function ChatBot() {
             )}
           </div>
 
-          {/* Input */}
+          {/* Input Bar */}
           <form
             onSubmit={(e) => {
               e.preventDefault();
               send(input);
             }}
-            className="flex items-center gap-2 border-t border-border p-3"
+            className="p-3 bg-background border-t border-border flex items-center gap-2"
           >
             <input
+              type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder="Ask about pricing, services..."
-              className="flex-1 rounded-full bg-surface border border-border px-4 py-2.5 text-sm focus:border-accent outline-none transition-colors"
+              placeholder="Inquire on costs, permits, or timelines..."
+              aria-label="Inquire on costs, permits, or timelines"
+              className="flex-1 bg-surface border border-border px-3.5 py-2.5 text-xs text-foreground placeholder:text-muted focus:border-accent focus:outline-none font-light"
             />
             <button
               type="submit"
-              aria-label="Send message"
-              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-accent text-background hover:bg-foreground hover:scale-105 transition-all"
+              disabled={!input.trim()}
+              aria-label="Send message to concierge"
+              className="h-9 w-9 bg-accent text-[#0c0c0b] hover:bg-accent-light transition-colors flex items-center justify-center disabled:opacity-40"
             >
-              <Send size={15} />
+              <Send size={14} />
             </button>
           </form>
+
+          {/* Direct Line Footer */}
+          <div className="px-4 py-2 bg-surface border-t border-border/60 flex items-center justify-between text-[10px] text-muted">
+            <span>Direct Phone:</span>
+            <a href="tel:+639772873075" className="text-accent hover:underline flex items-center gap-1">
+              <Phone size={10} /> 0977 287 3075
+            </a>
+          </div>
         </div>
       )}
-
-      {/* Launcher */}
-      <button
-        onClick={() => setOpen((v) => !v)}
-        aria-label={open ? "Close chat assistant" : "Open chat assistant"}
-        className="group relative flex h-16 w-16 items-center justify-center rounded-full bg-accent text-background shadow-[0_18px_40px_-10px_rgba(255,90,31,0.55)] hover:bg-foreground transition-colors"
-      >
-        {!open && (
-          <span className="absolute inset-0 rounded-full bg-accent/60 animate-ping [animation-duration:2.4s]" />
-        )}
-        <span className="relative">
-          {open ? (
-            <X size={22} />
-          ) : (
-            <Image src="/images/logo.jpg" alt="" width={34} height={34} className="rounded-full object-cover" />
-          )}
-        </span>
-      </button>
-    </div>
+    </>
   );
 }
