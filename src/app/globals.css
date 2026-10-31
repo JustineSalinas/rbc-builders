@@ -114,3 +114,23 @@ body {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* Monolithic Architectural Illumination for RBC BUILDERS */
+.architectural-glow-hover {
+  transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: color, text-shadow, transform, letter-spacing;
+}
+
+.group:hover .architectural-glow-hover,
+.architectural-glow-hover:hover {
+  color: #fff9f0 !important;
+  text-shadow:
+    0 0 10px rgba(255, 255, 255, 0.95),
+    0 0 25px rgba(223, 199, 162, 0.85),
+    0 0 55px rgba(197, 168, 128, 0.7),
+    0 0 110px rgba(197, 168, 128, 0.45),
+    0 0 180px rgba(197, 168, 128, 0.25);
+  letter-spacing: 0.23em;
+  transform: translateY(-2px);
+}
+

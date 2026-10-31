@@ -120,8 +120,12 @@ export default function Footer() {
           <div data-reveal className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
             {/* Column 1: Brand Authority, Mission & Real-Time PST Clock (Col-span 4) */}
             <div data-reveal data-reveal-delay="0.05" className="lg:col-span-4 flex flex-col gap-6">
-              <div className="flex items-center gap-3.5">
-                <div className="relative h-12 w-12 overflow-hidden border border-accent/40 rounded-full shrink-0">
+              <a
+                href="#top"
+                className="flex items-center gap-3.5 group/brand cursor-pointer w-fit"
+                title="RBC Builders - Architecture & Construction"
+              >
+                <div className="relative h-12 w-12 overflow-hidden border border-accent/40 group-hover/brand:border-accent group-hover/brand:shadow-[0_0_20px_rgba(197,168,128,0.5)] rounded-full shrink-0 transition-all duration-500">
                   <Image
                     src="/images/logo.jpg"
                     alt="RBC Builders"
@@ -132,14 +136,14 @@ export default function Footer() {
                   />
                 </div>
                 <div className="flex flex-col">
-                  <span className="font-serif text-2xl tracking-[0.06em] font-medium text-foreground leading-none">
+                  <span className="font-serif text-2xl tracking-[0.06em] font-medium text-foreground leading-none transition-all duration-500 group-hover/brand:text-[#fff9f0] group-hover/brand:drop-shadow-[0_0_16px_rgba(197,168,128,0.9)]">
                     RBC BUILDERS
                   </span>
-                  <span className="text-[9.5px] uppercase tracking-[0.25em] text-accent font-light mt-1 leading-none">
+                  <span className="text-[9.5px] uppercase tracking-[0.25em] text-accent font-light mt-1 leading-none group-hover/brand:tracking-[0.28em] transition-all duration-500">
                     Architecture &amp; Construction
                   </span>
                 </div>
-              </div>
+              </a>
 
               <p className="text-xs sm:text-sm text-foreground/75 font-light leading-relaxed max-w-sm">
                 A premier design-build architecture and general contracting firm headquartered in the City of San Fernando, Pampanga. We unify architectural design, seismic structural engineering, municipal permitting, and turnkey master construction across Central Luzon.
@@ -251,10 +255,28 @@ export default function Footer() {
         </div>
 
         {/* Large Grand Architectural Typography Signature */}
-        <div className="py-12 sm:py-16 select-none pointer-events-none text-center overflow-hidden border-b border-white/5">
-          <span className="font-serif text-[9vw] sm:text-[10vw] font-light text-white/[0.025] tracking-[0.2em] uppercase leading-none block whitespace-nowrap">
+        <div
+          onClick={scrollToTop}
+          title="Click to scroll back to top"
+          className="relative py-14 sm:py-20 select-none cursor-pointer text-center overflow-hidden border-b border-white/5 group transition-colors duration-700 hover:border-accent/40"
+        >
+          {/* Ambient Warm Architectural Backlight that blooms on hover */}
+          <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none">
+            <div className="w-[85vw] h-48 bg-[radial-gradient(ellipse_at_center,rgba(223,199,162,0.22)_0%,rgba(197,168,128,0.12)_45%,transparent_75%)] blur-2xl" />
+          </div>
+
+          <span className="architectural-glow-hover relative z-10 font-serif text-[9vw] sm:text-[10vw] font-light text-white/[0.04] tracking-[0.2em] uppercase leading-none block whitespace-nowrap select-none">
             RBC BUILDERS
           </span>
+
+          {/* Architectural illuminated subline that blooms with the signature */}
+          <div className="mt-4 flex items-center justify-center gap-3 opacity-0 group-hover:opacity-100 transition-all duration-700 pointer-events-none transform translate-y-2 group-hover:translate-y-0">
+            <span className="h-px w-8 bg-accent/60" />
+            <span className="text-[10px] sm:text-xs uppercase tracking-[0.3em] text-accent font-light">
+              Click to return to top &bull; Central Luzon Design-Build Practice
+            </span>
+            <span className="h-px w-8 bg-accent/60" />
+          </div>
         </div>
 
         {/* Legal, Warranties & Back-to-Top Bar */}
