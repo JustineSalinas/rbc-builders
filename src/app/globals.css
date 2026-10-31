@@ -247,3 +247,80 @@ body {
   transform: translateY(-2px);
 }
 
+/* Tamayo-Revisa Finale House Stage behind Footer */
+.finale {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: linear-gradient(180deg, #1d232c 0%, #12161c clamp(10rem, 22vw, 18rem));
+}
+
+.finale__verse {
+  position: relative;
+  z-index: 3;
+  margin: 0 auto;
+  padding: clamp(3.5rem, 7vw, 5.5rem) clamp(1rem, 4vw, 3.5rem) 0;
+  max-width: 48rem;
+  text-align: center;
+  font: 300 clamp(1.2rem, 2.2vw, 1.65rem)/1.45 var(--f-display);
+  color: #f1efe9;
+}
+
+.finale__stage {
+  position: relative;
+  height: clamp(28rem, 84vh, 52rem);
+  margin-top: -1rem;
+}
+
+.finale__sky {
+  mask-image: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.25) 15%, rgba(0, 0, 0, 0.85) 40%, #000 60%);
+  -webkit-mask-image: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.25) 15%, rgba(0, 0, 0, 0.85) 40%, #000 60%);
+}
+
+.finale__word {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: clamp(1rem, 7vh, 4.5rem);
+  margin: 0;
+  text-align: center;
+  font: 300 clamp(4.5rem, 13vw, 12rem)/0.8 var(--f-display);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #f1efe9;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0.85;
+  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.7);
+}
+
+.finale__shade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(0deg, #12161c 0%, rgba(18, 22, 28, 0.85) 16%, rgba(18, 22, 28, 0) 50%);
+}
+
+.finale__cap {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.25rem 2.5rem;
+  margin-top: clamp(-10rem, -15vh, -6rem);
+  padding: 0 clamp(1rem, 4vw, 3.5rem) clamp(2.5rem, 5vw, 4rem);
+  max-width: 80rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.finale__title {
+  margin: 0.4rem 0 0;
+  max-width: 18ch;
+  font: 300 clamp(2rem, 4vw, 3.4rem)/1.05 var(--f-display);
+  color: #f1efe9;
+  text-align: left;
+}
+

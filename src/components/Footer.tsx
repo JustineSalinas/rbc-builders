@@ -62,59 +62,67 @@ export default function Footer() {
 
   return (
     <footer id="footer" className="bg-[#f8f6f0] border-t border-border relative overflow-hidden text-foreground">
-      {/* Luxury Mansion Background Image with Deep Architectural Atmosphere */}
-      <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
-        <Image
-          src="/images/hero.jpg"
-          alt="RBC Builders Luxury Mansion"
-          fill
-          quality={95}
-          className="object-cover object-center opacity-10 scale-105 filter contrast-105"
-        />
-        {/* Layered Architectural Gradients for Deep Contrast & High Legibility */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#f8f6f0]/95 via-[#f8f6f0]/85 to-[#f0ece1]/98" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(248,246,240,0.6)_70%,rgba(240,236,225,0.95)_100%)]" />
-      </div>
+      {/* 1. Tamayo-Revisa Finale: Grand Architectural House Stage */}
+      <section className="finale" aria-labelledby="finale-title">
+        <p className="finale__verse font-serif">
+          &ldquo;A planning and design-build practice that creates human lifestyle beyond limitation.&rdquo;
+        </p>
 
-      <div className="relative z-10">
-        {/* Top Section: Grand Architectural Invitation Bar */}
-        <div className="mx-auto max-w-7xl px-4 sm:px-8 pt-20 sm:pt-28 pb-16 sm:pb-20 border-b border-border">
-          <div data-reveal className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 sm:gap-12">
-            <div className="max-w-3xl">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1 mb-5 border border-accent/40 rounded-full bg-accent/10">
-                <span className="h-1.5 w-1.5 rounded-full bg-accent animate-pulse" />
-                <span className="text-[10px] uppercase tracking-[0.25em] text-accent font-medium">
-                  Central Luzon Architectural Practice
-                </span>
-              </div>
-              <h2 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-light text-foreground tracking-tight leading-[1.08]">
-                Architecture engineered with permanence. Built for generations.
-              </h2>
-              <p className="text-sm sm:text-base text-foreground/75 font-light leading-relaxed mt-4 max-w-xl">
-                Ready to commission your bespoke luxury residence? Schedule a private design-build consultation with our chief architects and structural engineers.
-              </p>
-            </div>
-
-            <div className="flex flex-wrap items-center gap-4">
-              <a
-                href="#contact"
-                className="inline-flex items-center gap-3 px-8 py-4 text-xs uppercase tracking-[0.2em] font-medium bg-accent text-white hover:bg-accent-dim transition-all duration-300 rounded-full shadow-xl whitespace-nowrap"
-              >
-                <span>Request Consultation</span>
-                <ArrowRight size={14} />
-              </a>
-
-              <a
-                href="tel:+639772873075"
-                className="inline-flex items-center gap-2.5 px-7 py-4 text-xs uppercase tracking-[0.2em] font-medium text-foreground border border-border hover:border-accent hover:text-accent transition-colors rounded-full font-mono bg-surface shadow-sm whitespace-nowrap"
-              >
-                <Phone size={13} className="text-accent shrink-0" />
-                <span>0977 287 3075</span>
-              </a>
-            </div>
+        <div className="finale__stage">
+          {/* House Image with dusk lighting */}
+          <div className="absolute inset-0 overflow-hidden">
+            <Image
+              src="/images/hero.jpg"
+              alt="RBC Builders bespoke luxury estate lit at dusk"
+              fill
+              quality={95}
+              sizes="100vw"
+              className="object-cover object-[50%_25%] finale__sky filter contrast-110 brightness-95"
+            />
           </div>
+
+          {/* Large Architectural Monograph Watermark Text layered over the sky behind the house */}
+          <p className="finale__word font-serif select-none" aria-hidden="true">
+            BUILDERS
+          </p>
+
+          {/* Bottom dusk vignette shade fading smoothly into the cap */}
+          <div className="finale__shade" />
         </div>
 
+        {/* Finale Cap: Call to Action Bar */}
+        <div className="finale__cap">
+          <div>
+            <p className="text-[10.5px] uppercase tracking-[0.28em] text-[#c8a483] font-medium mb-2">
+              Designed &amp; Built by RBC Builders
+            </p>
+            <h2 id="finale-title" className="finale__title font-serif">
+              Let&apos;s create your dream into reality.
+            </h2>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-4 sm:gap-6">
+            <a
+              href="#contact"
+              className="btn btn--accent shadow-2xl"
+            >
+              <span>Start your project</span>
+              <ArrowRight size={14} />
+            </a>
+
+            <button
+              onClick={scrollToTop}
+              aria-label="Back to top"
+              className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-[#a8adb6] hover:text-white transition-colors"
+            >
+              <span>Back to top</span>
+              <ArrowUp size={14} />
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <div className="relative z-10">
         {/* Main Monograph Directory: Spacious 4-Column Architectural Spread */}
         <div ref={footerNavRef} className="mx-auto max-w-7xl px-4 sm:px-8 py-20 sm:py-28 border-b border-border">
           <div data-reveal className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
