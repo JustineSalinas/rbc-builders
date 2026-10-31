@@ -207,7 +207,7 @@ function SanFernandoVillaModel({ progress }: { progress: number }) {
   const foliageMat = useMemo(() => new THREE.MeshStandardMaterial({ color: FOLIAGE_GREEN, roughness: 0.9 }), []);
 
   return (
-    <group ref={group} scale={0.96} position={[0, -0.65, 0]} rotation={[0, -Math.PI / 6.5, 0]}>
+    <group ref={group} scale={0.92} position={[0, -0.65, 0]} rotation={[0, -Math.PI / 6.5, 0]}>
       {/* ============================================================== */}
       {/* 00. SITE GROUNDS, DRIVEWAY PAVERS & ENTRANCE STAIRS            */}
       {/* ============================================================== */}
@@ -641,8 +641,8 @@ export default function Mansion3DScene({ progress }: { progress: number }) {
         shadows
         dpr={[1, 2]}
         gl={{ antialias: true, powerPreference: "high-performance" }}
-        // Zoomed-out camera so the full mansion, driveway, and waterfall pool fit comfortably without cramping
-        camera={{ position: [5.6, 2.9, 6.2], fov: 32 }}
+        // Zoomed-out camera framed for side-by-side architectural dossier layout
+        camera={{ position: [5.7, 2.9, 6.3], fov: 33 }}
       >
         {/* Soft Warm Alabaster Illumination */}
         <ambientLight intensity={0.8} />

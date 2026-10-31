@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import dynamic from "next/dynamic";
-import { ArrowRight, Calculator, ShieldCheck, Sparkles, ArrowDown, ChevronDown, ChevronUp, Layers, Compass } from "lucide-react";
+import { ArrowRight, Calculator, ShieldCheck, Sparkles, ArrowDown, Layers, Compass } from "lucide-react";
 import { useReveal } from "@/lib/useReveal";
 
 // Dynamically load 3D Canvas with ssr: false
@@ -36,6 +36,7 @@ type FinishGrade = {
     flooring: string;
     walls: string;
     fixtures: string;
+    railings: string;
   };
 };
 
@@ -63,6 +64,7 @@ const FINISH_GRADES: FinishGrade[] = [
       flooring: "Power-troweled smooth cement screed ready for custom tile overlay",
       walls: "Plastered reinforced concrete masonry ready for primer & paint",
       fixtures: "Economic sanitary rough-in & primary electrical conduit lines",
+      railings: "Structural steel perimeter safety framing / rough site enclosure",
     },
   },
   {
@@ -70,7 +72,7 @@ const FINISH_GRADES: FinishGrade[] = [
     stageNum: 2,
     code: "GRADE 02",
     number: "02",
-    name: "Standard",
+    name: "Standard Architecture",
     subtitle: "Turnkey Contemporary",
     minRate: 20000,
     maxRate: 25000,
@@ -88,6 +90,7 @@ const FINISH_GRADES: FinishGrade[] = [
       flooring: "60×60cm high-gloss polished ceramic floor tiles",
       walls: "Two-coat premium latex paint with subtle tone-on-tone accents",
       fixtures: "Standard American Standard / Pozzi plumbing & electrical switches",
+      railings: "Modern painted steel balustrades & standard entry gate",
     },
   },
   {
@@ -95,7 +98,7 @@ const FINISH_GRADES: FinishGrade[] = [
     stageNum: 3,
     code: "GRADE 03",
     number: "03",
-    name: "Premium",
+    name: "Premium Architectural",
     subtitle: "Signature Architectural",
     popular: true,
     minRate: 25000,
@@ -114,6 +117,7 @@ const FINISH_GRADES: FinishGrade[] = [
       flooring: "Imported 60×120cm large-format porcelain slabs or engineered timber",
       walls: "Hand-laid natural stacked-stone exterior & textured interior feature walls",
       fixtures: "Semi-luxury Kohler / Hansgrohe designer plumbing fixtures",
+      railings: "Tempered glass balustrades & architectural motorized gate",
     },
   },
   {
@@ -121,7 +125,7 @@ const FINISH_GRADES: FinishGrade[] = [
     stageNum: 4,
     code: "GRADE 04",
     number: "04",
-    name: "Luxury",
+    name: "Luxury Masterpiece",
     subtitle: "Bespoke Masterpiece",
     minRate: 29000,
     maxRate: null,
@@ -139,6 +143,7 @@ const FINISH_GRADES: FinishGrade[] = [
       flooring: "Seamless large-format sintered stone slabs & solid hardwood parquet",
       walls: "Full-height natural marble veneers, fluted acoustic PVC & microcement",
       fixtures: "Full luxury Toto / Grohe sanitary fixtures & smart home automation pre-wire",
+      railings: "Frameless laminated glass balustrades & custom acoustic timber-slat gate",
     },
   },
 ];
@@ -279,32 +284,32 @@ export default function Pricing() {
       {/* ============================================================== */}
       <div ref={pinTrackRef} className="relative h-[380vh]">
         {/* Sticky Viewport Stage: Pinned on Screen */}
-        <div className="sticky top-0 h-screen w-full flex flex-col justify-between overflow-hidden bg-background px-4 sm:px-8 py-5 z-20">
+        <div className="sticky top-0 h-screen w-full flex flex-col justify-between overflow-hidden bg-background px-4 sm:px-8 py-3 sm:py-4 z-20">
           <div className="mx-auto max-w-7xl w-full flex flex-col h-full justify-between">
-            {/* Top Bar: Section Title, Progress Track & 01-04 Buttons */}
+            {/* Top Bar: Section Title, Progress Track & 01-04 Stage Tabs */}
             <div>
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2 sm:mb-2.5">
                 <div>
-                  <div className="inline-flex items-center gap-2 px-3 py-0.5 rounded-full bg-accent/10 border border-accent/30 text-accent text-[9.5px] uppercase tracking-[0.22em] font-medium font-mono">
+                  <div className="inline-flex items-center gap-2 px-3 py-0.5 rounded-full bg-accent/10 border border-accent/30 text-accent text-[9px] uppercase tracking-[0.22em] font-medium font-mono">
                     <Compass size={11} />
                     <span>In-Place Architectural Build Progression</span>
                   </div>
-                  <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-light text-foreground tracking-tight leading-tight mt-1">
+                  <h2 className="font-serif text-xl sm:text-2xl lg:text-3xl font-light text-foreground tracking-tight leading-tight mt-0.5">
                     Watch the Mansion Form As You Scroll
                   </h2>
                 </div>
 
                 {/* Progress Percentage Indicator */}
-                <div className="flex items-center gap-3 bg-surface px-4 py-2 rounded-2xl border border-border shadow-xs">
+                <div className="flex items-center gap-2.5 bg-surface px-3 py-1.5 rounded-2xl border border-border shadow-2xs">
                   <div className="flex flex-col text-right">
-                    <span className="text-[9.5px] uppercase tracking-wider text-muted font-mono">
+                    <span className="text-[9px] uppercase tracking-wider text-muted font-mono">
                       Mansion Formation
                     </span>
                     <span className="font-mono text-xs font-semibold text-accent">
                       {Math.round(scrollPercent * 100)}% Complete
                     </span>
                   </div>
-                  {/* Circular / Bar progress */}
+                  {/* Progress bar */}
                   <div className="w-16 h-2 bg-border/80 rounded-full overflow-hidden">
                     <div
                       className="h-full bg-accent transition-all duration-150 rounded-full"
@@ -323,14 +328,14 @@ export default function Pricing() {
                       key={grade.id}
                       type="button"
                       onClick={() => jumpToStage(idx)}
-                      className={`text-left p-2.5 sm:p-3.5 rounded-xl border transition-all duration-300 relative cursor-pointer flex flex-col justify-between ${
+                      className={`text-left p-2 sm:p-2.5 rounded-xl border transition-all duration-300 relative cursor-pointer flex flex-col justify-between ${
                         isActive
                           ? "bg-surface border-accent shadow-md ring-1 ring-accent"
                           : "bg-surface/50 border-border hover:border-accent/40"
                       }`}
                     >
                       {grade.popular && (
-                        <span className="absolute -top-1.5 right-2 hidden md:inline-flex items-center gap-0.5 text-[7.5px] uppercase tracking-widest bg-accent text-white px-2 py-0.2 font-semibold rounded-full shadow-xs">
+                        <span className="absolute -top-1.5 right-2 hidden md:inline-flex items-center gap-0.5 text-[7.5px] uppercase tracking-widest bg-accent text-white px-2 py-0.2 font-semibold rounded-full shadow-2xs">
                           <Sparkles size={7} />
                           <span>Popular</span>
                         </span>
@@ -345,11 +350,11 @@ export default function Pricing() {
                         </span>
                       </div>
 
-                      <div className="font-serif text-xs sm:text-sm text-accent font-medium mt-1">
+                      <div className="font-serif text-xs sm:text-sm text-accent font-medium mt-0.5 truncate">
                         {grade.rateDisplay}
                       </div>
 
-                      <div className="w-full bg-border/60 h-1 rounded-full mt-2 overflow-hidden">
+                      <div className="w-full bg-border/60 h-1 rounded-full mt-1.5 overflow-hidden">
                         <div
                           className={`h-full transition-all duration-300 ${
                             isActive ? "bg-accent" : "bg-transparent"
@@ -362,78 +367,197 @@ export default function Pricing() {
               </div>
             </div>
 
-            {/* Center: Large 3D Real Mansion Stage (Prominent & Clear) */}
-            <div className="relative flex-1 w-full my-2.5 rounded-3xl bg-gradient-to-b from-[#f9f7f2] via-[#f5f0e6] to-[#ece5d8] border border-border shadow-2xl overflow-hidden min-h-[360px] sm:min-h-[440px] max-h-[62vh]">
-              {/* 3D Real Mansion Canvas with Continuous Progress */}
-              <Mansion3DScene progress={buildProgress} />
+            {/* Center Row: Side-by-Side 3D Real Mansion + Live Stage Specifications Dossier */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 sm:gap-4 flex-1 min-h-0 w-full my-1.5 sm:my-2 items-stretch">
+              {/* Left Column (7 cols): 3D Mansion Canvas Stage */}
+              <div className="lg:col-span-7 xl:col-span-7 relative w-full h-[280px] sm:h-[340px] lg:h-full rounded-2xl sm:rounded-3xl bg-gradient-to-b from-[#f9f7f2] via-[#f5f0e6] to-[#ece5d8] border border-border shadow-xl overflow-hidden flex flex-col">
+                <Mansion3DScene progress={buildProgress} />
 
-              {/* Live Architectural Stage Callout Banner */}
-              <div className="absolute top-4 left-4 pointer-events-none z-10 flex flex-col gap-1.5 max-w-xs sm:max-w-md">
-                <div className="flex items-center gap-2">
-                  <span className="h-2 w-2 rounded-full bg-accent animate-pulse" />
-                  <span className="text-[10px] uppercase tracking-widest font-mono text-accent font-bold bg-white/95 px-3 py-1 rounded-full border border-accent/30 shadow-xs backdrop-blur-sm">
-                    {buildProgress < 0.35
-                      ? "GROUND SITE SURVEY & FOUNDATION"
-                      : `${activeTier.code} · ${activeTier.subtitle.toUpperCase()}`}
-                  </span>
+                {/* Live Architectural Stage Callout Banner over 3D Canvas */}
+                <div className="absolute top-3 left-3 pointer-events-none z-10 flex flex-col gap-1 max-w-[260px] sm:max-w-xs">
+                  <div className="flex items-center gap-1.5 bg-white/95 backdrop-blur-xs px-2.5 py-1 rounded-full border border-black/5 shadow-xs">
+                    <span className="h-2 w-2 rounded-full bg-accent animate-pulse" />
+                    <span className="text-[9.5px] uppercase tracking-wider font-mono text-accent font-bold truncate">
+                      {buildProgress < 0.35
+                        ? "SITE SURVEY & EXCAVATION"
+                        : `${activeTier.code} · ${activeTier.subtitle.toUpperCase()}`}
+                    </span>
+                  </div>
                 </div>
 
-                <div className="bg-white/90 backdrop-blur-sm px-3.5 py-1.5 rounded-xl border border-black/5 shadow-xs w-fit">
-                  <span className="font-serif text-lg sm:text-xl text-foreground font-medium">
-                    {activeTier.rateDisplay} <span className="text-xs font-sans text-muted">/ m²</span>
+                {/* Scroll Guidance Indicator */}
+                <div className="absolute bottom-3 left-3 pointer-events-none z-10 hidden sm:flex items-center gap-2 text-muted text-[9.5px] font-mono bg-white/85 px-3 py-1 rounded-full border border-border backdrop-blur-xs">
+                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-ping" />
+                  <span>
+                    {scrollPercent < 0.96
+                      ? "Scroll in place to form mansion ↓"
+                      : "Mansion fully assembled! Scroll down to estimate costs ↓"}
                   </span>
-                  <p className="text-[10.5px] text-foreground/75 font-light line-clamp-1 mt-0.5">
+                </div>
+              </div>
+
+              {/* Right Column (5 cols): Live Specifications & Price Dossier Beside the Mansion */}
+              <div className="lg:col-span-5 xl:col-span-5 relative w-full h-full rounded-2xl sm:rounded-3xl bg-surface/95 backdrop-blur-md border border-border shadow-xl p-3.5 sm:p-5 flex flex-col justify-between overflow-y-auto lg:overflow-hidden min-h-0">
+                {/* Header: Stage Code, Name, Price, and Tagline */}
+                <div>
+                  <div className="flex items-center justify-between gap-2 mb-1">
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-[9.5px] uppercase tracking-widest font-mono font-bold px-2 py-0.5 rounded-md bg-accent/15 text-accent border border-accent/30">
+                        {activeTier.code}
+                      </span>
+                      <span className="text-[10px] uppercase tracking-wider font-mono text-muted">
+                        {activeTier.subtitle}
+                      </span>
+                    </div>
+
+                    {activeTier.popular ? (
+                      <span className="inline-flex items-center gap-1 text-[8px] uppercase tracking-widest bg-accent text-white px-2 py-0.5 font-bold rounded-full shadow-2xs">
+                        <Sparkles size={8} />
+                        <span>Most Popular</span>
+                      </span>
+                    ) : (
+                      <span className="text-[9.5px] font-mono text-muted uppercase tracking-wider">
+                        Stage {activeTier.stageNum} of 04
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="flex items-baseline justify-between gap-2 mt-1">
+                    <h3 className="font-serif text-xl sm:text-2xl text-foreground font-normal tracking-tight">
+                      {activeTier.name}
+                    </h3>
+                    <div className="text-right">
+                      <span className="font-serif text-xl sm:text-2xl text-accent font-semibold tracking-tight">
+                        {activeTier.rateDisplay}
+                      </span>
+                      <span className="text-[9.5px] font-sans text-muted font-light block">
+                        / m² gross floor area
+                      </span>
+                    </div>
+                  </div>
+
+                  <p className="text-[11px] text-foreground/75 font-light leading-relaxed mt-1">
                     {activeTier.tagline}
                   </p>
                 </div>
-              </div>
 
-              {/* Scroll Guidance Indicator */}
-              <div className="absolute bottom-4 left-4 pointer-events-none z-10 hidden sm:flex items-center gap-2 text-muted text-[10px] font-mono bg-white/80 px-3 py-1 rounded-full border border-border backdrop-blur-xs">
-                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-ping" />
-                <span>
-                  {scrollPercent < 0.96
-                    ? "Scroll down to build the mansion in place ↓"
-                    : "Mansion fully assembled! Scroll down to estimate costs ↓"}
-                </span>
+                {/* Modular Specification Inclusions (The Contents per 01 to 04) */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 sm:gap-2 my-2 flex-1 min-h-0">
+                  {/* Ceiling */}
+                  <div className="p-2 sm:p-2.5 rounded-xl bg-background/80 border border-border/80 flex flex-col justify-start">
+                    <span className="text-[8.5px] uppercase tracking-wider font-mono text-accent font-semibold mb-0.5">
+                      Ceiling Architecture
+                    </span>
+                    <span className="text-[10.5px] text-foreground/85 leading-snug font-light">
+                      {activeTier.specifications.ceiling}
+                    </span>
+                  </div>
+
+                  {/* Fenestration */}
+                  <div className="p-2 sm:p-2.5 rounded-xl bg-background/80 border border-border/80 flex flex-col justify-start">
+                    <span className="text-[8.5px] uppercase tracking-wider font-mono text-accent font-semibold mb-0.5">
+                      Fenestration &amp; Glass
+                    </span>
+                    <span className="text-[10.5px] text-foreground/85 leading-snug font-light">
+                      {activeTier.specifications.windows}
+                    </span>
+                  </div>
+
+                  {/* Flooring */}
+                  <div className="p-2 sm:p-2.5 rounded-xl bg-background/80 border border-border/80 flex flex-col justify-start">
+                    <span className="text-[8.5px] uppercase tracking-wider font-mono text-accent font-semibold mb-0.5">
+                      Flooring &amp; Surfaces
+                    </span>
+                    <span className="text-[10.5px] text-foreground/85 leading-snug font-light">
+                      {activeTier.specifications.flooring}
+                    </span>
+                  </div>
+
+                  {/* Doors */}
+                  <div className="p-2 sm:p-2.5 rounded-xl bg-background/80 border border-border/80 flex flex-col justify-start">
+                    <span className="text-[8.5px] uppercase tracking-wider font-mono text-accent font-semibold mb-0.5">
+                      Doors &amp; Hardware
+                    </span>
+                    <span className="text-[10.5px] text-foreground/85 leading-snug font-light">
+                      {activeTier.specifications.doors}
+                    </span>
+                  </div>
+
+                  {/* Walls */}
+                  <div className="p-2 sm:p-2.5 rounded-xl bg-background/80 border border-border/80 flex flex-col justify-start">
+                    <span className="text-[8.5px] uppercase tracking-wider font-mono text-accent font-semibold mb-0.5">
+                      Walls &amp; Cladding
+                    </span>
+                    <span className="text-[10.5px] text-foreground/85 leading-snug font-light">
+                      {activeTier.specifications.walls}
+                    </span>
+                  </div>
+
+                  {/* Fixtures */}
+                  <div className="p-2 sm:p-2.5 rounded-xl bg-background/80 border border-border/80 flex flex-col justify-start">
+                    <span className="text-[8.5px] uppercase tracking-wider font-mono text-accent font-semibold mb-0.5">
+                      Fixtures &amp; MEP
+                    </span>
+                    <span className="text-[10.5px] text-foreground/85 leading-snug font-light">
+                      {activeTier.specifications.fixtures}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Railings & Materials Section */}
+                <div className="pt-1.5 border-t border-border/60">
+                  <div className="flex items-center gap-1.5 text-[10px] text-foreground/80 font-light mb-1.5">
+                    <span className="text-[8.5px] uppercase tracking-wider font-mono text-accent font-semibold shrink-0">
+                      Railings &amp; Gate:
+                    </span>
+                    <span className="truncate">{activeTier.specifications.railings}</span>
+                  </div>
+
+                  <div className="flex flex-wrap items-center gap-1">
+                    <span className="text-[8.5px] uppercase tracking-wider font-mono text-muted mr-1">
+                      Materials:
+                    </span>
+                    {activeTier.materials.map((mat) => (
+                      <span
+                        key={mat.name}
+                        className="text-[8.5px] uppercase tracking-wider px-2 py-0.5 rounded-md bg-accent/10 text-accent font-mono border border-accent/20"
+                      >
+                        {mat.name}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Direct Stage Actions */}
+                <div className="flex items-center gap-2 pt-2.5">
+                  <a
+                    href="#cost-estimator"
+                    className="flex-1 btn btn--accent rounded-full py-2 text-[10px] uppercase tracking-[0.16em] shadow-xs flex items-center justify-center gap-1.5 font-medium"
+                  >
+                    <span>Estimate {activeTier.name}</span>
+                    <ArrowDown size={11} />
+                  </a>
+
+                  <button
+                    type="button"
+                    onClick={() => setShowMatrix((v) => !v)}
+                    className="inline-flex items-center gap-1 px-3 py-2 rounded-full text-[10px] uppercase tracking-[0.16em] border border-border text-foreground hover:border-accent hover:text-accent bg-background transition-all cursor-pointer font-medium"
+                  >
+                    <Layers size={10} className="text-accent" />
+                    <span>{showMatrix ? "Hide Matrix" : "Matrix"}</span>
+                  </button>
+                </div>
               </div>
             </div>
 
-            {/* Bottom Bar: Live Materials Deployed + Quick Action */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2">
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="text-[9.5px] uppercase tracking-wider text-muted font-mono mr-1">
-                  Active Materials:
-                </span>
-                {activeTier.materials.map((mat) => (
-                  <span
-                    key={mat.name}
-                    className="text-[9.5px] uppercase tracking-wider px-2.5 py-1 rounded-lg bg-surface text-foreground font-mono border border-border shadow-2xs"
-                  >
-                    {mat.name}
-                  </span>
-                ))}
-              </div>
-
-              <div className="flex items-center gap-3">
-                <button
-                  type="button"
-                  onClick={() => setShowMatrix((v) => !v)}
-                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-[10.5px] uppercase tracking-[0.16em] border border-border text-foreground hover:border-accent hover:text-accent bg-surface transition-all cursor-pointer font-medium"
-                >
-                  <Layers size={11} className="text-accent" />
-                  <span>{showMatrix ? "Hide Matrix" : "Compare 01–04"}</span>
-                  {showMatrix ? <ChevronUp size={11} /> : <ChevronDown size={11} />}
-                </button>
-
-                <a
-                  href="#cost-estimator"
-                  className="btn btn--accent rounded-full px-4 py-1.5 text-[10.5px] uppercase tracking-[0.16em] shadow-xs flex items-center gap-1.5"
-                >
-                  <span>Estimate Costs</span>
-                  <ArrowDown size={12} />
-                </a>
-              </div>
+            {/* Bottom Bar: Live Phase Indicator */}
+            <div className="flex items-center justify-between text-[10px] text-muted font-mono pt-1">
+              <span>
+                Active Phase: Stage {activeTier.number} &middot; {activeTier.subtitle}
+              </span>
+              <span className="hidden sm:inline">
+                San Fernando, Pampanga &middot; Turnkey Design-Build Delivery
+              </span>
             </div>
           </div>
         </div>
@@ -513,6 +637,13 @@ export default function Pricing() {
                   <td className="py-2.5 px-4">American Standard / Pozzi</td>
                   <td className="py-2.5 px-4 bg-accent/5">Kohler / Hansgrohe</td>
                   <td className="py-2.5 px-4">Toto / Grohe + Smart Home</td>
+                </tr>
+                <tr>
+                  <td className="py-2.5 px-4 font-medium text-foreground">Railings &amp; Gate</td>
+                  <td className="py-2.5 px-4">Steel perimeter frame</td>
+                  <td className="py-2.5 px-4">Modern painted steel &amp; gate</td>
+                  <td className="py-2.5 px-4 bg-accent/5">Tempered glass &amp; motorized gate</td>
+                  <td className="py-2.5 px-4">Frameless laminated glass &amp; acoustic timber gate</td>
                 </tr>
               </tbody>
             </table>
