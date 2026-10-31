@@ -273,15 +273,18 @@ export default function Footer() {
             <div className="w-[85vw] h-48 bg-[radial-gradient(ellipse_at_center,rgba(154,116,66,0.18)_0%,rgba(154,116,66,0.08)_45%,transparent_75%)] blur-2xl" />
           </div>
 
-          <span className="architectural-glow-hover relative z-10 font-serif text-[9vw] sm:text-[10vw] font-light text-foreground/[0.07] tracking-[0.2em] uppercase leading-none block whitespace-nowrap select-none">
-            RBC BUILDERS
+          <span className="architectural-glow-hover wordmark wordmark--xl relative z-10 font-light text-foreground/[0.08] tracking-[0.2em] uppercase leading-none inline-flex items-center justify-center whitespace-nowrap select-none">
+            RBC<i></i>BUILDERS
           </span>
+          <p className="text-[11px] sm:text-xs uppercase tracking-[0.3em] text-accent font-light mt-3">
+            Architects &middot; Design &middot; Builders &middot; Central Luzon
+          </p>
 
           {/* Architectural illuminated subline that blooms with the signature */}
           <div className="mt-4 flex items-center justify-center gap-3 opacity-0 group-hover:opacity-100 transition-all duration-700 pointer-events-none transform translate-y-2 group-hover:translate-y-0">
             <span className="h-px w-8 bg-accent/60" />
             <span className="text-[10px] sm:text-xs uppercase tracking-[0.3em] text-accent font-light">
-              Click to return to top &bull; Central Luzon Design-Build Practice
+              Click to return to top &bull; San Fernando, Pampanga Headquarters
             </span>
             <span className="h-px w-8 bg-accent/60" />
           </div>

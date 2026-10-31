@@ -1,19 +1,19 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Plus_Jakarta_Sans } from "next/font/google";
+import { Jost, Cormorant_Garamond } from "next/font/google";
 import SmoothScroll from "@/components/SmoothScroll";
 import ChatBot from "@/components/ChatBot";
 import OnboardingTour from "@/components/OnboardingTour";
 import "./globals.css";
 
-const cormorant = Cormorant_Garamond({
-  variable: "--font-cormorant",
+const jost = Jost({
+  variable: "--font-jost",
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
   display: "swap",
 });
 
-const jakarta = Plus_Jakarta_Sans({
-  variable: "--font-jakarta",
+const cormorant = Cormorant_Garamond({
+  variable: "--font-cormorant",
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
   display: "swap",
@@ -49,7 +49,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${cormorant.variable} ${jakarta.variable} h-full antialiased selection:bg-[#ecdcc4] selection:text-[#151413]`}
+      className={`${jost.variable} ${cormorant.variable} h-full antialiased selection:bg-[#8b6a4e] selection:text-white`}
     >
       <body className="min-h-full flex flex-col bg-background text-foreground font-sans">
         <SmoothScroll>{children}</SmoothScroll>

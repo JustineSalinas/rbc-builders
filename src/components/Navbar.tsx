@@ -32,8 +32,8 @@ export default function Navbar() {
             : "bg-white/75 backdrop-blur-xl border border-black/[0.06] shadow-md shadow-black/[0.03]"
         }`}
       >
-        {/* Left: Brand Identity */}
-        <a href="#top" className="flex items-center gap-2.5 sm:gap-3 group shrink-0">
+        {/* Left: Brand Identity with Tamayo-Revisa architectural wordmark */}
+        <a href="#top" className="flex items-center gap-3 group shrink-0" aria-label="RBC Builders - Architects · Design · Builders">
           <div className="relative h-8 w-8 sm:h-9 sm:w-9 overflow-hidden rounded-full border border-accent/40 group-hover:border-accent transition-colors shrink-0">
             <Image
               src="/images/logo.jpg"
@@ -45,22 +45,22 @@ export default function Navbar() {
             />
           </div>
           <div className="flex flex-col justify-center">
-            <span className="font-serif text-base sm:text-lg tracking-[0.06em] font-medium text-foreground group-hover:text-accent transition-colors leading-none">
-              RBC BUILDERS
+            <span className="wordmark text-[14px] sm:text-[15.5px] font-medium text-foreground group-hover:text-accent transition-colors leading-none tracking-[0.24em]">
+              RBC<i></i>BUILDERS
             </span>
-            <span className="text-[7.5px] sm:text-[8.5px] uppercase tracking-[0.22em] text-muted font-sans font-light mt-1 leading-none">
-              Architecture &amp; Construction
+            <span className="text-[7.5px] sm:text-[8.5px] uppercase tracking-[0.22em] text-muted font-light mt-1 leading-none">
+              Architects &middot; Design &middot; Builders
             </span>
           </div>
         </a>
 
         {/* Center: Flexible Spacious Navigation Links */}
-        <div className="hidden lg:flex items-center justify-center gap-4 xl:gap-8 flex-1 min-w-0 px-2 xl:px-4">
+        <div className="hidden lg:flex items-center justify-center gap-5 xl:gap-8 flex-1 min-w-0 px-2 xl:px-4">
           {NAV_LINKS.map((link) => (
             <a
               key={link.href}
               href={link.href}
-              className="text-[10.5px] xl:text-[11.5px] uppercase tracking-[0.14em] xl:tracking-[0.16em] text-foreground/80 hover:text-accent transition-colors font-medium relative group py-1 whitespace-nowrap"
+              className="text-[11px] xl:text-[12px] uppercase tracking-[0.18em] text-foreground/80 hover:text-accent transition-colors font-medium relative group py-1 whitespace-nowrap"
             >
               {link.label}
               <span className="absolute bottom-0 left-0 w-0 h-[1.5px] bg-accent transition-all duration-300 group-hover:w-full" />
@@ -80,9 +80,9 @@ export default function Navbar() {
 
           <a
             href="#contact"
-            className="hidden sm:inline-flex items-center gap-2 px-4 xl:px-5 py-2 xl:py-2.5 text-[10px] xl:text-[11px] uppercase tracking-[0.16em] xl:tracking-[0.18em] font-medium text-white bg-accent hover:bg-accent-dim transition-all duration-300 rounded-full shadow-sm whitespace-nowrap"
+            className="hidden sm:inline-flex items-center gap-2 px-5 py-2.5 text-[10.5px] xl:text-[11.5px] uppercase tracking-[0.18em] font-medium text-white bg-accent hover:bg-accent-dim transition-all duration-300 shadow-sm whitespace-nowrap"
           >
-            <span>Private Consultation</span>
+            <span>Start a Project</span>
             <ArrowUpRight size={13} className="shrink-0" />
           </a>
 

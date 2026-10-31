@@ -76,19 +76,19 @@ export default function Services() {
   const [activeTab, setActiveTab] = useState(0);
 
   return (
-    <section ref={sectionRef} id="services" className="py-28 sm:py-36 px-4 sm:px-8 bg-surface relative">
+    <section ref={sectionRef} id="services" className="py-28 sm:py-36 px-4 sm:px-8 bg-[#1d232c] text-[#f1efe9] relative border-t border-white/10">
       <div className="mx-auto max-w-7xl">
         {/* Header */}
         <div data-reveal className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-16 sm:mb-20">
           <div>
-            <p className="text-[11px] uppercase tracking-[0.25em] text-accent font-medium mb-3">
+            <p className="text-[11px] uppercase tracking-[0.25em] text-[#c8a483] font-medium mb-3">
               Services &amp; Capabilities
             </p>
-            <h2 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-light text-foreground tracking-tight leading-[1.1]">
+            <h2 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-light text-[#f1efe9] tracking-tight leading-[1.1]">
               Four Core Services. One Accountable Master Builder.
             </h2>
           </div>
-          <p className="text-sm sm:text-base text-foreground/70 font-light max-w-md leading-relaxed">
+          <p className="text-sm sm:text-base text-[#a8adb6] font-light max-w-md leading-relaxed">
             Eliminating third-party friction by housing architectural vision, structural contracting, municipal legalities, and financing facilitation under one roof.
           </p>
         </div>
@@ -106,31 +106,31 @@ export default function Services() {
                   onClick={() => setActiveTab(index)}
                   className={`text-left p-6 border transition-all duration-300 flex items-start gap-5 ${
                     isActive
-                      ? "bg-surface border-accent shadow-md shadow-black/5 ring-1 ring-accent"
-                      : "bg-surface/60 border-border hover:border-accent/40 hover:bg-surface"
+                      ? "bg-[#242b35] border-[#c8a483] shadow-xl ring-1 ring-[#c8a483]"
+                      : "bg-[#242b35]/50 border-white/10 hover:border-[#c8a483]/50 hover:bg-[#242b35]"
                   }`}
                 >
                   <span
                     className={`font-serif text-lg tabular-nums mt-0.5 ${
-                      isActive ? "text-accent" : "text-muted"
+                      isActive ? "text-[#c8a483]" : "text-[#a8adb6]"
                     }`}
                   >
                     {item.id}
                   </span>
                   <div className="flex-1">
                     <div className="flex items-center justify-between">
-                      <span className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium">
+                      <span className="text-[10px] uppercase tracking-[0.2em] text-[#c8a483] font-medium">
                         {item.tag}
                       </span>
                       <Icon
                         size={16}
-                        className={isActive ? "text-accent" : "text-muted/60"}
+                        className={isActive ? "text-[#c8a483]" : "text-[#a8adb6]/60"}
                       />
                     </div>
-                    <h3 className="font-serif text-xl sm:text-2xl text-foreground font-normal mt-1">
+                    <h3 className="font-serif text-xl sm:text-2xl text-[#f1efe9] font-normal mt-1">
                       {item.title}
                     </h3>
-                    <p className="text-xs text-muted font-light mt-1.5 line-clamp-2">
+                    <p className="text-xs text-[#a8adb6] font-light mt-1.5 line-clamp-2">
                       {item.subtitle}
                     </p>
                   </div>
@@ -140,19 +140,19 @@ export default function Services() {
           </div>
 
           {/* Active Detail Panel */}
-          <div data-reveal data-reveal-delay="0.18" className="lg:col-span-7 bg-surface border border-border p-8 sm:p-12 relative overflow-hidden shadow-sm">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-accent/5 rounded-full blur-3xl pointer-events-none" />
+          <div data-reveal data-reveal-delay="0.18" className="lg:col-span-7 bg-[#242b35] border border-white/10 p-8 sm:p-12 relative overflow-hidden shadow-2xl">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-[#c8a483]/10 rounded-full blur-3xl pointer-events-none" />
 
-            <div className="flex items-center justify-between border-b border-border pb-6 mb-8">
+            <div className="flex items-center justify-between border-b border-white/10 pb-6 mb-8">
               <div>
-                <span className="text-[10px] uppercase tracking-[0.25em] text-accent font-medium">
+                <span className="text-[10px] uppercase tracking-[0.25em] text-[#c8a483] font-medium">
                   Discipline {DISCIPLINES[activeTab].id}
                 </span>
-                <h3 className="font-serif text-2xl sm:text-3xl text-foreground font-normal mt-1">
+                <h3 className="font-serif text-2xl sm:text-3xl text-[#f1efe9] font-normal mt-1">
                   {DISCIPLINES[activeTab].title}
                 </h3>
               </div>
-              <div className="h-12 w-12 rounded-full border border-accent/20 flex items-center justify-center text-accent bg-accent/5">
+              <div className="h-12 w-12 rounded-full border border-[#c8a483]/40 flex items-center justify-center text-[#c8a483] bg-[#c8a483]/10">
                 {(() => {
                   const Icon = DISCIPLINES[activeTab].icon;
                   return <Icon size={22} strokeWidth={1.5} />;
@@ -160,21 +160,21 @@ export default function Services() {
               </div>
             </div>
 
-            <p className="text-sm sm:text-base text-foreground/80 font-light leading-relaxed mb-8">
+            <p className="text-sm sm:text-base text-[#f1efe9]/85 font-light leading-relaxed mb-8">
               {DISCIPLINES[activeTab].description}
             </p>
 
             <div className="mb-10">
-              <h4 className="text-xs uppercase tracking-[0.2em] text-accent font-medium mb-4">
+              <h4 className="text-xs uppercase tracking-[0.2em] text-[#c8a483] font-medium mb-4">
                 Guaranteed Scope &amp; Deliverables
               </h4>
               <div className="grid grid-cols-1 gap-3.5">
                 {DISCIPLINES[activeTab].deliverables.map((item) => (
                   <div key={item} className="flex items-start gap-3">
-                    <span className="h-5 w-5 rounded-full bg-accent/10 border border-accent/30 flex items-center justify-center text-accent shrink-0 mt-0.5">
+                    <span className="h-5 w-5 rounded-full bg-[#c8a483]/15 border border-[#c8a483]/40 flex items-center justify-center text-[#c8a483] shrink-0 mt-0.5">
                       <Check size={11} strokeWidth={2.5} />
                     </span>
-                    <span className="text-xs sm:text-sm text-foreground/80 font-light leading-relaxed">
+                    <span className="text-xs sm:text-sm text-[#f1efe9]/80 font-light leading-relaxed">
                       {item}
                     </span>
                   </div>
@@ -182,13 +182,13 @@ export default function Services() {
               </div>
             </div>
 
-            <div className="pt-6 border-t border-border flex flex-wrap items-center justify-between gap-4">
-              <div className="text-xs text-muted">
-                San Fernando · Angeles · Tarlac · Bataan · Zambales
+            <div className="pt-6 border-t border-white/10 flex flex-wrap items-center justify-between gap-4">
+              <div className="text-xs text-[#a8adb6]">
+                San Fernando &middot; Angeles &middot; Tarlac &middot; Bataan &middot; Zambales
               </div>
               <a
                 href="#contact"
-                className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-accent hover:text-foreground font-medium transition-colors"
+                className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-[#c8a483] hover:text-white font-medium transition-colors"
               >
                 <span>Consult Our Engineers</span>
                 <ArrowUpRight size={14} />

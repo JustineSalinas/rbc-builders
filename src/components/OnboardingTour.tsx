@@ -372,35 +372,33 @@ export default function OnboardingTour() {
             height: `${boxRect.height}px`,
           }}
         >
-          {/* Main Glowing Architectural Box Frame */}
+          {/* Main Glowing Architectural Box Frame with Tamayo-Revisa theatrical spotlight */}
           <div
-            className="relative w-full h-full border-2 border-accent/90 ring-1 ring-accent/30 ring-offset-2 ring-offset-white rounded-sm"
+            className="relative w-full h-full rounded-sm"
             style={{
               boxShadow:
-                "0 0 35px rgba(154, 116, 66, 0.35), 0 0 75px rgba(154, 116, 66, 0.15), inset 0 0 30px rgba(154, 116, 66, 0.04)",
+                "0 0 0 9999px rgba(18, 22, 28, 0.76), 0 0 0 2px #c8a483, 0 0 0 8px rgba(200, 164, 131, 0.22)",
             }}
           >
             {/* Architectural Crosshair Corners */}
-            <div className="absolute -top-1.5 -left-1.5 w-6 h-6 border-t-2 border-l-2 border-accent" />
-            <div className="absolute -top-1.5 -right-1.5 w-6 h-6 border-t-2 border-r-2 border-accent" />
-            <div className="absolute -bottom-1.5 -left-1.5 w-6 h-6 border-b-2 border-l-2 border-accent" />
-            <div className="absolute -bottom-1.5 -right-1.5 w-6 h-6 border-b-2 border-r-2 border-accent" />
+            <div className="absolute -top-1.5 -left-1.5 w-6 h-6 border-t-2 border-l-2 border-[#c8a483]" />
+            <div className="absolute -top-1.5 -right-1.5 w-6 h-6 border-t-2 border-r-2 border-[#c8a483]" />
+            <div className="absolute -bottom-1.5 -left-1.5 w-6 h-6 border-b-2 border-l-2 border-[#c8a483]" />
+            <div className="absolute -bottom-1.5 -right-1.5 w-6 h-6 border-b-2 border-r-2 border-[#c8a483]" />
 
             {/* Top Luminous Spotlight Badge */}
-            <div className="absolute -top-4 left-4 sm:left-8 px-3.5 py-1 bg-white border border-accent shadow-2xl flex items-center gap-2.5 rounded-full pointer-events-auto">
+            <div className="absolute -top-4 left-4 sm:left-8 px-3.5 py-1 bg-[#1d232c] border border-[#c8a483] shadow-2xl flex items-center gap-2.5 rounded-full pointer-events-auto">
               <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-accent" />
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#c8a483] opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-[#c8a483]" />
               </span>
-              <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.24em] text-accent font-mono font-medium whitespace-nowrap">
-                ✦ Highlighted Feature &middot; {stepData.title}
+              <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.24em] text-[#c8a483] font-mono font-medium whitespace-nowrap">
+                ✦ {stepData.title}
               </span>
             </div>
 
             {/* Bottom Technical Specification Tag */}
-            <div className="hidden sm:flex absolute -bottom-3.5 right-6 sm:right-8 px-3 py-0.5 bg-white border border-accent/60 text-[9px] font-mono text-accent uppercase tracking-[0.2em] items-center gap-2 shadow-lg">
-              <span>FEATURE #{stepData.id.toUpperCase()}</span>
-              <span className="text-muted/60">&bull;</span>
+            <div className="hidden sm:flex absolute -bottom-3.5 right-6 sm:right-8 px-3 py-0.5 bg-[#1d232c] border border-[#c8a483]/60 text-[9px] font-mono text-[#c8a483] uppercase tracking-[0.2em] items-center gap-2 shadow-lg">
               <span>SECTION {currentStep + 1} OF {TOUR_STEPS.length}</span>
             </div>
           </div>
@@ -409,43 +407,43 @@ export default function OnboardingTour() {
 
       {/* State 2B: Floating Tour Concierge Card (Active Walkthrough) */}
       {isOpen && hasStarted && (
-        <div className="fixed bottom-6 left-4 right-4 sm:left-6 sm:right-auto sm:w-[460px] z-[80] bg-white/95 backdrop-blur-2xl border border-accent/60 p-6 sm:p-7 shadow-2xl text-foreground animate-in slide-in-from-bottom-5 duration-300">
+        <div className="fixed bottom-6 left-4 right-4 sm:left-6 sm:right-auto sm:w-[460px] z-[80] bg-[#faf9f6] border border-border/80 p-6 sm:p-7 rounded-[18px] shadow-[0_30px_70px_-20px_rgba(0,0,0,0.7)] text-[#1d232c] animate-in slide-in-from-bottom-5 duration-300">
           {/* Progress Header */}
           <div className="flex items-center justify-between gap-4 mb-3">
-            <span className="text-[10px] uppercase tracking-[0.22em] text-accent font-medium font-mono">
+            <span className="text-[10px] uppercase tracking-[0.22em] text-[#8b6a4e] font-medium font-mono">
               {stepData.badge}
             </span>
 
             <button
               onClick={handleSkipTour}
               aria-label="End tour"
-              className="text-[10px] uppercase tracking-[0.16em] text-muted hover:text-accent transition-colors"
+              className="text-[10.5px] uppercase tracking-[0.16em] text-muted hover:text-accent transition-colors underline underline-offset-4"
             >
-              Skip Tour &times;
+              Skip Tour
             </button>
           </div>
 
           {/* Progress Bar */}
-          <div className="h-1 w-full bg-stone-200 overflow-hidden mb-4">
+          <div className="h-1 w-full bg-stone-200 overflow-hidden mb-4 rounded-full">
             <div
-              className="h-full bg-accent transition-all duration-500"
+              className="h-full bg-[#8b6a4e] transition-all duration-500 rounded-full"
               style={{ width: `${((currentStep + 1) / TOUR_STEPS.length) * 100}%` }}
             />
           </div>
 
           {/* Step Title */}
-          <h4 className="font-serif text-2xl text-foreground font-normal mb-2 leading-snug">
+          <h4 className="font-serif text-2xl text-[#1d232c] font-normal mb-2 leading-snug">
             {stepData.title}
           </h4>
 
           {/* Personalized Description */}
-          <p className="text-xs sm:text-[13px] text-foreground/85 font-light leading-relaxed mb-4">
+          <p className="text-xs sm:text-[13px] text-[#4b5260] font-light leading-relaxed mb-4">
             {stepData.getDescription(displayName)}
           </p>
 
           {/* Action Hint */}
-          <div className="p-2.5 bg-accent/5 border border-accent/20 text-[11px] text-accent font-normal flex items-start gap-2 mb-5">
-            <Sparkles size={13} className="text-accent shrink-0 mt-0.5" />
+          <div className="p-2.5 bg-[#8b6a4e]/5 border border-[#8b6a4e]/20 text-[11px] text-[#8b6a4e] font-medium flex items-start gap-2 mb-5 rounded-lg">
+            <Sparkles size={13} className="text-[#8b6a4e] shrink-0 mt-0.5" />
             <span>{stepData.actionHint}</span>
           </div>
 
@@ -454,7 +452,7 @@ export default function OnboardingTour() {
             <button
               onClick={handlePrev}
               disabled={currentStep === 0 || isScrolling}
-              className="px-4 py-2 border border-border disabled:opacity-30 disabled:pointer-events-none hover:border-accent text-xs uppercase tracking-wider text-muted hover:text-accent transition-colors flex items-center gap-1.5"
+              className="px-4 py-2 border border-border disabled:opacity-30 disabled:pointer-events-none hover:border-[#8b6a4e] text-xs uppercase tracking-wider text-muted hover:text-accent transition-colors flex items-center gap-1.5 rounded-full"
             >
               <ArrowLeft size={12} />
               <span>Previous</span>
@@ -467,7 +465,7 @@ export default function OnboardingTour() {
             <button
               onClick={handleNext}
               disabled={isScrolling}
-              className="px-5 py-2.5 bg-accent hover:bg-accent-dim text-white text-xs uppercase tracking-wider font-medium transition-all flex items-center gap-2 shadow-md"
+              className="px-5 py-2.5 bg-[#1d232c] hover:bg-[#47546e] text-white text-xs uppercase tracking-wider font-medium transition-all flex items-center gap-2 shadow-md rounded-full"
             >
               <span>{currentStep === TOUR_STEPS.length - 1 ? "Finish Tour" : "Next Section"}</span>
               {currentStep === TOUR_STEPS.length - 1 ? <Check size={14} /> : <ArrowRight size={13} />}

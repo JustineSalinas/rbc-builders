@@ -86,42 +86,42 @@ export default function Hero() {
           {/* Left Column: Brand Statement & Positioning */}
           <div className="lg:col-span-5 flex flex-col justify-center">
             {/* Accreditation Badge */}
-            <div className="hero-reveal inline-flex items-center gap-2.5 px-3 py-1 mb-5 border border-accent/30 rounded-full bg-accent/5 w-fit">
+            <div className="hero-reveal inline-flex items-center gap-2.5 px-3 py-1 mb-4 border border-accent/40 bg-accent/5 w-fit">
               <span className="h-1.5 w-1.5 rounded-full bg-accent animate-pulse" />
-              <span className="text-[9.5px] uppercase tracking-[0.24em] text-accent font-medium">
-                PRC Accredited Design-Build Contractor
+              <span className="text-[10px] uppercase tracking-[0.26em] text-accent font-medium">
+                Architects &middot; Design &middot; Builders &middot; Central Luzon
               </span>
             </div>
 
             {/* Editorial Main Headline */}
-            <h1 className="hero-reveal font-serif text-4xl sm:text-5xl lg:text-[3.6rem] font-light leading-[1.08] tracking-tight text-foreground mb-6">
-              Architecture with Permanence.{" "}
-              <span className="italic font-normal text-accent font-serif block sm:inline">
-                Built with Precision.
+            <h1 className="hero-reveal font-serif text-4xl sm:text-5xl lg:text-[3.7rem] font-light leading-[1.06] tracking-tight text-foreground mb-6">
+              Architecture engineered with permanence.{" "}
+              <span className="italic font-normal text-accent block mt-1">
+                Built for generations.
               </span>
             </h1>
 
             {/* Core Narrative Paragraph */}
             <p className="hero-reveal text-sm sm:text-[15px] text-foreground/75 leading-relaxed font-light mb-8 max-w-lg">
-              RBC Builders is a premier design-build architecture and general contracting firm based in San Fernando, Pampanga. We unify architectural design, structural engineering, government permits, and turnkey master construction across Central Luzon under one accountable standard.
+              Headquartered in the City of San Fernando, Pampanga, RBC Builders unifies architectural planning, seismic structural calculations, LGU municipal permitting, and master general contracting under single-source accountability.
             </p>
 
             {/* Call to Actions */}
-            <div className="hero-reveal flex flex-wrap items-center gap-4 mb-8">
+            <div className="hero-reveal flex flex-wrap items-center gap-3.5 mb-8">
               <a
                 href="#contact"
-                className="inline-flex items-center gap-2.5 px-7 py-3.5 text-[11px] uppercase tracking-[0.2em] font-medium bg-accent text-white hover:bg-accent-dim transition-all duration-300 shadow-md"
+                className="btn btn--accent shadow-md"
               >
-                <span>Commission an Estate</span>
+                <span>Start a Project</span>
                 <ArrowRight size={14} />
               </a>
 
               <a
                 href="#projects"
-                className="inline-flex items-center gap-2 px-6 py-3.5 text-[11px] uppercase tracking-[0.2em] font-medium text-foreground hover:text-accent border border-border hover:border-accent transition-colors bg-surface shadow-sm"
+                className="btn btn--line"
               >
-                <span>Selected Works</span>
-                <ArrowDownRight size={14} className="text-muted" />
+                <span>Explore Works</span>
+                <ArrowDownRight size={14} />
               </a>
             </div>
 
