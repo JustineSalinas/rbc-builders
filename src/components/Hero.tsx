@@ -85,13 +85,10 @@ export default function Hero() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center mb-12 sm:mb-16">
           {/* Left Column: Brand Statement & Positioning */}
           <div className="lg:col-span-5 flex flex-col justify-center">
-            {/* Accreditation Badge */}
-            <div className="hero-reveal inline-flex items-center gap-2 sm:gap-2.5 px-3.5 py-1.5 mb-5 sm:mb-6 border border-accent/35 bg-accent/5 rounded-full max-w-full w-fit">
-              <span className="h-1.5 w-1.5 rounded-full bg-accent animate-pulse shrink-0" />
-              <span className="text-[9.5px] sm:text-[10.5px] uppercase tracking-[0.16em] sm:tracking-[0.2em] text-accent font-medium leading-none flex flex-wrap items-center gap-x-2 gap-y-1">
-                <span className="whitespace-nowrap">San Fernando, Pampanga</span>
-                <span className="text-accent/50 hidden sm:inline">&middot;</span>
-                <span className="whitespace-nowrap">PRC Licensed Design-Build Practice</span>
+            {/* Accreditation Eyebrow */}
+            <div className="hero-reveal mb-4 sm:mb-5">
+              <span className="text-[10px] sm:text-xs uppercase tracking-[0.18em] sm:tracking-[0.22em] text-accent font-medium whitespace-nowrap block">
+                San Fernando, Pampanga &middot; PRC Licensed Design
               </span>
             </div>
 
