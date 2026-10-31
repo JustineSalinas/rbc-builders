@@ -4,8 +4,9 @@ import { useEffect, useRef } from "react";
 import * as THREE from "three";
 
 const clamp = (v: number, a = 0, b = 1) => Math.min(b, Math.max(a, v));
-const ease = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
-const seg = (p: number, a: number, b: number) => ease(clamp((p - a) / (b - a)));
+// Smoothstep interpolation: natural, steady, organic architectural velocity with zero sudden jerks
+const smoothstep = (t: number) => t * t * (3 - 2 * t);
+const seg = (p: number, a: number, b: number) => smoothstep(clamp((p - a) / (b - a)));
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
 export interface Journey3DHandle {
@@ -434,22 +435,22 @@ export default function Journey3DCanvas({
       });
     });
 
-    // ── 06 · Construction: Concrete Columns, Travertine Portal & Luxury Villa Structure ──
+    // ── 06 · Construction: Progressive Structural Building Sequence ──
+    rise(box(-8.4, 9.6, 0, 0.3, -4.4, 4.4, M.concrete), 4.95, 5.2); // Foundation plinth
     COLS.forEach(([x, z], i) =>
-      rise(box(x - 0.22, x + 0.22, 0.35, 3.4, z - 0.22, z + 0.22, M.concrete), 5.0 + i * 0.02, 5.25 + i * 0.02)
+      rise(box(x - 0.22, x + 0.22, 0.35, 3.4, z - 0.22, z + 0.22, M.concrete), 5.05 + i * 0.02, 5.35 + i * 0.02)
     );
-    rise(box(-8.4, 9.6, 0, 0.3, -4.4, 4.4, M.concrete), 5.0, 5.15); // Foundation plinth
-    rise(box(-7.6, 3.4, 0.3, 3.4, -3.8, 3.2, M.plaster), 5.22, 5.45); // GF Stucco walls
-    rise(box(-9, 9.8, 3.4, 3.75, -4.6, 4.8, M.concrete), 5.4, 5.5); // 2F Transfer slab
-    rise(box(-8.8, 9.6, 3.36, 3.4, -4.4, 4.6, M.soffit), 5.45, 5.52); // Timber under-soffit
-    rise(box(-6.2, 6.4, 3.75, 6.8, -4.2, 3.0, M.charcoal), 5.5, 5.72); // 2F Upper pavilion
-    rise(box(-7.4, 8.0, 6.8, 7.15, -5.2, 4.4, M.concrete), 5.7, 5.8); // Continuous roof slab
-    rise(box(-7.2, 7.8, 6.76, 6.8, -5.0, 4.2, M.soffit), 5.74, 5.8); // Timber batten under-soffit
+    rise(box(-7.6, 3.4, 0.3, 3.4, -3.8, 3.2, M.plaster), 5.2, 5.52); // GF Stucco walls
+    // Signature Travertine Stone Entrance Portal Tower (Majestic 2-story shaft)
+    rise(box(-1.6, -0.2, 0, 7.0, 2.8, 4.0, M.travertine), 5.28, 5.75);
+    rise(box(-9, 9.8, 3.4, 3.75, -4.6, 4.8, M.concrete), 5.38, 5.65); // 2F Transfer slab
+    rise(box(-8.8, 9.6, 3.36, 3.4, -4.4, 4.6, M.soffit), 5.42, 5.68); // Timber under-soffit
+    rise(box(-6.2, 6.4, 3.75, 6.8, -4.2, 3.0, M.charcoal), 5.5, 5.78); // 2F Upper pavilion
+    rise(box(-7.4, 8.0, 6.8, 7.15, -5.2, 4.4, M.concrete), 5.65, 5.88); // Continuous roof slab
+    rise(box(-7.2, 7.8, 6.76, 6.8, -5.0, 4.2, M.soffit), 5.68, 5.9); // Timber batten under-soffit
 
-    // Signature Travertine Stone Entrance Portal Tower (Prominent 2-story shaft)
-    rise(box(-1.6, -0.2, 0, 7.0, 2.8, 4.0, M.travertine), 5.3, 5.7);
     // Grand Oversized Mahogany Pivot Door
-    rise(box(-1.3, -0.5, 0.3, 4.2, 3.96, 4.04, M.mahogany), 5.6, 5.85);
+    rise(box(-1.3, -0.5, 0.3, 4.2, 3.96, 4.04, M.mahogany), 5.65, 5.92);
 
     // Panoramic Floor-to-Ceiling Glass Fenestration
     [
@@ -460,18 +461,18 @@ export default function Journey3DCanvas({
       [-7.66, -7.6, 0.5, 3.2, -3.4, 2.8],
       [-6.26, -6.2, 4.0, 6.5, -3.8, 2.6],
     ].forEach(([x0, x1, y0, y1, z0, z1], i) =>
-      rise(box(x0, x1, y0, y1, z0, z1, M.glass), 5.72 + i * 0.03, 5.85 + i * 0.03)
+      rise(box(x0, x1, y0, y1, z0, z1, M.glass), 5.72 + i * 0.03, 5.92 + i * 0.03)
     );
 
     // Acoustic Vertical Timber Louvers on 2F
     for (let i = 0; i < 18; i++) {
       const x = 1.7 + i * 0.26;
-      rise(box(x, x + 0.09, 3.85, 6.7, 3.06, 3.22, M.timber), 5.78 + i * 0.008, 5.9 + i * 0.008);
+      rise(box(x, x + 0.09, 3.85, 6.7, 3.06, 3.22, M.timber), 5.76 + i * 0.01, 5.96 + i * 0.01);
     }
 
     // Frameless Glass Balustrades
-    rise(box(9.5, 9.56, 3.75, 4.85, -4.4, 4.6, M.rail), 5.85, 5.95);
-    rise(box(6.4, 9.56, 3.75, 4.85, 4.54, 4.6, M.rail), 5.85, 5.95);
+    rise(box(9.5, 9.56, 3.75, 4.85, -4.4, 4.6, M.rail), 5.86, 6.02);
+    rise(box(6.4, 9.56, 3.75, 4.85, 4.54, 4.6, M.rail), 5.86, 6.02);
 
     // ── 07 · Turnover: Dusk Illumination, Cascading Waterfall Pool & Twilight Atmosphere ──
     [
@@ -579,16 +580,16 @@ export default function Journey3DCanvas({
       },
     });
 
-    // ── Spacious Cinematic Camera Spline Path (Villa fully framed, classy & zoomed out) ──
+    // ── Spacious Cinematic Camera Spline Path (Steady, progressive descent, zero jarring dips) ──
     const V = (x: number, y: number, z: number) => new THREE.Vector3(x, y, z);
     const camPath = new THREE.CatmullRomCurve3(
       [
         V(14.0, 22.0, 20.0), // 0: Blueprint drafting axonometric view (full drafting board visible)
-        V(19.0, 18.0, 22.0), // 1: Sweeping around site survey stakes & sun arc
-        V(20.0, 15.0, 24.0), // 2: Alabaster massing volumes rising
-        V(18.0, 13.0, 24.0), // 3: Technical elevation with PRC stamp
-        V(17.0, 13.0, 22.0), // 4: Excavation trenches & foundation rebar cages
-        V(18.0, 11.0, 25.0), // 5: Construction of columns, travertine portal & louvers
+        V(18.0, 18.0, 23.0), // 1: Sweeping around site survey stakes & sun arc
+        V(19.5, 15.0, 25.0), // 2: Alabaster massing volumes rising
+        V(18.5, 13.5, 25.0), // 3: Technical elevation with PRC stamp
+        V(17.5, 12.0, 24.0), // 4: Excavation trenches & foundation rebar cages
+        V(17.5, 10.5, 25.0), // 5: Construction of columns, travertine portal & louvers
         V(16.5, 8.5, 25.0),  // 6: Dusk beauty angle looking at villa standing proud
         V(16.5, 8.5, 25.0),  // 7: Clamped at final beauty angle
       ],
@@ -598,12 +599,12 @@ export default function Journey3DCanvas({
 
     const lookPath = new THREE.CatmullRomCurve3(
       [
-        V(0.5, 0.2, 0.0),   // 0: Center of blueprint
-        V(0.5, 0.8, 0.5),   // 1: Center of site
-        V(0.5, 2.0, 0.5),   // 2: Massing center
-        V(0.5, 2.2, 0.5),   // 3: Elevation center
-        V(0.5, 1.2, 0.5),   // 4: Footing center
-        V(0.5, 2.5, 0.5),   // 5: Travertine portal center
+        V(0.5, 0.4, 0.0),   // 0: Center of blueprint
+        V(0.5, 1.0, 0.2),   // 1: Center of site
+        V(0.5, 1.8, 0.3),   // 2: Massing center
+        V(0.5, 2.2, 0.4),   // 3: Elevation center
+        V(0.5, 2.0, 0.4),   // 4: Footing center
+        V(0.5, 2.6, 0.5),   // 5: Travertine portal center
         V(0.5, 2.8, 0.5),   // 6: Completed villa facade center
         V(0.5, 2.8, 0.5),   // 7: Completed villa facade center
       ],

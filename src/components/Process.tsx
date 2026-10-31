@@ -167,17 +167,28 @@ export default function Process() {
   const [activeStepIndex, setActiveStepIndex] = useState<number>(0);
   const currentStepIdxRef = useRef<number>(0);
 
-  // Direct, low-latency 60fps scroll tracking
+  // Zero-layout-thrashing 60-120fps scroll tracking
   useEffect(() => {
-    const onScroll = () => {
+    let trackTop = 0;
+    let trackHeight = 0;
+
+    const measureTrack = () => {
       if (!pinTrackRef.current) return;
       const rect = pinTrackRef.current.getBoundingClientRect();
+      trackTop = window.scrollY + rect.top;
+      trackHeight = rect.height;
+    };
+
+    measureTrack();
+
+    const onScroll = () => {
+      if (!trackHeight) measureTrack();
       const viewportHeight = window.innerHeight;
-      const totalScrollableDistance = rect.height - viewportHeight;
+      const totalScrollableDistance = trackHeight - viewportHeight;
 
       if (totalScrollableDistance <= 0) return;
 
-      const scrolledPast = -rect.top;
+      const scrolledPast = window.scrollY - trackTop;
       const rawProgress = Math.min(Math.max(scrolledPast / totalScrollableDistance, 0), 1);
 
       // Continuous 3D journey progress (0.0 to 7.0)
@@ -234,7 +245,10 @@ export default function Process() {
     };
 
     window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
+    window.addEventListener("resize", () => {
+      measureTrack();
+      onScroll();
+    });
     onScroll();
 
     return () => {
@@ -293,11 +307,11 @@ export default function Process() {
       <div id="methodology" className="sr-only" />
 
       {/* ============================================================== */}
-      {/* PINNED IN-PLACE SCROLL TRACK CONTAINER (Calibrated 250vh)       */}
+      {/* PINNED IN-PLACE SCROLL TRACK CONTAINER (Calibrated 320vh)       */}
       {/* Stops user first: scrolling in place builds villa 01 till 07   */}
       {/* Once complete at 07, section releases to scroll down naturally */}
       {/* ============================================================== */}
-      <div ref={pinTrackRef} className="relative h-[250vh]">
+      <div ref={pinTrackRef} className="relative h-[320vh]">
         {/* Sticky Viewport Stage: Pinned on Screen with 100dvh for mobile address bar safety */}
         <div className="sticky top-0 h-[100dvh] w-full flex flex-col justify-between overflow-hidden bg-background px-3 sm:px-6 lg:px-8 pt-16 sm:pt-20 pb-2 sm:pb-3 z-20">
           <div className="mx-auto max-w-7xl w-full flex flex-col h-full justify-between min-h-0">
