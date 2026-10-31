@@ -62,12 +62,12 @@ const TOUR_STEPS: TourStep[] = [
     actionHint: "Slide the floor area from 100 m² to 600 m² and select your project municipality.",
   },
   {
-    id: "process",
+    id: "journey",
     badge: "07 / 10 · Construction Roadmap",
-    title: "Two-Stage 7-Phase Journey",
+    title: "Our Journey With You",
     getDescription: (name) =>
-      `Here is our two-stage methodology, ${name}: divided into Pre-Construction Permitting (Weeks 1–11) and Structural Execution & Turnover (Months 3–10) with zero hidden delays.`,
-    actionHint: "Click any phase card to review verified engineering deliverables and quality checklists.",
+      `From our first consultation meeting to a home standing proud, ${name}. Watch your luxury villa form in 3D across 7 deliberate phases as you scroll.`,
+    actionHint: "Scroll to build the residence from pencil blueprint to dusk turnover, or click any step to jump.",
   },
   {
     id: "testimonials",

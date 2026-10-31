@@ -10,7 +10,7 @@ const EXPLORE_LINKS = [
   { href: "#services", label: "Our Services" },
   { href: "#projects", label: "Featured Projects" },
   { href: "#pricing", label: "Pricing & Rates" },
-  { href: "#process", label: "Construction Process" },
+  { href: "#journey", label: "The Journey" },
   { href: "#testimonials", label: "Client Endorsements" },
   { href: "#contact", label: "Start Your Project" },
 ];
