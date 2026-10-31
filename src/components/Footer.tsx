@@ -21,6 +21,7 @@ const DISCIPLINES = [
   "Turnkey General Contracting",
   "LGU Permits & Fire Clearances",
   "Bank Construction Financing",
+  "Photorealistic 3D Rendering & CGI",
   "Interior Architecture & Millwork",
   "Post-Turnover Structural Warranty",
 ];

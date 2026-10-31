@@ -32,10 +32,10 @@ const TOUR_STEPS: TourStep[] = [
   {
     id: "services",
     badge: "03 / 10 · Capabilities Matrix",
-    title: "Four Core Services",
+    title: "Specialized Disciplines",
     getDescription: (name) =>
-      `${name}, we provide single-source execution across 4 distinct disciplines: Architectural Planning, Turnkey General Contracting, LGU Building Permits, and Bank Loan Financing.`,
-    actionHint: "Tap through the four service tabs to inspect itemized deliverable lists.",
+      `${name}, we provide single-source execution across 5 distinct disciplines: Architectural Planning, Turnkey General Contracting, LGU Building Permits, Bank Loan Financing, and Photorealistic 3D Rendering Projects.`,
+    actionHint: "Tap through the service tabs to inspect itemized deliverables and explore our 3D rendering project gallery.",
   },
   {
     id: "projects",
