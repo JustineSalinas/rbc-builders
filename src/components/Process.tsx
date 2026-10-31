@@ -167,6 +167,11 @@ export default function Process() {
   const [activeStepIndex, setActiveStepIndex] = useState<number>(0);
   const currentStepIdxRef = useRef<number>(0);
 
+  // Stable callback for 3D engine instance to prevent unnecessary unmounts/re-renders
+  const handleCanvasInit = useCallback((engine: Journey3DHandle) => {
+    journeyEngineRef.current = engine;
+  }, []);
+
   // Zero-layout-thrashing 60-120fps scroll tracking
   useEffect(() => {
     let trackTop = 0;
@@ -180,6 +185,11 @@ export default function Process() {
     };
 
     measureTrack();
+    const t1 = setTimeout(measureTrack, 250);
+    const t2 = setTimeout(measureTrack, 800);
+    if (typeof document !== "undefined" && document.fonts) {
+      document.fonts.ready.then(measureTrack);
+    }
 
     const onScroll = () => {
       if (!trackHeight) measureTrack();
@@ -252,6 +262,8 @@ export default function Process() {
     onScroll();
 
     return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
     };
@@ -268,10 +280,20 @@ export default function Process() {
     const stepFractions = [0.05, 0.20, 0.35, 0.50, 0.65, 0.80, 0.95];
     const targetScrollY = trackTop + stepFractions[stepIndex] * totalScrollableDistance;
 
-    window.scrollTo({
-      top: targetScrollY,
-      behavior: "smooth",
-    });
+    const lenis = (
+      window as unknown as {
+        __lenis?: { scrollTo: (target: number, opts?: Record<string, unknown>) => void };
+      }
+    ).__lenis;
+
+    if (lenis) {
+      lenis.scrollTo(targetScrollY, { duration: 1.0 });
+    } else {
+      window.scrollTo({
+        top: targetScrollY,
+        behavior: "smooth",
+      });
+    }
   }, []);
 
   const nextStep = useCallback(() => {
@@ -287,10 +309,22 @@ export default function Process() {
   const skipPastJourney = useCallback(() => {
     if (!pinTrackRef.current) return;
     const rect = pinTrackRef.current.getBoundingClientRect();
-    window.scrollTo({
-      top: window.scrollY + rect.bottom + 20,
-      behavior: "smooth",
-    });
+    const targetScrollY = window.scrollY + rect.bottom + 20;
+
+    const lenis = (
+      window as unknown as {
+        __lenis?: { scrollTo: (target: number, opts?: Record<string, unknown>) => void };
+      }
+    ).__lenis;
+
+    if (lenis) {
+      lenis.scrollTo(targetScrollY, { duration: 1.1 });
+    } else {
+      window.scrollTo({
+        top: targetScrollY,
+        behavior: "smooth",
+      });
+    }
   }, []);
 
   const activeStep = JOURNEY_STEPS[activeStepIndex];
@@ -307,11 +341,11 @@ export default function Process() {
       <div id="methodology" className="sr-only" />
 
       {/* ============================================================== */}
-      {/* PINNED IN-PLACE SCROLL TRACK CONTAINER (Calibrated 320vh)       */}
+      {/* PINNED IN-PLACE SCROLL TRACK CONTAINER (Calibrated 340vh)       */}
       {/* Stops user first: scrolling in place builds villa 01 till 07   */}
       {/* Once complete at 07, section releases to scroll down naturally */}
       {/* ============================================================== */}
-      <div ref={pinTrackRef} className="relative h-[320vh]">
+      <div ref={pinTrackRef} className="relative h-[340vh]">
         {/* Sticky Viewport Stage: Pinned on Screen with 100dvh for mobile address bar safety */}
         <div className="sticky top-0 h-[100dvh] w-full flex flex-col justify-between overflow-hidden bg-background px-3 sm:px-6 lg:px-8 pt-16 sm:pt-20 pb-2 sm:pb-3 z-20">
           <div className="mx-auto max-w-7xl w-full flex flex-col h-full justify-between min-h-0">
@@ -411,9 +445,7 @@ export default function Process() {
                 className="w-full h-[200px] xs:h-[225px] sm:h-[270px] lg:h-full lg:col-span-7 xl:col-span-7 relative rounded-2xl sm:rounded-3xl bg-[#ebe5da] border border-border shadow-xl overflow-hidden flex flex-col shrink-0"
               >
                 <Journey3DCanvas
-                  onInit={(engine) => {
-                    journeyEngineRef.current = engine;
-                  }}
+                  onInit={handleCanvasInit}
                 />
 
                 {/* Top-Left Sheet Phase Indicator */}

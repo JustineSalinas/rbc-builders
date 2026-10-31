@@ -26,6 +26,11 @@ export default function Journey3DCanvas({
 }: Journey3DCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const engineRef = useRef<Journey3DHandle | null>(null);
+  const onInitRef = useRef(onInit);
+
+  useEffect(() => {
+    onInitRef.current = onInit;
+  }, [onInit]);
 
   useEffect(() => {
     if (progress !== undefined && engineRef.current) {
@@ -664,8 +669,8 @@ export default function Journey3DCanvas({
 
       const dt = Math.min((now - (last || now)) / 1000, 0.05);
       last = now;
-      // Critically damped follow: zero sluggish lag, tracks scroll wheel with 60fps fluidity
-      const k = Math.min(1, dt * 26);
+      // High-precision 60-120fps critically damped follow: responsive, zero rubber-band double lag
+      const k = Math.min(1, dt * 32);
       shown = shown < 0 ? target : shown + (target - shown) * k;
       if (Math.abs(target - shown) < 0.0002) shown = target;
 
@@ -738,7 +743,7 @@ export default function Journey3DCanvas({
       },
     };
     engineRef.current = handle;
-    onInit?.(handle);
+    onInitRef.current?.(handle);
 
     // If progress prop was provided initially, apply it immediately
     if (progress !== undefined) {
@@ -754,12 +759,13 @@ export default function Journey3DCanvas({
       io.disconnect();
       renderer.dispose();
     };
-  }, [initialProgress, progress, onInit]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Run ONCE on mount; never tear down WebGL context during scroll re-renders
 
   return (
     <canvas
       ref={canvasRef}
-      className="w-full h-full block cursor-grab active:cursor-grabbing select-none"
+      className="w-full h-full block cursor-grab active:cursor-grabbing select-none pointer-events-none sm:pointer-events-auto"
     />
   );
 }

@@ -13,6 +13,9 @@ export default function SmoothScroll({ children }: { children: ReactNode }) {
       touchMultiplier: 1.2,
     });
 
+    // Expose lenis instance globally for synchronized programmatic scrolling
+    (window as unknown as { __lenis?: Lenis }).__lenis = lenis;
+
     lenis.on("scroll", ScrollTrigger.update);
 
     const raf = (time: number) => lenis.raf(time * 1000);
@@ -34,6 +37,7 @@ export default function SmoothScroll({ children }: { children: ReactNode }) {
     return () => {
       document.removeEventListener("click", onClick);
       gsap.ticker.remove(raf);
+      delete (window as unknown as { __lenis?: Lenis }).__lenis;
       lenis.destroy();
     };
   }, []);
