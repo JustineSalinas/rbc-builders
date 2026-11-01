@@ -104,7 +104,13 @@ export default function OnboardingTour() {
     return (targetEl.querySelector(".max-w-7xl") as HTMLElement) || targetEl;
   };
 
-  // Smooth unhurried scroll helper
+  // Slow, deliberate scroll to the next highlighted section. Uses Lenis
+  // directly rather than native window.scrollTo(behavior:"smooth") —
+  // Lenis is intercepting wheel/touch scroll globally, so a native
+  // smooth-scroll call fights it and produces an abrupt snap instead of
+  // one continuous glide.
+  const SCROLL_DURATION = 1.5;
+
   const scrollToStep = useCallback((stepIndex: number) => {
     const targetStep = TOUR_STEPS[stepIndex];
     if (!targetStep) return;
@@ -112,16 +118,22 @@ export default function OnboardingTour() {
     setIsScrolling(true);
     const contentEl = getTargetContentEl(targetStep.id);
     if (contentEl) {
+      const lenis = (window as unknown as {
+        __lenis?: { scrollTo: (target: number, opts?: Record<string, unknown>) => void };
+      }).__lenis;
       const topOffset = contentEl.getBoundingClientRect().top + window.scrollY - 100;
-      window.scrollTo({
-        top: Math.max(0, topOffset),
-        behavior: "smooth",
-      });
+      const top = Math.max(0, topOffset);
+
+      if (lenis) {
+        lenis.scrollTo(top, { duration: SCROLL_DURATION, easing: (t: number) => 1 - Math.pow(1 - t, 3) });
+      } else {
+        window.scrollTo({ top, behavior: "smooth" });
+      }
     }
 
     setTimeout(() => {
       setIsScrolling(false);
-    }, 900);
+    }, SCROLL_DURATION * 1000 + 150);
   }, []);
 
   const handleSkipTour = useCallback(() => {
@@ -214,9 +226,19 @@ export default function OnboardingTour() {
       });
     };
 
-    // Immediate calculation + settling updates after scroll animation finishes
-    const timer1 = setTimeout(updateRect, 100);
-    const timer2 = setTimeout(updateRect, 950);
+    // Track the highlight box during the glide instead of snapping once
+    // at the end — keeps it visually glued to the section as the page
+    // scrolls, matching the slower 1.5s scroll duration.
+    const raf = { id: 0 };
+    const trackDuringScroll = () => {
+      updateRect();
+      raf.id = requestAnimationFrame(trackDuringScroll);
+    };
+    raf.id = requestAnimationFrame(trackDuringScroll);
+    const stopTracking = setTimeout(() => {
+      cancelAnimationFrame(raf.id);
+      updateRect();
+    }, 1650);
 
     window.addEventListener("resize", updateRect);
 
@@ -232,8 +254,8 @@ export default function OnboardingTour() {
     }
 
     return () => {
-      clearTimeout(timer1);
-      clearTimeout(timer2);
+      cancelAnimationFrame(raf.id);
+      clearTimeout(stopTracking);
       window.removeEventListener("resize", updateRect);
       if (observer) observer.disconnect();
     };
