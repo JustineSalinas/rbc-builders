@@ -35,7 +35,7 @@ export default function Marquee() {
   const sectionRef = useReveal<HTMLElement>();
 
   return (
-    <section ref={sectionRef} className="border-b border-border bg-surface py-8 px-4 sm:px-8">
+    <section ref={sectionRef} id="credentials" className="border-b border-border bg-surface py-8 px-4 sm:px-8">
       <div className="mx-auto max-w-7xl">
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6 sm:gap-8">
           {CREDENTIALS.map((item, i) => (

@@ -12,27 +12,38 @@ type TourStep = {
   actionHint: string;
 };
 
-const TOTAL_STEPS = 12;
+const TOTAL_STEPS = 14;
 const n = (i: number) => `${String(i).padStart(2, "0")} / ${TOTAL_STEPS}`;
 
+// Walks every section top to bottom, in page order, including every
+// distinct interactive sub-feature within a section (not just one
+// stop per component) — nothing on the page is skipped.
 const TOUR_STEPS: TourStep[] = [
   {
     id: "top",
     badge: n(1),
     title: "Welcome, RBC Builders",
-    getDescription: (name) => `Hi ${name}. A quick look at what we do and what we've built.`,
+    getDescription: (name) =>
+      `Hi ${name}. Use the menu up top anytime, or follow along here.`,
     actionHint: "Browse the project slideshow and key numbers.",
   },
   {
-    id: "about",
+    id: "credentials",
     badge: n(2),
+    title: "What We Handle",
+    getDescription: () => "Planning, contracting, permits, financing, and progress reporting.",
+    actionHint: "",
+  },
+  {
+    id: "about",
+    badge: n(3),
     title: "Design + Build, One Team",
     getDescription: () => "Design, permits, and construction under one accountable roof.",
     actionHint: "",
   },
   {
     id: "services",
-    badge: n(3),
+    badge: n(4),
     title: "Our Services",
     getDescription: () =>
       "Architectural planning, contracting, permits, bank financing assistance, and 3D rendering.",
@@ -40,63 +51,70 @@ const TOUR_STEPS: TourStep[] = [
   },
   {
     id: "services",
-    badge: n(4),
+    badge: n(5),
     title: "3D Rendering Gallery",
     getDescription: () => "Photorealistic CGI renders from our visualization studio.",
     actionHint: "Click a thumbnail, or view the full set on Behance.",
   },
   {
     id: "projects",
-    badge: n(5),
+    badge: n(6),
     title: "Completed Projects",
     getDescription: () => "A gallery of exteriors and interiors we've designed and built.",
     actionHint: "Filter by type, then click a project to see specs.",
   },
   {
     id: "transformation",
-    badge: n(6),
+    badge: n(7),
     title: "Before & After",
     getDescription: () => "Compare the build at groundwork vs. handover.",
     actionHint: "Drag the slider left or right.",
   },
   {
     id: "pricing",
-    badge: n(7),
+    badge: n(8),
     title: "Finish Tiers & Specs",
     getDescription: () => "Per-square-meter rates across four finish tiers, itemized by category.",
     actionHint: "Tap a tier to see its full specification sheet.",
   },
   {
     id: "pricing",
-    badge: n(8),
+    badge: n(9),
+    title: "Compare All Tiers",
+    getDescription: () => "Every category, side by side across all four tiers.",
+    actionHint: "Toggle the comparison matrix open.",
+  },
+  {
+    id: "pricing",
+    badge: n(10),
     title: "Cost Estimator",
     getDescription: () => "Estimate your budget and timeline from floor area and location.",
     actionHint: "Slide the floor area to see your estimate update.",
   },
   {
     id: "journey",
-    badge: n(9),
+    badge: n(11),
     title: "Our Build Process",
     getDescription: () => "Watch the home take shape in 3D, from first call to turnover.",
     actionHint: "Scroll to build, or tap a step to jump.",
   },
   {
     id: "testimonials",
-    badge: n(10),
+    badge: n(12),
     title: "What Clients Say",
     getDescription: () => "Real feedback from the people we've built for.",
     actionHint: "",
   },
   {
     id: "contact",
-    badge: n(11),
+    badge: n(13),
     title: "Start Your Project",
     getDescription: (name) => `Ready, ${name}? Use the guided brief or a quick form.`,
     actionHint: "Both reach our team directly.",
   },
   {
     id: "footer",
-    badge: n(12),
+    badge: n(14),
     title: "Contact & Service Areas",
     getDescription: (name) =>
       `Thanks for the tour, ${name}. Reach us anytime below, or ask our chat assistant.`,

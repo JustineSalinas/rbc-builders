@@ -130,7 +130,7 @@ export default function BeforeAfter() {
             <div>
               <h4 className="font-serif text-lg text-foreground font-normal">Reinforced Monolithic Concrete</h4>
               <p className="text-xs text-muted font-light mt-0.5 leading-relaxed">
-                Poured-in-place concrete structures engineered to withstand Philippine seismic Zone 4 standards.
+                Poured-in-place concrete structures built to the project's structural engineering plan.
               </p>
             </div>
           </div>
