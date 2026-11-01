@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { MoveHorizontal, ShieldCheck, Check } from "lucide-react";
 import { useReveal } from "@/lib/useReveal";
@@ -10,6 +10,7 @@ export default function BeforeAfter() {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [pos, setPos] = useState(50);
   const dragging = useRef(false);
+  const [autoPlay, setAutoPlay] = useState(true);
 
   const updatePos = (clientX: number) => {
     const el = containerRef.current;
@@ -18,6 +19,31 @@ export default function BeforeAfter() {
     const pct = ((clientX - rect.left) / rect.width) * 100;
     setPos(Math.min(100, Math.max(0, pct)));
   };
+
+  // Idle showcase: slowly sweeps the slider back and forth until the
+  // visitor takes control by dragging it themselves.
+  useEffect(() => {
+    if (!autoPlay) return;
+    let frame: number;
+    let direction = 1;
+    const speed = 0.12; // % per frame (~60fps)
+    const tick = () => {
+      setPos((p) => {
+        let next = p + speed * direction;
+        if (next >= 85) {
+          next = 85;
+          direction = -1;
+        } else if (next <= 15) {
+          next = 15;
+          direction = 1;
+        }
+        return next;
+      });
+      frame = requestAnimationFrame(tick);
+    };
+    frame = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frame);
+  }, [autoPlay]);
 
   return (
     <section ref={sectionRef} id="transformation" className="py-28 sm:py-36 px-4 sm:px-8 bg-surface relative overflow-hidden border-t border-border">
@@ -32,9 +58,9 @@ export default function BeforeAfter() {
               From Groundwork to Completed Handover
             </h2>
           </div>
-          <div className="flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-muted">
-            <MoveHorizontal size={16} className="text-accent" />
-            <span>Drag slider to compare structural phases</span>
+          <div className="flex items-center gap-2 text-[11px] sm:text-xs uppercase tracking-[0.12em] sm:tracking-[0.2em] text-muted whitespace-nowrap">
+            <MoveHorizontal size={16} className="text-accent shrink-0" />
+            <span>Drag slider to compare phases</span>
           </div>
         </div>
 
@@ -45,6 +71,7 @@ export default function BeforeAfter() {
             onMouseMove={(e) => dragging.current && updatePos(e.clientX)}
             onMouseDown={(e) => {
               dragging.current = true;
+              setAutoPlay(false);
               updatePos(e.clientX);
             }}
             onMouseUp={() => (dragging.current = false)}
@@ -52,6 +79,7 @@ export default function BeforeAfter() {
             onTouchMove={(e) => updatePos(e.touches[0].clientX)}
             onTouchStart={(e) => {
               dragging.current = true;
+              setAutoPlay(false);
               updatePos(e.touches[0].clientX);
             }}
             onTouchEnd={() => (dragging.current = false)}
@@ -97,8 +125,14 @@ export default function BeforeAfter() {
                 aria-valuemax={100}
                 aria-valuenow={Math.round(pos)}
                 onKeyDown={(e) => {
-                  if (e.key === "ArrowLeft") setPos((p) => Math.max(0, p - 5));
-                  if (e.key === "ArrowRight") setPos((p) => Math.min(100, p + 5));
+                  if (e.key === "ArrowLeft") {
+                    setAutoPlay(false);
+                    setPos((p) => Math.max(0, p - 5));
+                  }
+                  if (e.key === "ArrowRight") {
+                    setAutoPlay(false);
+                    setPos((p) => Math.min(100, p + 5));
+                  }
                 }}
                 className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 h-11 w-11 rounded-full bg-white/95 border border-accent flex items-center justify-center text-accent shadow-xl focus:outline-none focus:ring-2 focus:ring-accent"
               >

@@ -116,29 +116,29 @@ export default function Footer() {
       {/* Foreground Content: Consultation Monograph & Master Directory */}
       <div className="relative z-20">
         {/* 1. RBC Builders Estate Finale: Editorial Consultation Header */}
-        <section className="pt-16 sm:pt-24 pb-12 sm:pb-16 border-b border-border/80" aria-labelledby="estate-finale-title">
+        <section className="pt-10 sm:pt-24 pb-8 sm:pb-16 border-b border-border/80" aria-labelledby="estate-finale-title">
           <div data-tour="footer-cta" className="max-w-7xl mx-auto px-4 sm:px-8">
             <div className="max-w-3xl">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1 mb-4 border border-accent/40 rounded-full bg-white/85 shadow-sm backdrop-blur-sm">
-                <span className="h-1.5 w-1.5 rounded-full bg-accent animate-pulse" />
-                <span className="text-[10px] uppercase tracking-[0.24em] text-accent font-medium font-mono">
+              <div className="inline-flex items-center gap-2 px-3 py-1 mb-3 sm:mb-4 border border-accent/40 rounded-full bg-white/85 shadow-sm backdrop-blur-sm">
+                <span className="h-1.5 w-1.5 rounded-full bg-accent animate-pulse shrink-0" />
+                <span className="text-[9.5px] sm:text-[10px] uppercase tracking-[0.1em] sm:tracking-[0.24em] text-accent font-medium font-mono">
                   Design &amp; Build Contractor &middot; San Fernando, Pampanga
                 </span>
               </div>
 
-              <h2 id="estate-finale-title" className="font-serif text-3xl sm:text-5xl lg:text-6xl font-light text-[#151413] tracking-tight leading-[1.08]">
+              <h2 id="estate-finale-title" className="font-serif text-2xl sm:text-5xl lg:text-6xl font-light text-[#151413] tracking-tight leading-[1.15] sm:leading-[1.08]">
                 Every custom home begins with a conversation.
               </h2>
 
-              <p className="text-sm sm:text-base text-[#5c564e] font-light mt-4 max-w-2xl leading-relaxed">
-                Schedule a design-build consultation with our licensed architects and engineers. We provide full site feasibility reviews, custom architectural plans, and transparent cost estimates.
+              <p className="text-sm sm:text-base text-[#5c564e] font-light mt-3 sm:mt-4 max-w-2xl leading-relaxed">
+                Schedule a design-build consultation. We provide full site feasibility reviews, custom architectural plans, and transparent cost estimates.
               </p>
 
               {/* Direct Consultation Actions */}
-              <div className="flex flex-wrap items-center gap-3 sm:gap-4 mt-8">
+              <div className="flex flex-wrap items-center gap-2.5 sm:gap-4 mt-6 sm:mt-8">
                 <a
                   href="#contact"
-                  className="btn btn--accent shadow-md rounded-full px-7 py-3.5 text-xs uppercase tracking-[0.18em]"
+                  className="btn btn--accent shadow-md rounded-full px-5 py-3 sm:px-7 sm:py-3.5 text-xs uppercase tracking-[0.12em] sm:tracking-[0.18em]"
                 >
                   <span>Start Your Project</span>
                   <ArrowRight size={14} />
@@ -146,26 +146,17 @@ export default function Footer() {
 
                 <a
                   href="tel:+639772873075"
-                  className="inline-flex items-center gap-2 px-5 py-3.5 text-xs uppercase tracking-[0.14em] font-mono text-[#151413] border border-border hover:border-accent hover:text-accent transition-all rounded-full bg-white/90 backdrop-blur-sm shadow-sm"
+                  className="inline-flex items-center gap-2 px-4 py-3 sm:px-5 sm:py-3.5 text-xs uppercase tracking-[0.08em] sm:tracking-[0.14em] font-mono text-[#151413] border border-border hover:border-accent hover:text-accent transition-all rounded-full bg-white/90 backdrop-blur-sm shadow-sm"
                   title="Direct Hotline: 0977 287 3075"
                 >
                   <Phone size={13} className="text-accent shrink-0" />
                   <span>0977 287 3075</span>
                 </a>
 
-                <a
-                  href="mailto:rbcbuilders70@gmail.com"
-                  className="inline-flex items-center gap-2 px-5 py-3.5 text-xs uppercase tracking-[0.14em] font-mono text-[#151413] border border-border hover:border-accent hover:text-accent transition-all rounded-full bg-white/90 backdrop-blur-sm shadow-sm"
-                  title="Official Email: rbcbuilders70@gmail.com"
-                >
-                  <Mail size={13} className="text-accent shrink-0" />
-                  <span>rbcbuilders70@gmail.com</span>
-                </a>
-
                 <button
                   onClick={scrollToTop}
                   aria-label="Back to top"
-                  className="inline-flex items-center gap-2 px-4 py-3.5 rounded-full bg-white/90 hover:bg-white text-foreground text-xs uppercase tracking-[0.16em] font-medium shadow-sm backdrop-blur-sm transition-all border border-border ml-auto sm:ml-0"
+                  className="inline-flex items-center gap-2 px-4 py-3 sm:py-3.5 rounded-full bg-white/90 hover:bg-white text-foreground text-xs uppercase tracking-[0.1em] sm:tracking-[0.16em] font-medium shadow-sm backdrop-blur-sm transition-all border border-border ml-auto sm:ml-0"
                 >
                   <span>Top</span>
                   <ArrowUp size={13} className="text-accent" />
@@ -176,10 +167,10 @@ export default function Footer() {
         </section>
 
         {/* Main Monograph Directory: Spacious 4-Column Architectural Spread */}
-        <div ref={footerNavRef} data-tour="footer-links" className="mx-auto max-w-7xl px-4 sm:px-8 py-20 sm:py-28 border-b border-border">
-          <div data-reveal className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+        <div ref={footerNavRef} data-tour="footer-links" className="mx-auto max-w-7xl px-4 sm:px-8 py-10 sm:py-28 border-b border-border">
+          <div data-reveal className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 sm:gap-12 lg:gap-16 items-start">
             {/* Column 1: Brand Authority, Mission & Real-Time PST Clock (Col-span 4) */}
-            <div data-reveal data-reveal-delay="0.05" className="lg:col-span-4 flex flex-col gap-6">
+            <div data-reveal data-reveal-delay="0.05" className="lg:col-span-4 flex flex-col gap-4 sm:gap-6">
               <a
                 href="#top"
                 className="flex items-center gap-3.5 group/brand cursor-pointer w-fit"
@@ -199,18 +190,18 @@ export default function Footer() {
                   <span className="font-serif text-2xl tracking-[0.06em] font-medium text-foreground leading-none transition-all duration-500 group-hover/brand:text-accent">
                     RBC BUILDERS
                   </span>
-                  <span className="text-[9.5px] uppercase tracking-[0.25em] text-accent font-light mt-1 leading-none group-hover/brand:tracking-[0.28em] transition-all duration-500">
+                  <span className="text-[10px] uppercase tracking-[0.15em] sm:tracking-[0.25em] text-accent font-light mt-1 leading-none group-hover/brand:tracking-[0.28em] transition-all duration-500">
                     Architecture &amp; Construction
                   </span>
                 </div>
               </a>
 
-              <p className="text-xs sm:text-sm text-foreground/75 font-light leading-relaxed max-w-sm">
-                A premier design-build architecture and general contracting firm headquartered in the City of San Fernando, Pampanga. We unify architectural design, seismic structural engineering, municipal permitting, and turnkey master construction across Central Luzon.
+              <p className="text-sm text-foreground/75 font-light leading-relaxed max-w-sm">
+                A premier design-build architecture and general contracting firm headquartered in the City of San Fernando, Pampanga. We unify architectural design, structural engineering, municipal permitting, and turnkey master construction across Central Luzon.
               </p>
 
               {/* Status and Clock */}
-              <div className="p-4 bg-surface border border-border shadow-sm space-y-2.5">
+              <div className="p-3 sm:p-4 bg-surface border border-border shadow-sm space-y-2">
                 <div className="flex items-center gap-2.5 text-xs text-muted font-mono">
                   <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
                   <span>Manila (PST): <strong className="text-foreground">{manilaTime || "12:00:00 PM"}</strong></span>
@@ -227,30 +218,30 @@ export default function Footer() {
             </div>
 
             {/* Column 2: Navigation Directory (Col-span 2) */}
-            <div data-reveal data-reveal-delay="0.1" className="lg:col-span-2 flex flex-col gap-4">
-              <p className="text-[10px] uppercase tracking-[0.25em] text-accent font-medium pb-2 border-b border-border">
+            <div data-reveal data-reveal-delay="0.1" className="lg:col-span-2 flex flex-col gap-3 sm:gap-4">
+              <p className="text-[10px] uppercase tracking-[0.15em] sm:tracking-[0.25em] text-accent font-medium pb-2 border-b border-border">
                 Navigation
               </p>
-              <div className="flex flex-col gap-3">
+              <div className="grid grid-cols-2 sm:flex sm:flex-col gap-2.5 sm:gap-3">
                 {EXPLORE_LINKS.map((link) => (
                   <a
                     key={link.href}
                     href={link.href}
-                    className="text-xs sm:text-[13px] text-foreground/75 hover:text-accent font-light transition-colors flex items-center justify-between group"
+                    className="text-sm text-foreground/75 hover:text-accent font-light transition-colors flex items-center justify-between group"
                   >
                     <span>{link.label}</span>
-                    <span className="text-accent opacity-0 group-hover:opacity-100 transition-opacity text-xs">&rarr;</span>
+                    <span className="hidden sm:inline text-accent opacity-0 group-hover:opacity-100 transition-opacity text-xs">&rarr;</span>
                   </a>
                 ))}
               </div>
             </div>
 
             {/* Column 3: Specialized Disciplines (Col-span 3) */}
-            <div data-reveal data-reveal-delay="0.15" className="lg:col-span-3 flex flex-col gap-4">
-              <p className="text-[10px] uppercase tracking-[0.25em] text-accent font-medium pb-2 border-b border-border">
+            <div data-reveal data-reveal-delay="0.15" className="lg:col-span-3 flex flex-col gap-3 sm:gap-4">
+              <p className="text-[10px] uppercase tracking-[0.15em] sm:tracking-[0.25em] text-accent font-medium pb-2 border-b border-border">
                 Disciplines &amp; Standards
               </p>
-              <ul className="flex flex-col gap-3 text-xs sm:text-[13px] text-foreground/75 font-light">
+              <ul className="flex flex-col gap-2.5 sm:gap-3 text-sm text-foreground/75 font-light">
                 {DISCIPLINES.map((discipline) => (
                   <li key={discipline} className="flex items-start gap-2.5">
                     <span className="h-1.5 w-1.5 rounded-full bg-accent/80 mt-1.5 shrink-0" />
@@ -261,11 +252,11 @@ export default function Footer() {
             </div>
 
             {/* Column 4: Regional Footprint & Direct Contacts (Col-span 3) */}
-            <div data-reveal data-reveal-delay="0.2" className="lg:col-span-3 flex flex-col gap-4">
-              <p className="text-[10px] uppercase tracking-[0.25em] text-accent font-medium pb-2 border-b border-border">
+            <div data-reveal data-reveal-delay="0.2" className="lg:col-span-3 flex flex-col gap-3 sm:gap-4">
+              <p className="text-[10px] uppercase tracking-[0.15em] sm:tracking-[0.25em] text-accent font-medium pb-2 border-b border-border">
                 Active Territories
               </p>
-              <ul className="flex flex-col gap-2.5 text-xs text-foreground/70 font-light">
+              <ul className="grid grid-cols-2 sm:flex sm:flex-col gap-2 sm:gap-2.5 text-sm text-foreground/70 font-light">
                 {SERVICE_REGIONS.map((region) => (
                   <li key={region} className="flex items-center gap-2">
                     <span className="h-1 w-1 rounded-full bg-accent shrink-0" />
@@ -275,10 +266,10 @@ export default function Footer() {
               </ul>
 
               {/* Direct Touchpoints Box */}
-              <div className="mt-4 pt-4 border-t border-border flex flex-col gap-2.5">
+              <div className="mt-2 sm:mt-4 pt-3 sm:pt-4 border-t border-border flex flex-col gap-2 sm:gap-2.5">
                 <a
                   href="tel:+639772873075"
-                  className="p-3 bg-surface border border-border hover:border-accent text-xs flex items-center justify-between gap-3 transition-colors group shadow-sm"
+                  className="p-2.5 sm:p-3 bg-surface border border-border hover:border-accent text-xs flex items-center justify-between gap-3 transition-colors group shadow-sm"
                 >
                   <span className="flex items-center gap-2 text-muted group-hover:text-foreground shrink-0">
                     <Phone size={13} className="text-accent shrink-0" />
@@ -289,7 +280,7 @@ export default function Footer() {
 
                 <a
                   href="mailto:rbcbuilders70@gmail.com"
-                  className="p-3 bg-surface border border-border hover:border-accent text-xs flex items-center justify-between gap-3 transition-colors group shadow-sm"
+                  className="p-2.5 sm:p-3 bg-surface border border-border hover:border-accent text-xs flex items-center justify-between gap-3 transition-colors group shadow-sm"
                 >
                   <span className="flex items-center gap-2 text-muted group-hover:text-foreground shrink-0">
                     <Mail size={13} className="text-accent shrink-0" />
@@ -304,7 +295,7 @@ export default function Footer() {
                   href="https://www.facebook.com/profile.php?id=100088879215614"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-3 bg-surface border border-border hover:border-accent text-xs flex items-center justify-between gap-3 transition-colors group shadow-sm"
+                  className="p-2.5 sm:p-3 bg-surface border border-border hover:border-accent text-xs flex items-center justify-between gap-3 transition-colors group shadow-sm"
                 >
                   <span className="flex items-center gap-2 text-muted group-hover:text-foreground shrink-0">
                     <svg className="w-3.5 h-3.5 fill-accent group-hover:fill-[#1877F2] transition-colors shrink-0" viewBox="0 0 24 24">
@@ -326,7 +317,7 @@ export default function Footer() {
         <div
           onClick={scrollToTop}
           title="Click to scroll back to top"
-          className="relative py-14 sm:py-20 select-none cursor-pointer text-center overflow-hidden border-b border-border group transition-colors duration-700 hover:border-accent/40"
+          className="relative py-8 sm:py-20 select-none cursor-pointer text-center overflow-hidden border-b border-border group transition-colors duration-700 hover:border-accent/40"
         >
           {/* Ambient Warm Architectural Backlight that blooms on hover */}
           <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none">
@@ -336,14 +327,16 @@ export default function Footer() {
           <span className="architectural-glow-hover font-serif text-[8.5vw] font-light text-foreground/[0.08] tracking-[0.2em] uppercase leading-none block whitespace-nowrap select-none">
             RBC BUILDERS
           </span>
-          <p className="text-[11px] sm:text-xs uppercase tracking-[0.3em] text-accent font-light mt-3">
+          <p className="text-[10px] sm:text-xs uppercase tracking-[0.15em] sm:tracking-[0.3em] text-accent font-light mt-3">
             Design &middot; Build &middot; Architecture &middot; San Fernando, Pampanga
           </p>
 
-          {/* Architectural illuminated subline that blooms with the signature */}
-          <div className="mt-4 flex items-center justify-center gap-3 opacity-0 group-hover:opacity-100 transition-all duration-700 pointer-events-none transform translate-y-2 group-hover:translate-y-0">
+          {/* Architectural illuminated subline that blooms with the signature — hidden on
+              mobile (opacity-0 non-interactive on touch anyway, but was still consuming
+              layout height every screen) */}
+          <div className="hidden sm:flex mt-4 items-center justify-center gap-3 opacity-0 group-hover:opacity-100 transition-all duration-700 pointer-events-none transform translate-y-2 group-hover:translate-y-0">
             <span className="h-px w-8 bg-accent/60" />
-            <span className="text-[10px] sm:text-xs uppercase tracking-[0.3em] text-accent font-light">
+            <span className="text-xs uppercase tracking-[0.3em] text-accent font-light">
               Click to return to top &bull; San Fernando, Pampanga Headquarters
             </span>
             <span className="h-px w-8 bg-accent/60" />
@@ -351,7 +344,7 @@ export default function Footer() {
         </div>
 
         {/* Legal, Warranties & Back-to-Top Bar */}
-        <div className="mx-auto max-w-7xl px-4 sm:px-8 py-8 sm:py-10 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-muted font-light">
+        <div className="mx-auto max-w-7xl px-4 sm:px-8 py-5 sm:py-10 flex flex-col md:flex-row items-center justify-between gap-3 sm:gap-4 text-xs text-muted font-light">
           <div className="flex items-center gap-2 text-foreground/80">
             <ShieldCheck size={16} className="text-accent shrink-0" />
             <span>Design-Build Practice &middot; San Fernando, Pampanga</span>
