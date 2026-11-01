@@ -365,7 +365,7 @@ export default function Pricing() {
               <span className="text-xs text-muted font-light block mt-0.5">
                 per square meter (m²)
               </span>
-              <div className="inline-flex items-center gap-1.5 text-[10px] text-emerald-600 dark:text-emerald-400 font-mono mt-2">
+              <div className="inline-flex items-center gap-1.5 text-[10px] text-emerald-600 font-mono mt-2">
                 <ShieldCheck size={12} />
                 <span>Fixed-Price Milestone Contract</span>
               </div>
