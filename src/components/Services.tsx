@@ -145,10 +145,40 @@ export default function Services() {
                         src={RENDERING_PROJECTS[selectedRenderIdx]}
                         alt={`RBC Builders 3D render ${selectedRenderIdx + 1}`}
                         fill
+                        quality={95}
                         sizes="(max-width: 1024px) 100vw, 60vw"
                         className="object-cover transition-transform duration-500 group-hover/preview:scale-105"
                       />
                       <div className="absolute inset-0 bg-background/0 group-hover/preview:bg-background/20 transition-colors" />
+
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedRenderIdx(
+                            (selectedRenderIdx - 1 + RENDERING_PROJECTS.length) % RENDERING_PROJECTS.length
+                          );
+                        }}
+                        aria-label="Previous render"
+                        className="absolute left-2 sm:left-3 top-1/2 -translate-y-1/2 p-2 sm:p-2.5 bg-background/70 text-foreground opacity-0 group-hover/preview:opacity-100 sm:opacity-80 hover:bg-accent hover:text-background transition-all"
+                      >
+                        <ChevronLeft size={18} />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedRenderIdx((selectedRenderIdx + 1) % RENDERING_PROJECTS.length);
+                        }}
+                        aria-label="Next render"
+                        className="absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 p-2 sm:p-2.5 bg-background/70 text-foreground opacity-0 group-hover/preview:opacity-100 sm:opacity-80 hover:bg-accent hover:text-background transition-all"
+                      >
+                        <ChevronRight size={18} />
+                      </button>
+
+                      <span className="absolute bottom-2 right-2 sm:bottom-3 sm:right-3 px-2 py-1 bg-background/70 text-foreground text-[10px] font-mono uppercase tracking-wider">
+                        {selectedRenderIdx + 1} / {RENDERING_PROJECTS.length}
+                      </span>
                     </div>
 
                     <div className="flex items-center gap-2 overflow-x-auto py-3 mt-1 hide-scrollbar">
@@ -161,7 +191,7 @@ export default function Services() {
                             selectedRenderIdx === rIdx ? "border-accent" : "border-border opacity-50 hover:opacity-100"
                           }`}
                         >
-                          <Image src={img} alt="" fill sizes="80px" className="object-cover" />
+                          <Image src={img} alt="" fill quality={90} sizes="80px" className="object-cover" />
                         </button>
                       ))}
                     </div>
@@ -210,6 +240,7 @@ export default function Services() {
               src={RENDERING_PROJECTS[lightboxIndex]}
               alt={`RBC Builders 3D render ${lightboxIndex + 1}`}
               fill
+              quality={100}
               sizes="100vw"
               className="object-contain"
               priority
