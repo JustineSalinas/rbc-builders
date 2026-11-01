@@ -12,69 +12,94 @@ type TourStep = {
   actionHint: string;
 };
 
+const TOTAL_STEPS = 12;
+const n = (i: number) => `${String(i).padStart(2, "0")} / ${TOTAL_STEPS}`;
+
 const TOUR_STEPS: TourStep[] = [
   {
     id: "top",
-    badge: "01 / 09",
+    badge: n(1),
     title: "Welcome, RBC Builders",
     getDescription: (name) => `Hi ${name}. A quick look at what we do and what we've built.`,
-    actionHint: "Browse the project slideshow.",
+    actionHint: "Browse the project slideshow and key numbers.",
   },
   {
     id: "about",
-    badge: "02 / 09",
+    badge: n(2),
     title: "Design + Build, One Team",
     getDescription: () => "Design, permits, and construction under one accountable roof.",
     actionHint: "",
   },
   {
     id: "services",
-    badge: "03 / 09",
+    badge: n(3),
     title: "Our Services",
     getDescription: () =>
       "Architectural planning, contracting, permits, bank financing assistance, and 3D rendering.",
     actionHint: "Tap a service to see details.",
   },
   {
+    id: "services",
+    badge: n(4),
+    title: "3D Rendering Gallery",
+    getDescription: () => "Photorealistic CGI renders from our visualization studio.",
+    actionHint: "Click a thumbnail, or view the full set on Behance.",
+  },
+  {
     id: "projects",
-    badge: "04 / 09",
+    badge: n(5),
     title: "Completed Projects",
     getDescription: () => "A gallery of exteriors and interiors we've designed and built.",
-    actionHint: "Click a project to see specs.",
+    actionHint: "Filter by type, then click a project to see specs.",
   },
   {
     id: "transformation",
-    badge: "05 / 09",
+    badge: n(6),
     title: "Before & After",
-    getDescription: () => "Drag the slider to compare the build at groundwork vs. handover.",
-    actionHint: "Drag left or right.",
+    getDescription: () => "Compare the build at groundwork vs. handover.",
+    actionHint: "Drag the slider left or right.",
   },
   {
     id: "pricing",
-    badge: "06 / 09",
-    title: "Pricing",
-    getDescription: () => "Per-square-meter rates across four finish tiers.",
-    actionHint: "",
+    badge: n(7),
+    title: "Finish Tiers & Specs",
+    getDescription: () => "Per-square-meter rates across four finish tiers, itemized by category.",
+    actionHint: "Tap a tier to see its full specification sheet.",
+  },
+  {
+    id: "pricing",
+    badge: n(8),
+    title: "Cost Estimator",
+    getDescription: () => "Estimate your budget and timeline from floor area and location.",
+    actionHint: "Slide the floor area to see your estimate update.",
   },
   {
     id: "journey",
-    badge: "07 / 09",
+    badge: n(9),
     title: "Our Build Process",
-    getDescription: () => "Scroll to watch the home take shape, step by step.",
+    getDescription: () => "Watch the home take shape in 3D, from first call to turnover.",
     actionHint: "Scroll to build, or tap a step to jump.",
   },
   {
-    id: "contact",
-    badge: "08 / 09",
-    title: "Start Your Project",
-    getDescription: (name) => `Ready, ${name}? Send us your project details here.`,
+    id: "testimonials",
+    badge: n(10),
+    title: "What Clients Say",
+    getDescription: () => "Real feedback from the people we've built for.",
     actionHint: "",
   },
   {
+    id: "contact",
+    badge: n(11),
+    title: "Start Your Project",
+    getDescription: (name) => `Ready, ${name}? Use the guided brief or a quick form.`,
+    actionHint: "Both reach our team directly.",
+  },
+  {
     id: "footer",
-    badge: "09 / 09",
+    badge: n(12),
     title: "Contact & Service Areas",
-    getDescription: (name) => `Thanks for the tour, ${name}. Reach us anytime below.`,
+    getDescription: (name) =>
+      `Thanks for the tour, ${name}. Reach us anytime below, or ask our chat assistant.`,
     actionHint: "",
   },
 ];
@@ -108,13 +133,19 @@ export default function OnboardingTour() {
   // directly rather than native window.scrollTo(behavior:"smooth") —
   // Lenis is intercepting wheel/touch scroll globally, so a native
   // smooth-scroll call fights it and produces an abrupt snap instead of
-  // one continuous glide.
-  const SCROLL_DURATION = 1.5;
+  // one continuous glide. Touch devices get a longer duration: taps
+  // land more easily than a mouse click, so without extra margin it's
+  // easy to tap through steps faster than the glide (and the reader)
+  // can keep up.
+  const isTouchDevice = () =>
+    typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches;
+  const scrollDuration = () => (isTouchDevice() ? 1.9 : 1.5);
 
   const scrollToStep = useCallback((stepIndex: number) => {
     const targetStep = TOUR_STEPS[stepIndex];
     if (!targetStep) return;
 
+    const duration = scrollDuration();
     setIsScrolling(true);
     const contentEl = getTargetContentEl(targetStep.id);
     if (contentEl) {
@@ -125,7 +156,7 @@ export default function OnboardingTour() {
       const top = Math.max(0, topOffset);
 
       if (lenis) {
-        lenis.scrollTo(top, { duration: SCROLL_DURATION, easing: (t: number) => 1 - Math.pow(1 - t, 3) });
+        lenis.scrollTo(top, { duration, easing: (t: number) => 1 - Math.pow(1 - t, 3) });
       } else {
         window.scrollTo({ top, behavior: "smooth" });
       }
@@ -133,7 +164,7 @@ export default function OnboardingTour() {
 
     setTimeout(() => {
       setIsScrolling(false);
-    }, SCROLL_DURATION * 1000 + 150);
+    }, duration * 1000 + 150);
   }, []);
 
   const handleSkipTour = useCallback(() => {
@@ -228,7 +259,7 @@ export default function OnboardingTour() {
 
     // Track the highlight box during the glide instead of snapping once
     // at the end — keeps it visually glued to the section as the page
-    // scrolls, matching the slower 1.5s scroll duration.
+    // scrolls, matching the scroll duration (longer on touch devices).
     const raf = { id: 0 };
     const trackDuringScroll = () => {
       updateRect();
@@ -238,7 +269,7 @@ export default function OnboardingTour() {
     const stopTracking = setTimeout(() => {
       cancelAnimationFrame(raf.id);
       updateRect();
-    }, 1650);
+    }, scrollDuration() * 1000 + 150);
 
     window.addEventListener("resize", updateRect);
 

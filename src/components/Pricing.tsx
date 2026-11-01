@@ -417,7 +417,7 @@ export default function Pricing() {
             <div className="flex items-center gap-2 text-muted">
               <ShieldCheck size={14} className="text-accent shrink-0" />
               <span>
-                All specifications verified by PRC-Licensed Architects &amp; Civil Engineers.
+                Specifications confirmed in writing before contract signing.
               </span>
             </div>
             <div className="flex items-center gap-3 text-foreground/80">
@@ -625,7 +625,7 @@ export default function Pricing() {
           <div className="flex items-center gap-2">
             <ShieldCheck size={14} className="text-accent" />
             <span>
-              All rates include PRC-Licensed Civil, Structural &amp; Electrical Engineering Blueprints.
+              All rates include architectural, structural, and electrical blueprints.
             </span>
           </div>
           <span>San Fernando &middot; Angeles City &middot; Clark &middot; Subic</span>
