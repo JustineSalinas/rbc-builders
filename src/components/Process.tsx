@@ -93,8 +93,8 @@ const JOURNEY_STEPS: StepData[] = [
     phaseCode: "Sheet 04 · Plans & Permits",
     name: "Plans & permits",
     duration: "Weeks 8–11",
-    tagline: "Signed and sealed blueprints, full municipal approvals, and bank BOQ.",
-    body: "Signed and sealed architectural, structural, electrical, and sanitary blueprints by licensed PRC professionals, fully submitted and approved for all municipal building permits with zero delays.",
+    tagline: "Signed and sealed blueprints, submitted for full municipal approval.",
+    body: "Signed and sealed architectural, structural, electrical, and sanitary blueprints, fully submitted for all required municipal building permits.",
     icon: FileCheck,
     leadRole: "Engineering Team",
     deliverables: [
@@ -109,7 +109,7 @@ const JOURNEY_STEPS: StepData[] = [
     name: "Groundbreaking",
     duration: "Months 3–4",
     tagline: "The first faithful step on site, with the family who dared to dream.",
-    body: "Site clearing, layout staking, and heavy excavation. We pour reinforced concrete footings, tie beams, and slab-on-grade with certified ready-mix concrete rigorously tested for compressive strength.",
+    body: "Site clearing, layout staking, and heavy excavation. We pour reinforced concrete footings, tie beams, and slab-on-grade built to the project's structural engineering plan.",
     icon: HardHat,
     leadRole: "Project Engineer",
     deliverables: [
@@ -139,7 +139,7 @@ const JOURNEY_STEPS: StepData[] = [
     name: "Turnover",
     duration: "Months 9–10",
     tagline: "A dream built for a family. A home standing proud.",
-    body: "Twilight falls on your finished residence. Architectural cove lighting illuminates, the reflection pool turns turquoise, and we hand over the keys with full warranties and municipal occupancy.",
+    body: "Twilight falls on your finished residence. Architectural cove lighting illuminates, the reflection pool turns turquoise, and we hand over the keys with the final punch list resolved and municipal occupancy secured.",
     icon: Key,
     leadRole: "Turnover Director",
     deliverables: [
