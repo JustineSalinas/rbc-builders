@@ -117,7 +117,7 @@ export default function Footer() {
       <div className="relative z-20">
         {/* 1. RBC Builders Estate Finale: Editorial Consultation Header */}
         <section className="pt-16 sm:pt-24 pb-12 sm:pb-16 border-b border-border/80" aria-labelledby="estate-finale-title">
-          <div className="max-w-7xl mx-auto px-4 sm:px-8">
+          <div data-tour="footer-cta" className="max-w-7xl mx-auto px-4 sm:px-8">
             <div className="max-w-3xl">
               <div className="inline-flex items-center gap-2 px-3.5 py-1 mb-4 border border-accent/40 rounded-full bg-white/85 shadow-sm backdrop-blur-sm">
                 <span className="h-1.5 w-1.5 rounded-full bg-accent animate-pulse" />
@@ -176,7 +176,7 @@ export default function Footer() {
         </section>
 
         {/* Main Monograph Directory: Spacious 4-Column Architectural Spread */}
-        <div ref={footerNavRef} className="mx-auto max-w-7xl px-4 sm:px-8 py-20 sm:py-28 border-b border-border">
+        <div ref={footerNavRef} data-tour="footer-links" className="mx-auto max-w-7xl px-4 sm:px-8 py-20 sm:py-28 border-b border-border">
           <div data-reveal className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
             {/* Column 1: Brand Authority, Mission & Real-Time PST Clock (Col-span 4) */}
             <div data-reveal data-reveal-delay="0.05" className="lg:col-span-4 flex flex-col gap-6">

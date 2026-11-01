@@ -26,6 +26,7 @@ export default function Navbar() {
   return (
     <header className="fixed top-0 inset-x-0 z-50 px-3 sm:px-6 pt-3 sm:pt-5 transition-all duration-300 pointer-events-none">
       <nav
+        id="site-navbar"
         className={`mx-auto max-w-7xl flex items-center justify-between px-3 sm:px-6 h-14 sm:h-16 rounded-full pointer-events-auto transition-all duration-500 gap-3 sm:gap-4 ${
           scrolled
             ? "bg-white/90 backdrop-blur-2xl border border-black/10 shadow-xl shadow-black/5"

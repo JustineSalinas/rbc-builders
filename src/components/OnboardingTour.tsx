@@ -12,38 +12,50 @@ type TourStep = {
   actionHint: string;
 };
 
-const TOTAL_STEPS = 14;
+// Steps whose target is position:fixed (always on screen regardless of
+// scroll position): there's no sensible document position to scroll to,
+// so these skip the scroll animation and just move the highlight.
+const FIXED_STEP_IDS = new Set(["site-navbar", "chatbot-launcher"]);
+
+const TOTAL_STEPS = 18;
 const n = (i: number) => `${String(i).padStart(2, "0")} / ${TOTAL_STEPS}`;
 
-// Walks every section top to bottom, in page order, including every
-// distinct interactive sub-feature within a section (not just one
-// stop per component) — nothing on the page is skipped.
+// Walks every section top to bottom, in page order, with a dedicated
+// stop for every distinct interactive sub-feature — nothing on the
+// page is skipped.
 const TOUR_STEPS: TourStep[] = [
   {
-    id: "top",
+    id: "site-navbar",
     badge: n(1),
+    title: "Navigate Anywhere",
+    getDescription: (name) => `Hi ${name}. Jump to any section from this menu, anytime.`,
+    actionHint: "",
+  },
+  {
+    id: "top",
+    badge: n(2),
     title: "Welcome, RBC Builders",
-    getDescription: (name) =>
-      `Hi ${name}. Use the menu up top anytime, or follow along here.`,
-    actionHint: "Browse the project slideshow and key numbers.",
+    getDescription: () => "A project slideshow, our key numbers, and ways to get started.",
+    actionHint: "Browse the slideshow and stats.",
   },
   {
     id: "credentials",
-    badge: n(2),
+    badge: n(3),
     title: "What We Handle",
     getDescription: () => "Planning, contracting, permits, financing, and progress reporting.",
     actionHint: "",
   },
   {
     id: "about",
-    badge: n(3),
+    badge: n(4),
     title: "Design + Build, One Team",
-    getDescription: () => "Design, permits, and construction under one accountable roof.",
+    getDescription: () =>
+      "Unified accountability, precise cost engineering, permit handling, and quality finishes.",
     actionHint: "",
   },
   {
     id: "services",
-    badge: n(4),
+    badge: n(5),
     title: "Our Services",
     getDescription: () =>
       "Architectural planning, contracting, permits, bank financing assistance, and 3D rendering.",
@@ -51,73 +63,94 @@ const TOUR_STEPS: TourStep[] = [
   },
   {
     id: "services",
-    badge: n(5),
+    badge: n(6),
     title: "3D Rendering Gallery",
     getDescription: () => "Photorealistic CGI renders from our visualization studio.",
     actionHint: "Click a thumbnail, or view the full set on Behance.",
   },
   {
     id: "projects",
-    badge: n(6),
+    badge: n(7),
     title: "Completed Projects",
     getDescription: () => "A gallery of exteriors and interiors we've designed and built.",
     actionHint: "Filter by type, then click a project to see specs.",
   },
   {
     id: "transformation",
-    badge: n(7),
+    badge: n(8),
     title: "Before & After",
-    getDescription: () => "Compare the build at groundwork vs. handover.",
+    getDescription: () => "Compare the build at groundwork vs. handover, plus our build standards.",
     actionHint: "Drag the slider left or right.",
   },
   {
     id: "pricing",
-    badge: n(8),
+    badge: n(9),
     title: "Finish Tiers & Specs",
     getDescription: () => "Per-square-meter rates across four finish tiers, itemized by category.",
     actionHint: "Tap a tier to see its full specification sheet.",
   },
   {
     id: "pricing",
-    badge: n(9),
+    badge: n(10),
     title: "Compare All Tiers",
     getDescription: () => "Every category, side by side across all four tiers.",
     actionHint: "Toggle the comparison matrix open.",
   },
   {
     id: "pricing",
-    badge: n(10),
+    badge: n(11),
     title: "Cost Estimator",
     getDescription: () => "Estimate your budget and timeline from floor area and location.",
     actionHint: "Slide the floor area to see your estimate update.",
   },
   {
     id: "journey",
-    badge: n(11),
+    badge: n(12),
     title: "Our Build Process",
     getDescription: () => "Watch the home take shape in 3D, from first call to turnover.",
     actionHint: "Scroll to build, or tap a step to jump.",
   },
   {
     id: "testimonials",
-    badge: n(12),
+    badge: n(13),
     title: "What Clients Say",
     getDescription: () => "Real feedback from the people we've built for.",
     actionHint: "",
   },
   {
-    id: "contact",
-    badge: n(13),
-    title: "Start Your Project",
+    id: "contact-info",
+    badge: n(14),
+    title: "Headquarters & Map",
+    getDescription: () => "Our office location, phone, and email, plus a live map.",
+    actionHint: "",
+  },
+  {
+    id: "contact-form",
+    badge: n(15),
+    title: "Send Your Project Brief",
     getDescription: (name) => `Ready, ${name}? Use the guided brief or a quick form.`,
     actionHint: "Both reach our team directly.",
   },
   {
-    id: "footer",
-    badge: n(14),
-    title: "Contact & Service Areas",
+    id: "footer-cta",
+    badge: n(16),
+    title: "Let's Build It Right",
+    getDescription: () => "A direct line whenever you're ready to start.",
+    actionHint: "",
+  },
+  {
+    id: "footer-links",
+    badge: n(17),
+    title: "Service Areas & Socials",
+    getDescription: () => "Every area we build in, our live local clock, and social links.",
+    actionHint: "",
+  },
+  {
+    id: "chatbot-launcher",
+    badge: n(18),
+    title: "Ask Us Anything",
     getDescription: (name) =>
-      `Thanks for the tour, ${name}. Reach us anytime below, or ask our chat assistant.`,
+      `That's everything, ${name}. Our chat assistant is always here if you have questions.`,
     actionHint: "",
   },
 ];
@@ -136,14 +169,21 @@ export default function OnboardingTour() {
   } | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
 
-  // Helper to retrieve the prominent inner container or fallback to section
+  // Helper to retrieve the prominent inner container or fallback to section.
+  // Sub-sections (footer's CTA vs. link columns, contact's info vs. form)
+  // are marked with a data-tour attribute for precise targeting instead
+  // of guessing by container order. Fixed-position elements (the navbar,
+  // the chat launcher) are their own direct target — they have no inner
+  // .max-w-7xl content wrapper to drill into.
   const getTargetContentEl = (stepId: string): HTMLElement | null => {
+    if (stepId.startsWith("footer-") || stepId.startsWith("contact-")) {
+      return document.querySelector<HTMLElement>(`[data-tour="${stepId}"]`);
+    }
+    if (FIXED_STEP_IDS.has(stepId)) {
+      return document.getElementById(stepId);
+    }
     const targetEl = document.getElementById(stepId);
     if (!targetEl) return null;
-    if (stepId === "footer") {
-      const maxWContainers = targetEl.querySelectorAll(".max-w-7xl");
-      return (maxWContainers[1] as HTMLElement) || (maxWContainers[0] as HTMLElement) || targetEl;
-    }
     return (targetEl.querySelector(".max-w-7xl") as HTMLElement) || targetEl;
   };
 
@@ -164,6 +204,17 @@ export default function OnboardingTour() {
     if (!targetStep) return;
 
     const duration = scrollDuration();
+
+    // Fixed-position targets (navbar, chat launcher) are always on
+    // screen no matter the scroll position — there's no document
+    // position to scroll to, so just hold the current pacing for
+    // reading/settling and move the highlight box in place.
+    if (FIXED_STEP_IDS.has(targetStep.id)) {
+      setIsScrolling(true);
+      setTimeout(() => setIsScrolling(false), 500);
+      return;
+    }
+
     setIsScrolling(true);
     const contentEl = getTargetContentEl(targetStep.id);
     if (contentEl) {
@@ -473,24 +524,24 @@ export default function OnboardingTour() {
 
       {/* State 2B: Floating Tour Concierge Card (Active Walkthrough) */}
       {isOpen && hasStarted && (
-        <div className="fixed bottom-6 left-4 right-4 sm:left-6 sm:right-auto sm:w-[460px] z-[80] bg-[#faf9f6] border border-border/80 p-6 sm:p-7 rounded-[18px] shadow-[0_30px_70px_-20px_rgba(0,0,0,0.7)] text-[#1d232c] animate-in slide-in-from-bottom-5 duration-300">
+        <div className="fixed bottom-5 left-4 right-4 sm:left-6 sm:right-auto sm:w-[420px] z-[80] bg-[#faf9f6] border border-border/80 p-6 sm:p-7 rounded-[20px] shadow-[0_30px_70px_-20px_rgba(0,0,0,0.7)] text-[#1d232c] animate-in slide-in-from-bottom-5 duration-300">
           {/* Progress Header */}
-          <div className="flex items-center justify-between gap-4 mb-3">
-            <span className="text-[10px] uppercase tracking-[0.22em] text-[#8b6a4e] font-medium font-mono">
+          <div className="flex items-center justify-between gap-3 mb-4">
+            <span className="text-[10px] uppercase tracking-[0.22em] text-[#8b6a4e] font-medium font-mono whitespace-nowrap">
               {stepData.badge}
             </span>
 
             <button
               onClick={handleSkipTour}
               aria-label="End tour"
-              className="text-[10.5px] uppercase tracking-[0.16em] text-muted hover:text-accent transition-colors underline underline-offset-4"
+              className="shrink-0 text-[10.5px] uppercase tracking-[0.16em] text-muted hover:text-accent transition-colors underline underline-offset-4 whitespace-nowrap"
             >
               Skip Tour
             </button>
           </div>
 
           {/* Progress Bar */}
-          <div className="h-1 w-full bg-stone-200 overflow-hidden mb-4 rounded-full">
+          <div className="h-1 w-full bg-stone-200 overflow-hidden mb-5 rounded-full">
             <div
               className="h-full bg-[#8b6a4e] transition-all duration-500 rounded-full"
               style={{ width: `${((currentStep + 1) / TOUR_STEPS.length) * 100}%` }}
@@ -498,44 +549,44 @@ export default function OnboardingTour() {
           </div>
 
           {/* Step Title */}
-          <h4 className="font-serif text-2xl text-[#1d232c] font-normal mb-2 leading-snug">
+          <h4 className="font-serif text-xl sm:text-2xl text-[#1d232c] font-normal mb-3 leading-snug">
             {stepData.title}
           </h4>
 
           {/* Personalized Description */}
-          <p className="text-xs sm:text-[13px] text-[#4b5260] font-light leading-relaxed mb-4">
+          <p className="text-xs sm:text-[13px] text-[#4b5260] font-light leading-relaxed mb-5">
             {stepData.getDescription(displayName)}
           </p>
 
           {/* Action Hint */}
           {stepData.actionHint && (
-            <div className="p-2.5 bg-[#8b6a4e]/5 border border-[#8b6a4e]/20 text-[11px] text-[#8b6a4e] font-medium flex items-start gap-2 mb-5 rounded-lg">
+            <div className="p-3 bg-[#8b6a4e]/5 border border-[#8b6a4e]/20 text-[11px] text-[#8b6a4e] font-medium flex items-start gap-2 mb-6 rounded-lg">
               <Sparkles size={13} className="text-[#8b6a4e] shrink-0 mt-0.5" />
               <span>{stepData.actionHint}</span>
             </div>
           )}
 
-          {/* Navigation Controls */}
-          <div className="flex items-center justify-between gap-3 pt-3 border-t border-border">
+          {/* Navigation Controls — kept to one line at every width */}
+          <div className="flex flex-nowrap items-center justify-between gap-2 pt-4 border-t border-border">
             <button
               onClick={handlePrev}
               disabled={currentStep === 0 || isScrolling}
-              className="px-4 py-2 border border-border disabled:opacity-30 disabled:pointer-events-none hover:border-[#8b6a4e] text-xs uppercase tracking-wider text-muted hover:text-accent transition-colors flex items-center gap-1.5 rounded-full"
+              className="shrink-0 whitespace-nowrap px-3.5 py-2 border border-border disabled:opacity-30 disabled:pointer-events-none hover:border-[#8b6a4e] text-[11px] sm:text-xs uppercase tracking-wider text-muted hover:text-accent transition-colors flex items-center gap-1 rounded-full"
             >
               <ArrowLeft size={12} />
-              <span>Previous</span>
+              <span>Back</span>
             </button>
 
-            <span className="text-xs font-mono text-muted/70">
-              {currentStep + 1} / {TOUR_STEPS.length}
+            <span className="shrink-0 whitespace-nowrap text-[11px] sm:text-xs font-mono text-muted/70">
+              {currentStep + 1}/{TOUR_STEPS.length}
             </span>
 
             <button
               onClick={handleNext}
               disabled={isScrolling}
-              className="px-5 py-2.5 bg-[#1d232c] hover:bg-[#47546e] text-white text-xs uppercase tracking-wider font-medium transition-all flex items-center gap-2 shadow-md rounded-full"
+              className="shrink-0 whitespace-nowrap px-4 py-2 bg-[#1d232c] hover:bg-[#47546e] text-white text-[11px] sm:text-xs uppercase tracking-wider font-medium transition-all flex items-center gap-1.5 shadow-md rounded-full"
             >
-              <span>{currentStep === TOUR_STEPS.length - 1 ? "Finish Tour" : "Next Section"}</span>
+              <span>{currentStep === TOUR_STEPS.length - 1 ? "Finish" : "Next"}</span>
               {currentStep === TOUR_STEPS.length - 1 ? <Check size={14} /> : <ArrowRight size={13} />}
             </button>
           </div>

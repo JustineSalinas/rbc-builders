@@ -51,7 +51,7 @@ export default function Contact() {
         {/* Two-Column Grid: Contact Coordinates vs Form Wizard */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
           {/* Left Column: Office Coordinates & Map */}
-          <div data-reveal data-reveal-delay="0.1" className="lg:col-span-5 flex flex-col gap-8">
+          <div data-reveal data-reveal-delay="0.1" data-tour="contact-info" className="lg:col-span-5 flex flex-col gap-8">
             <div className="p-8 bg-surface border border-border flex flex-col gap-6 shadow-sm">
               <h3 className="font-serif text-2xl text-foreground font-normal pb-4 border-b border-border">
                 Headquarters &amp; Direct Lines
@@ -138,7 +138,7 @@ export default function Contact() {
           </div>
 
           {/* Right Column: Inquiry Mode Tabs & Interactive Wizard */}
-          <div data-reveal data-reveal-delay="0.16" className="lg:col-span-7 flex flex-col">
+          <div data-reveal data-reveal-delay="0.16" data-tour="contact-form" className="lg:col-span-7 flex flex-col">
             <div className="flex items-center gap-2 mb-4 border-b border-border pb-3">
               <button
                 onClick={() => setMode("guided")}

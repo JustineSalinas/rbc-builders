@@ -64,7 +64,7 @@ export default function ChatBot() {
   return (
     <>
       {/* Floating Action Elements (Pill on left + Vertical Button Stack on right) */}
-      <div className="fixed bottom-6 right-6 z-50 flex items-end gap-3">
+      <div id="chatbot-launcher" className="fixed bottom-6 right-6 z-50 flex items-end gap-3">
         {/* RBC Architectural Concierge Teaser Pill */}
         {!open && (
           <button
