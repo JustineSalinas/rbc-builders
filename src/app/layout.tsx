@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Jost, Cormorant_Garamond } from "next/font/google";
 import SmoothScroll from "@/components/SmoothScroll";
 import ChatBot from "@/components/ChatBot";
@@ -19,8 +19,15 @@ const cormorant = Cormorant_Garamond({
   display: "swap",
 });
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  userScalable: true,
+};
+
 export const metadata: Metadata = {
-  metadataBase: new URL("https://rbcbuilders.ph"),
+  metadataBase: new URL("https://rbc-builders.vercel.app"),
   title: "RBC Builders | Architectural Design & Luxury Construction · Pampanga",
   description:
     "Design-build architectural and general construction firm based in San Fernando, Pampanga. Custom residential construction, building permits, labor, materials, and turnkey execution across Central Luzon.",

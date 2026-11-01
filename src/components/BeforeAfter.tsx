@@ -106,16 +106,17 @@ export default function BeforeAfter() {
               </div>
             </div>
 
-            {/* Phase Watermark Labels */}
-            <div className="absolute top-6 left-6 pointer-events-none">
-              <span className="text-[10px] uppercase tracking-[0.25em] px-3 py-1.5 bg-black/60 border border-white/20 text-white font-medium backdrop-blur-md">
-                Structural Execution (Phase 05)
+            {/* Phase Watermark Labels — stacked on mobile so they can
+                never collide; side by side once there's room (sm+) */}
+            <div className="absolute top-4 left-4 right-4 sm:right-auto flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 pointer-events-none">
+              <span className="self-start text-[9px] sm:text-[10px] uppercase tracking-[0.15em] sm:tracking-[0.25em] px-2.5 sm:px-3 py-1 sm:py-1.5 bg-black/60 border border-white/20 text-white font-medium backdrop-blur-md whitespace-nowrap">
+                <span className="sm:hidden">Before</span>
+                <span className="hidden sm:inline">Structural Execution (Phase 05)</span>
               </span>
-            </div>
 
-            <div className="absolute top-6 right-6 pointer-events-none">
-              <span className="text-[10px] uppercase tracking-[0.25em] px-3 py-1.5 bg-black/60 border border-accent/50 text-accent font-medium backdrop-blur-md">
-                Turnkey Handover (Phase 07)
+              <span className="self-end sm:self-start text-[9px] sm:text-[10px] uppercase tracking-[0.15em] sm:tracking-[0.25em] px-2.5 sm:px-3 py-1 sm:py-1.5 bg-black/60 border border-accent/50 text-accent font-medium backdrop-blur-md whitespace-nowrap">
+                <span className="sm:hidden">After</span>
+                <span className="hidden sm:inline">Turnkey Handover (Phase 07)</span>
               </span>
             </div>
           </div>

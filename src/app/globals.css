@@ -46,12 +46,25 @@
   --font-sans: var(--f-text);
 }
 
+/* Safety net against mobile browsers auto-shrinking the whole page to
+   fit a single stray overflowing element. Width stays locked to the
+   device regardless of anything that accidentally extends past it;
+   the specific overflow still gets fixed at the source, but this keeps
+   one offender from zooming out the entire site in the meantime. */
+html {
+  overflow-x: hidden;
+  width: 100%;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--f-text);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
 }
 
 ::selection {
