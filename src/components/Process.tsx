@@ -412,7 +412,7 @@ export default function Process() {
                 <div className="flex items-center gap-2 shrink-0">
                   <div className="flex items-center gap-2 bg-surface px-2.5 sm:px-3 py-1 rounded-2xl border border-border shadow-2xs">
                     <div className="flex flex-col text-right">
-                      <span className="text-[7.5px] sm:text-[8.5px] uppercase tracking-wider text-muted font-mono hidden xs:inline">
+                      <span className="text-[7.5px] sm:text-[8.5px] uppercase tracking-wider text-muted font-mono">
                         Progress
                       </span>
                       <span
@@ -485,7 +485,7 @@ export default function Process() {
               {/* 3D Architectural Villa Model Stage (Generous mobile height, never squashed) */}
               <div
                 style={{ touchAction: "pan-y" }}
-                className="w-full h-[200px] xs:h-[225px] sm:h-[270px] lg:h-full lg:col-span-7 xl:col-span-7 relative rounded-2xl sm:rounded-3xl bg-[#ebe5da] border border-border shadow-xl overflow-hidden flex flex-col shrink-0"
+                className="w-full h-[200px] sm:h-[270px] lg:h-full lg:col-span-7 xl:col-span-7 relative rounded-2xl sm:rounded-3xl bg-[#ebe5da] border border-border shadow-xl overflow-hidden flex flex-col shrink-0"
               >
                 <Journey3DCanvas
                   onInit={handleCanvasInit}
