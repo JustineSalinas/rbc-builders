@@ -148,7 +148,7 @@ export default function BeforeAfter() {
                 <span className="hidden sm:inline">Structural Execution (Phase 05)</span>
               </span>
 
-              <span className="self-end sm:self-start text-[9px] sm:text-[10px] uppercase tracking-[0.15em] sm:tracking-[0.25em] px-2.5 sm:px-3 py-1 sm:py-1.5 bg-black/60 border border-accent/50 text-accent font-medium backdrop-blur-md whitespace-nowrap">
+              <span className="self-end sm:self-start text-[9px] sm:text-[10px] uppercase tracking-[0.15em] sm:tracking-[0.25em] px-2.5 sm:px-3 py-1 sm:py-1.5 bg-black/70 border border-accent text-white font-medium backdrop-blur-md whitespace-nowrap">
                 <span className="sm:hidden">After</span>
                 <span className="hidden sm:inline">Turnkey Handover (Phase 07)</span>
               </span>
