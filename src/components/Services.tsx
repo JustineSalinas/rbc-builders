@@ -136,7 +136,7 @@ export default function Services() {
                 </a>
 
                 {service.isRenderingService && (
-                  <div className="pb-8 sm:pb-9 px-2 -mx-2">
+                  <div data-tour="services-rendering" className="pb-8 sm:pb-9 px-2 -mx-2">
                     <div
                       className="relative aspect-video overflow-hidden cursor-pointer group/preview"
                       onClick={() => setLightboxIndex(selectedRenderIdx)}

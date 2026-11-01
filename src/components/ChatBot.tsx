@@ -64,27 +64,32 @@ export default function ChatBot() {
   return (
     <>
       {/* Floating Action Elements (Pill on left + Vertical Button Stack on right) */}
-      <div id="chatbot-launcher" className="fixed bottom-6 right-6 z-50 flex items-end gap-3">
-        {/* RBC Architectural Concierge Teaser Pill */}
+      <div id="chatbot-launcher" className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 flex items-end gap-3">
+        {/* RBC Architectural Concierge Teaser Pill — icon-only on mobile to
+            keep the fixed footprint small (it was overlapping in-page
+            controls lower on some sections) */}
         {!open && (
           <button
             type="button"
             onClick={() => setOpen(true)}
             aria-label="Open architectural advisory chat"
-            className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-white/95 hover:bg-white border border-accent/50 hover:border-accent text-foreground shadow-xl backdrop-blur-md transition-all duration-300 hover:scale-105 group cursor-pointer mb-0.5"
+            className="flex items-center gap-2 p-2.5 sm:px-4 sm:py-2.5 rounded-full bg-white/95 hover:bg-white border border-accent/50 hover:border-accent text-foreground shadow-xl backdrop-blur-md transition-all duration-300 hover:scale-105 group cursor-pointer mb-0.5"
           >
-            <span className="relative flex h-2 w-2">
+            <span className="relative flex h-2 w-2 shrink-0">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75" />
               <span className="relative inline-flex rounded-full h-2 w-2 bg-accent" />
             </span>
-            <span className="text-xs font-normal tracking-tight text-foreground group-hover:text-accent transition-colors whitespace-nowrap">
+            <span className="hidden sm:inline text-xs font-normal tracking-tight text-foreground group-hover:text-accent transition-colors whitespace-nowrap">
               RBC Concierge &middot; <strong className="font-medium text-accent">Ask Us Anything</strong>
             </span>
           </button>
         )}
 
-        {/* Dedicated Vertical Column for Circular Buttons (All perfectly centered above each other) */}
-        <div className="flex flex-col items-center gap-2.5">
+        {/* Dedicated Vertical Column for Circular Buttons (All perfectly centered above each other).
+            Email / Phone / Facebook are desktop-only shortcuts — they're already reachable from
+            the navbar and footer, and stacking all four on mobile made this fixed column tall
+            enough to overlap in-page controls (slider handles, the journey stage counter). */}
+        <div className="hidden sm:flex flex-col items-center gap-2.5">
           {!open && (
             <>
               {/* Email Button (top) */}
@@ -135,25 +140,26 @@ export default function ChatBot() {
               </a>
             </>
           )}
-
-          {/* Chatbot Trigger Button (bottom anchor) */}
-          <button
-            onClick={() => setOpen((v) => !v)}
-            aria-label="Toggle RBC Architectural Concierge"
-            className="h-12 w-12 sm:h-13 sm:w-13 rounded-full bg-white border border-accent/60 text-accent hover:border-accent hover:bg-accent hover:text-white shadow-xl transition-all duration-300 flex items-center justify-center group shrink-0"
-          >
-            {open ? (
-              <X size={20} />
-            ) : (
-              <div className="relative flex items-center justify-center">
-                <span className="font-serif text-[12px] font-semibold tracking-wider text-accent group-hover:text-white transition-colors">
-                  RBC
-                </span>
-                <span className="absolute -top-1.5 -right-1.5 h-2 w-2 rounded-full bg-accent ring-2 ring-white" />
-              </div>
-            )}
-          </button>
         </div>
+
+        {/* Chatbot Trigger Button (bottom anchor) — always visible, independent
+            of the desktop-only contact shortcuts above */}
+        <button
+          onClick={() => setOpen((v) => !v)}
+          aria-label="Toggle RBC Architectural Concierge"
+          className="h-12 w-12 sm:h-13 sm:w-13 rounded-full bg-white border border-accent/60 text-accent hover:border-accent hover:bg-accent hover:text-white shadow-xl transition-all duration-300 flex items-center justify-center group shrink-0"
+        >
+          {open ? (
+            <X size={20} />
+          ) : (
+            <div className="relative flex items-center justify-center">
+              <span className="font-serif text-[12px] font-semibold tracking-wider text-accent group-hover:text-white transition-colors">
+                RBC
+              </span>
+              <span className="absolute -top-1.5 -right-1.5 h-2 w-2 rounded-full bg-accent ring-2 ring-white" />
+            </div>
+          )}
+        </button>
       </div>
 
       {/* Concierge Panel */}

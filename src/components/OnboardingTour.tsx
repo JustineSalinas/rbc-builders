@@ -62,7 +62,7 @@ const TOUR_STEPS: TourStep[] = [
     actionHint: "Tap a service to see details.",
   },
   {
-    id: "services",
+    id: "services-rendering",
     badge: n(6),
     title: "3D Rendering Gallery",
     getDescription: () => "Photorealistic CGI renders from our visualization studio.",
@@ -176,7 +176,7 @@ export default function OnboardingTour() {
   // the chat launcher) are their own direct target — they have no inner
   // .max-w-7xl content wrapper to drill into.
   const getTargetContentEl = (stepId: string): HTMLElement | null => {
-    if (stepId.startsWith("footer-") || stepId.startsWith("contact-")) {
+    if (stepId.startsWith("footer-") || stepId.startsWith("contact-") || stepId.startsWith("services-")) {
       return document.querySelector<HTMLElement>(`[data-tour="${stepId}"]`);
     }
     if (FIXED_STEP_IDS.has(stepId)) {
