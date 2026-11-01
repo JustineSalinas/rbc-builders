@@ -15,83 +15,67 @@ type TourStep = {
 const TOUR_STEPS: TourStep[] = [
   {
     id: "top",
-    badge: "01 / 10 · Firm Introduction",
-    title: "Welcome to RBC Builders",
-    getDescription: (name) =>
-      `Welcome to RBC Builders, ${name}. Here is our design-build overview across Central Luzon. Explore our signature residential projects and key built metrics.`,
-    actionHint: "Inspect the slideshow controls and built square meters delivered.",
+    badge: "01 / 09",
+    title: "Welcome, RBC Builders",
+    getDescription: (name) => `Hi ${name}. A quick look at what we do and what we've built.`,
+    actionHint: "Browse the project slideshow.",
   },
   {
     id: "about",
-    badge: "02 / 10 · Firm Philosophy",
-    title: "The Design-Build Practice",
-    getDescription: (name) =>
-      `Here, ${name}, we detail our unified design-build accountability: architectural blueprints, engineering, and general contracting under one roof.`,
-    actionHint: "Review our approach to design, budgeting, and build quality.",
+    badge: "02 / 09",
+    title: "Design + Build, One Team",
+    getDescription: () => "Design, permits, and construction under one accountable roof.",
+    actionHint: "",
   },
   {
     id: "services",
-    badge: "03 / 10 · Capabilities Matrix",
-    title: "Specialized Disciplines",
-    getDescription: (name) =>
-      `${name}, we provide single-source execution across 5 distinct disciplines: Architectural Planning, Turnkey General Contracting, LGU Building Permits, Bank Loan Financing, and Photorealistic 3D Rendering Projects.`,
-    actionHint: "Tap through the service tabs to inspect itemized deliverables and explore our 3D rendering project gallery.",
+    badge: "03 / 09",
+    title: "Our Services",
+    getDescription: () =>
+      "Architectural planning, contracting, permits, bank financing assistance, and 3D rendering.",
+    actionHint: "Tap a service to see details.",
   },
   {
     id: "projects",
-    badge: "04 / 10 · Realized Portfolio",
-    title: "Completed Luxury Estates",
-    getDescription: (name) =>
-      `Here is our monograph of 12 realized private residences, ${name}. You can click any villa card to inspect full structural specifications and room allocations.`,
-    actionHint: "Filter by Custom Modern Villas, Estates, or Turnkey Interiors, and click to view full monograph specs.",
+    badge: "04 / 09",
+    title: "Completed Projects",
+    getDescription: () => "A gallery of exteriors and interiors we've designed and built.",
+    actionHint: "Click a project to see specs.",
   },
   {
     id: "transformation",
-    badge: "05 / 10 · Site Transformation",
-    title: "Groundwork to Completed Home",
-    getDescription: (name) =>
-      `Witness our construction integrity, ${name}. Use the interactive before-and-after slider to compare raw structural groundwork with the completed residence handover.`,
-    actionHint: "Drag the slider left and right or use your keyboard arrow keys.",
+    badge: "05 / 09",
+    title: "Before & After",
+    getDescription: () => "Drag the slider to compare the build at groundwork vs. handover.",
+    actionHint: "Drag left or right.",
   },
   {
     id: "pricing",
-    badge: "06 / 10 · Investment Framework",
-    title: "Pricing & Build Rates Estimator",
-    getDescription: (name) =>
-      `Transparent per-square-meter construction rates across 4 finish standards, ${name}. Use our interactive floor area slider to estimate your project budget in Central Luzon.`,
-    actionHint: "Slide the floor area from 100 m² to 600 m² and select your project municipality.",
+    badge: "06 / 09",
+    title: "Pricing",
+    getDescription: () => "Per-square-meter rates across four finish tiers.",
+    actionHint: "",
   },
   {
     id: "journey",
-    badge: "07 / 10 · Construction Roadmap",
-    title: "Our Journey With You",
-    getDescription: (name) =>
-      `From our first consultation meeting to a home standing proud, ${name}. Watch your luxury villa form in 3D across 7 deliberate phases as you scroll.`,
-    actionHint: "Scroll to build the residence from pencil blueprint to dusk turnover, or click any step to jump.",
-  },
-  {
-    id: "testimonials",
-    badge: "08 / 10 · Client Feedback",
-    title: "Homeowner Endorsements",
-    getDescription: (name) =>
-      `Read authentic reviews from homeowners and professionals who built their homes with RBC Builders, ${name}.`,
-    actionHint: "Browse the endorsement carousel.",
+    badge: "07 / 09",
+    title: "Our Build Process",
+    getDescription: () => "Scroll to watch the home take shape, step by step.",
+    actionHint: "Scroll to build, or tap a step to jump.",
   },
   {
     id: "contact",
-    badge: "09 / 10 · Start Your Project",
-    title: "Consultation & Project Brief",
-    getDescription: (name) =>
-      `Ready to build your home, ${name}? Complete our 5-step interactive project brief or connect directly with our team via direct phone and official email.`,
-    actionHint: "Use the guided brief wizard or submit a direct inquiry form.",
+    badge: "08 / 09",
+    title: "Start Your Project",
+    getDescription: (name) => `Ready, ${name}? Send us your project details here.`,
+    actionHint: "",
   },
   {
     id: "footer",
-    badge: "10 / 10 · Regional Footprint",
-    title: "Headquarters & Territories",
-    getDescription: (name) =>
-      `Our contact directory: real-time Manila clock, service areas across Central Luzon, and direct Facebook contact. Thank you for touring RBC Builders, ${name}!`,
-    actionHint: "Explore our active service regions or scroll back to top.",
+    badge: "09 / 09",
+    title: "Contact & Service Areas",
+    getDescription: (name) => `Thanks for the tour, ${name}. Reach us anytime below.`,
+    actionHint: "",
   },
 ];
 
@@ -453,10 +437,12 @@ export default function OnboardingTour() {
           </p>
 
           {/* Action Hint */}
-          <div className="p-2.5 bg-[#8b6a4e]/5 border border-[#8b6a4e]/20 text-[11px] text-[#8b6a4e] font-medium flex items-start gap-2 mb-5 rounded-lg">
-            <Sparkles size={13} className="text-[#8b6a4e] shrink-0 mt-0.5" />
-            <span>{stepData.actionHint}</span>
-          </div>
+          {stepData.actionHint && (
+            <div className="p-2.5 bg-[#8b6a4e]/5 border border-[#8b6a4e]/20 text-[11px] text-[#8b6a4e] font-medium flex items-start gap-2 mb-5 rounded-lg">
+              <Sparkles size={13} className="text-[#8b6a4e] shrink-0 mt-0.5" />
+              <span>{stepData.actionHint}</span>
+            </div>
+          )}
 
           {/* Navigation Controls */}
           <div className="flex items-center justify-between gap-3 pt-3 border-t border-border">

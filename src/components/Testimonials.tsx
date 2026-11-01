@@ -36,7 +36,7 @@ export default function Testimonials() {
   const current = TESTIMONIALS[index];
 
   return (
-    <section className="py-24 sm:py-32 px-4 sm:px-6 bg-background">
+    <section id="testimonials" className="py-24 sm:py-32 px-4 sm:px-6 bg-background">
       <div ref={ref} className="mx-auto max-w-7xl">
         <div className="flex items-end justify-between mb-12 sm:mb-16">
           <h2 data-reveal className="font-display text-4xl sm:text-5xl leading-tight max-w-md">
