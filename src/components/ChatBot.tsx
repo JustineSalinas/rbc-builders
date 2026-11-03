@@ -30,12 +30,28 @@ export default function ChatBot() {
   const [input, setInput] = useState("");
   const [typing, setTyping] = useState(false);
   const [chips, setChips] = useState(STARTER_CHIPS);
+  const [overFooter, setOverFooter] = useState(false);
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const idRef = useRef(1);
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
   }, [messages, typing]);
+
+  // The footer already repeats phone/email/Facebook, and it's the one
+  // section with content pinned to the bottom-right where this fixed
+  // launcher lives — collapse the extra icons to just the chat button
+  // while the footer is in view so nothing gets covered.
+  useEffect(() => {
+    const footerEl = document.getElementById("footer");
+    if (!footerEl) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setOverFooter(entry.isIntersecting),
+      { rootMargin: "0px 0px -40% 0px" }
+    );
+    observer.observe(footerEl);
+    return () => observer.disconnect();
+  }, []);
 
   const send = (raw: string) => {
     const text = raw.trim();
@@ -68,7 +84,7 @@ export default function ChatBot() {
         {/* RBC Architectural Concierge Teaser Pill — icon-only on mobile to
             keep the fixed footprint small (it was overlapping in-page
             controls lower on some sections) */}
-        {!open && (
+        {!open && !overFooter && (
           <button
             type="button"
             onClick={() => setOpen(true)}
@@ -86,9 +102,11 @@ export default function ChatBot() {
         )}
 
         {/* Dedicated Vertical Column for Circular Buttons, stacked directly above the chat
-            FAB on every screen size (smaller on mobile to keep the fixed footprint modest). */}
+            FAB on every screen size (smaller on mobile to keep the fixed footprint modest).
+            Collapsed while the footer is in view — it already repeats these same three
+            contacts, and this is the one section pinned to the same bottom-right corner. */}
         <div className="flex flex-col items-center gap-2 sm:gap-2.5">
-          {!open && (
+          {!open && !overFooter && (
             <>
               {/* Email Button (top) */}
               <a
