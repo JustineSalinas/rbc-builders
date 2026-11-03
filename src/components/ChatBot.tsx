@@ -85,11 +85,9 @@ export default function ChatBot() {
           </button>
         )}
 
-        {/* Dedicated Vertical Column for Circular Buttons (All perfectly centered above each other).
-            Email / Phone / Facebook are desktop-only shortcuts — they're already reachable from
-            the navbar and footer, and stacking all four on mobile made this fixed column tall
-            enough to overlap in-page controls (slider handles, the journey stage counter). */}
-        <div className="hidden sm:flex flex-col items-center gap-2.5">
+        {/* Dedicated Vertical Column for Circular Buttons, stacked directly above the chat
+            FAB on every screen size (smaller on mobile to keep the fixed footprint modest). */}
+        <div className="flex flex-col items-center gap-2 sm:gap-2.5">
           {!open && (
             <>
               {/* Email Button (top) */}
@@ -97,10 +95,11 @@ export default function ChatBot() {
                 href="mailto:rbcbuilders70@gmail.com"
                 aria-label="Email RBC Builders at rbcbuilders70@gmail.com"
                 title="Official Email: rbcbuilders70@gmail.com"
-                className="relative h-11 w-11 rounded-full bg-white hover:bg-surface-raised text-[#151413] shadow-lg hover:scale-110 transition-all duration-300 flex items-center justify-center border border-border group animate-in fade-in slide-in-from-bottom-2 duration-300"
+                className="relative h-9 w-9 sm:h-11 sm:w-11 rounded-full bg-white hover:bg-surface-raised text-[#151413] shadow-lg hover:scale-110 transition-all duration-300 flex items-center justify-center border border-border group animate-in fade-in slide-in-from-bottom-2 duration-300"
               >
-                <Mail size={18} className="text-[#151413] transition-transform duration-300 group-hover:scale-110" />
-                <span className="absolute right-full mr-3 px-2.5 py-1 bg-[#151413] border border-black/10 text-white text-[11px] font-mono whitespace-nowrap rounded-md opacity-0 pointer-events-none group-hover:opacity-100 group-hover:-translate-x-1 transition-all duration-200 shadow-xl">
+                <Mail size={15} className="text-[#151413] transition-transform duration-300 group-hover:scale-110 sm:hidden" />
+                <Mail size={18} className="text-[#151413] transition-transform duration-300 group-hover:scale-110 hidden sm:block" />
+                <span className="absolute right-full mr-3 px-2.5 py-1 bg-[#151413] border border-black/10 text-white text-[11px] font-mono whitespace-nowrap rounded-md opacity-0 pointer-events-none group-hover:opacity-100 group-hover:-translate-x-1 transition-all duration-200 shadow-xl hidden sm:block">
                   rbcbuilders70@gmail.com
                 </span>
               </a>
@@ -110,10 +109,11 @@ export default function ChatBot() {
                 href="tel:+639772873075"
                 aria-label="Call RBC Builders at 0977 287 3075"
                 title="Hotline: 0977 287 3075"
-                className="relative h-11 w-11 rounded-full bg-white hover:bg-surface-raised text-[#151413] shadow-lg hover:scale-110 transition-all duration-300 flex items-center justify-center border border-border group animate-in fade-in slide-in-from-bottom-2 duration-300"
+                className="relative h-9 w-9 sm:h-11 sm:w-11 rounded-full bg-white hover:bg-surface-raised text-[#151413] shadow-lg hover:scale-110 transition-all duration-300 flex items-center justify-center border border-border group animate-in fade-in slide-in-from-bottom-2 duration-300"
               >
-                <Phone size={18} className="text-[#151413] transition-transform duration-300 group-hover:scale-110" />
-                <span className="absolute right-full mr-3 px-2.5 py-1 bg-[#151413] border border-black/10 text-white text-[11px] font-mono whitespace-nowrap rounded-md opacity-0 pointer-events-none group-hover:opacity-100 group-hover:-translate-x-1 transition-all duration-200 shadow-xl">
+                <Phone size={15} className="text-[#151413] transition-transform duration-300 group-hover:scale-110 sm:hidden" />
+                <Phone size={18} className="text-[#151413] transition-transform duration-300 group-hover:scale-110 hidden sm:block" />
+                <span className="absolute right-full mr-3 px-2.5 py-1 bg-[#151413] border border-black/10 text-white text-[11px] font-mono whitespace-nowrap rounded-md opacity-0 pointer-events-none group-hover:opacity-100 group-hover:-translate-x-1 transition-all duration-200 shadow-xl hidden sm:block">
                   0977 287 3075
                 </span>
               </a>
@@ -125,10 +125,10 @@ export default function ChatBot() {
                 rel="noopener noreferrer"
                 aria-label="Visit RBC Builders on Facebook"
                 title="Visit our Facebook Page"
-                className="relative h-11 w-11 rounded-full bg-[#1877F2] hover:bg-[#166FE5] text-white shadow-xl hover:scale-110 transition-all duration-300 flex items-center justify-center border border-white/20 group animate-in fade-in slide-in-from-bottom-2 duration-300"
+                className="relative h-9 w-9 sm:h-11 sm:w-11 rounded-full bg-[#1877F2] hover:bg-[#166FE5] text-white shadow-xl hover:scale-110 transition-all duration-300 flex items-center justify-center border border-white/20 group animate-in fade-in slide-in-from-bottom-2 duration-300"
               >
                 <svg
-                  className="w-5 h-5 fill-current transition-transform duration-300 group-hover:scale-110"
+                  className="w-4 h-4 sm:w-5 sm:h-5 fill-current transition-transform duration-300 group-hover:scale-110"
                   viewBox="0 0 24 24"
                   aria-hidden="true"
                 >

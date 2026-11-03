@@ -17,7 +17,7 @@ type TourStep = {
 // so these skip the scroll animation and just move the highlight.
 const FIXED_STEP_IDS = new Set(["site-navbar", "chatbot-launcher"]);
 
-const TOTAL_STEPS = 18;
+const TOTAL_STEPS = 17;
 const n = (i: number) => `${String(i).padStart(2, "0")} / ${TOTAL_STEPS}`;
 
 // Walks every section top to bottom, in page order, with a dedicated
@@ -132,22 +132,15 @@ const TOUR_STEPS: TourStep[] = [
     actionHint: "Both reach our team directly.",
   },
   {
-    id: "footer-cta",
+    id: "footer-links",
     badge: n(16),
     title: "Let's Build It Right",
-    getDescription: () => "A direct line whenever you're ready to start.",
-    actionHint: "",
-  },
-  {
-    id: "footer-links",
-    badge: n(17),
-    title: "Service Areas & Socials",
-    getDescription: () => "Every area we build in, our live local clock, and social links.",
+    getDescription: () => "A direct line, our navigation, and social links whenever you're ready to start.",
     actionHint: "",
   },
   {
     id: "chatbot-launcher",
-    badge: n(18),
+    badge: n(17),
     title: "Ask Us Anything",
     getDescription: (name) =>
       `That's everything, ${name}. Our chat assistant is always here if you have questions.`,
