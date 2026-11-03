@@ -72,14 +72,15 @@ export default function ChatBot() {
             type="button"
             onClick={() => setOpen(true)}
             aria-label="Open architectural advisory chat"
-            className="flex items-center gap-2 p-2.5 sm:px-4 sm:py-2.5 rounded-full bg-white/95 hover:bg-white border border-accent/50 hover:border-accent text-foreground shadow-xl backdrop-blur-md transition-all duration-300 hover:scale-105 group cursor-pointer mb-0.5"
+            className="flex items-center gap-2 px-3 py-2.5 sm:px-4 rounded-full bg-white/95 hover:bg-white border border-accent/50 hover:border-accent text-foreground shadow-xl backdrop-blur-md transition-all duration-300 hover:scale-105 group cursor-pointer mb-0.5"
           >
             <span className="relative flex h-2 w-2 shrink-0">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75" />
               <span className="relative inline-flex rounded-full h-2 w-2 bg-accent" />
             </span>
-            <span className="hidden sm:inline text-xs font-normal tracking-tight text-foreground group-hover:text-accent transition-colors whitespace-nowrap">
-              RBC Concierge &middot; <strong className="font-medium text-accent">Ask Us Anything</strong>
+            <span className="text-xs font-normal tracking-tight text-foreground group-hover:text-accent transition-colors whitespace-nowrap">
+              <span className="hidden sm:inline">RBC Concierge &middot; </span>
+              <strong className="font-medium text-accent">Ask Us Anything</strong>
             </span>
           </button>
         )}
