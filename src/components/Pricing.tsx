@@ -327,15 +327,15 @@ export default function Pricing() {
           {/* Top Dossier Header */}
           <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-6 pb-6 border-b border-border/80">
             <div className="max-w-2xl">
-              <div className="flex items-center gap-2 mb-2">
-                <span className="text-[10px] uppercase tracking-widest font-mono font-bold px-2.5 py-0.5 rounded-md bg-accent/15 text-accent border border-accent/30">
+              <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5 mb-2">
+                <span className="shrink-0 text-[10px] uppercase tracking-widest font-mono font-bold px-2.5 py-0.5 rounded-md bg-accent/15 text-accent border border-accent/30">
                   {activeTier.code}
                 </span>
-                <span className="text-[11px] uppercase tracking-wider font-mono text-muted">
+                <span className="text-[11px] uppercase tracking-wider font-mono text-muted leading-snug">
                   House Construction Cost in Pampanga
                 </span>
                 {activeTier.popular && (
-                  <span className="inline-flex items-center gap-1 text-[8.5px] uppercase tracking-widest bg-accent text-white px-2 py-0.5 font-bold rounded-full shadow-2xs">
+                  <span className="shrink-0 inline-flex items-center gap-1 text-[8.5px] uppercase tracking-widest bg-accent text-white px-2 py-0.5 font-bold rounded-full shadow-2xs">
                     <Sparkles size={8} />
                     <span>Recommended Grade</span>
                   </span>
