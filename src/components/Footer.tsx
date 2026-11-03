@@ -1,40 +1,21 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useState, useRef } from "react";
 import Image from "next/image";
-import { ArrowUp, ArrowRight, Phone, Mail, MapPin, Clock, ShieldCheck } from "lucide-react";
+import { ArrowUp, ArrowRight, Phone, Mail, ShieldCheck } from "lucide-react";
 import { useReveal } from "@/lib/useReveal";
 
 const EXPLORE_LINKS = [
-  { href: "#about", label: "About RBC Builders" },
-  { href: "#services", label: "Our Services" },
-  { href: "#projects", label: "Featured Projects" },
-  { href: "#pricing", label: "Pricing & Rates" },
-  { href: "#journey", label: "The Journey" },
-  { href: "#testimonials", label: "Client Endorsements" },
-  { href: "#contact", label: "Start Your Project" },
-];
-
-const DISCIPLINES = [
-  "Custom Architectural Planning",
-  "Turnkey General Contracting",
-  "Government Permits & Clearances",
-  "Bank Financing Assistance",
-  "3D Rendering & CGI",
-];
-
-const SERVICE_REGIONS = [
-  "City of San Fernando (Headquarters)",
-  "Angeles City",
-  "Tarlac",
-  "Balanga",
-  "Mariveles",
-  "Olongapo",
+  { href: "#about", label: "About" },
+  { href: "#services", label: "Services" },
+  { href: "#projects", label: "Projects" },
+  { href: "#pricing", label: "Pricing" },
+  { href: "#journey", label: "Our Process" },
+  { href: "#contact", label: "Contact" },
 ];
 
 export default function Footer() {
   const footerNavRef = useReveal<HTMLDivElement>();
-  const [manilaTime, setManilaTime] = useState<string>("");
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
   const footerRef = useRef<HTMLElement | null>(null);
 
@@ -49,24 +30,6 @@ export default function Footer() {
   const handleMouseLeave = () => {
     setTilt({ x: 0, y: 0 });
   };
-
-  useEffect(() => {
-    const updateTime = () => {
-      const now = new Date();
-      setManilaTime(
-        new Intl.DateTimeFormat("en-PH", {
-          timeZone: "Asia/Manila",
-          hour: "2-digit",
-          minute: "2-digit",
-          second: "2-digit",
-          hour12: true,
-        }).format(now)
-      );
-    };
-    updateTime();
-    const interval = setInterval(updateTime, 1000);
-    return () => clearInterval(interval);
-  }, []);
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -166,149 +129,70 @@ export default function Footer() {
           </div>
         </section>
 
-        {/* Main Monograph Directory: Spacious 4-Column Architectural Spread */}
-        <div ref={footerNavRef} data-tour="footer-links" className="mx-auto max-w-7xl px-4 sm:px-8 py-10 sm:py-28 border-b border-border">
-          <div data-reveal className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 sm:gap-12 lg:gap-16 items-start">
-            {/* Column 1: Brand Authority, Mission & Real-Time PST Clock (Col-span 4) */}
-            <div data-reveal data-reveal-delay="0.05" className="lg:col-span-4 flex flex-col gap-4 sm:gap-6">
-              <a
-                href="#top"
-                className="flex items-center gap-3.5 group/brand cursor-pointer w-fit"
-                title="RBC Builders - Architecture & Construction"
-              >
-                <div className="relative h-12 w-12 overflow-hidden border border-accent/40 group-hover/brand:border-accent group-hover/brand:shadow-[0_0_20px_rgba(154,116,66,0.3)] rounded-full shrink-0 transition-all duration-500">
-                  <Image
-                    src="/images/logo.jpg"
-                    alt="RBC Builders"
-                    fill
-                    quality={95}
-                    sizes="48px"
-                    className="object-cover"
-                  />
-                </div>
-                <div className="flex flex-col">
-                  <span className="font-serif text-2xl tracking-[0.06em] font-medium text-foreground leading-none transition-all duration-500 group-hover/brand:text-accent">
-                    RBC BUILDERS
-                  </span>
-                  <span className="text-[10px] uppercase tracking-[0.15em] sm:tracking-[0.25em] text-accent font-light mt-1 leading-none group-hover/brand:tracking-[0.28em] transition-all duration-500">
-                    Architecture &amp; Construction
-                  </span>
-                </div>
+        {/* Simple Directory Row: brand, nav, direct contact — one line of
+            purpose each, no repeated content from the sections above it */}
+        <div ref={footerNavRef} data-tour="footer-links" className="mx-auto max-w-7xl px-4 sm:px-8 py-10 sm:py-16 border-b border-border">
+          <div data-reveal className="flex flex-col md:flex-row md:items-start md:justify-between gap-8 md:gap-6">
+            {/* Brand mark */}
+            <a
+              href="#top"
+              className="flex items-center gap-3 group/brand cursor-pointer w-fit shrink-0"
+              title="RBC Builders - Architecture & Construction"
+            >
+              <div className="relative h-11 w-11 overflow-hidden border border-accent/40 group-hover/brand:border-accent rounded-full shrink-0 transition-all duration-500">
+                <Image
+                  src="/images/logo.jpg"
+                  alt="RBC Builders"
+                  fill
+                  quality={95}
+                  sizes="44px"
+                  className="object-cover"
+                />
+              </div>
+              <div className="flex flex-col">
+                <span className="font-serif text-xl tracking-[0.06em] font-medium text-foreground leading-none transition-colors duration-500 group-hover/brand:text-accent">
+                  RBC BUILDERS
+                </span>
+                <span className="text-[10px] uppercase tracking-[0.15em] text-accent font-light mt-1 leading-none">
+                  Architecture &amp; Construction
+                </span>
+              </div>
+            </a>
+
+            {/* Navigation */}
+            <nav aria-label="Footer" className="flex flex-wrap gap-x-5 gap-y-2.5 md:gap-x-6">
+              {EXPLORE_LINKS.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className="text-sm text-foreground/75 hover:text-accent font-light transition-colors"
+                >
+                  {link.label}
+                </a>
+              ))}
+            </nav>
+
+            {/* Direct contact */}
+            <div className="flex flex-col gap-2 text-sm">
+              <a href="tel:+639772873075" className="inline-flex items-center gap-2 text-foreground/75 hover:text-accent font-light transition-colors">
+                <Phone size={14} className="text-accent shrink-0" />
+                <span>0977 287 3075</span>
               </a>
-
-              <p className="text-sm text-foreground/75 font-light leading-relaxed max-w-sm">
-                A premier design-build architecture and general contracting firm headquartered in the City of San Fernando, Pampanga. We unify architectural design, structural engineering, municipal permitting, and turnkey master construction across Central Luzon.
-              </p>
-
-              {/* Status and Clock */}
-              <div className="p-3 sm:p-4 bg-surface border border-border shadow-sm space-y-2">
-                <div className="flex items-center gap-2.5 text-xs text-muted font-mono">
-                  <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
-                  <span>Manila (PST): <strong className="text-foreground">{manilaTime || "12:00:00 PM"}</strong></span>
-                </div>
-                <div className="flex items-center gap-2 text-xs text-muted">
-                  <MapPin size={13} className="text-accent shrink-0" />
-                  <span>San Fernando, Pampanga &middot; Central Luzon</span>
-                </div>
-                <div className="flex items-center gap-2 text-xs text-muted">
-                  <Clock size={13} className="text-accent shrink-0" />
-                  <span>Mon – Sat: 8:00 AM – 6:00 PM PST</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Column 2: Navigation Directory (Col-span 2) */}
-            <div data-reveal data-reveal-delay="0.1" className="lg:col-span-2 flex flex-col gap-3 sm:gap-4">
-              <p className="text-[10px] uppercase tracking-[0.15em] sm:tracking-[0.25em] text-accent font-medium pb-2 border-b border-border">
-                Navigation
-              </p>
-              <div className="grid grid-cols-2 sm:flex sm:flex-col gap-2.5 sm:gap-3">
-                {EXPLORE_LINKS.map((link) => (
-                  <a
-                    key={link.href}
-                    href={link.href}
-                    className="text-sm text-foreground/75 hover:text-accent font-light transition-colors flex items-center justify-between group"
-                  >
-                    <span>{link.label}</span>
-                    <span className="hidden sm:inline text-accent opacity-0 group-hover:opacity-100 transition-opacity text-xs">&rarr;</span>
-                  </a>
-                ))}
-              </div>
-            </div>
-
-            {/* Column 3: Specialized Disciplines (Col-span 3) */}
-            <div data-reveal data-reveal-delay="0.15" className="lg:col-span-3 flex flex-col gap-3 sm:gap-4">
-              <p className="text-[10px] uppercase tracking-[0.15em] sm:tracking-[0.25em] text-accent font-medium pb-2 border-b border-border">
-                Disciplines &amp; Standards
-              </p>
-              <ul className="flex flex-col gap-2.5 sm:gap-3 text-sm text-foreground/75 font-light">
-                {DISCIPLINES.map((discipline) => (
-                  <li key={discipline} className="flex items-start gap-2.5">
-                    <span className="h-1.5 w-1.5 rounded-full bg-accent/80 mt-1.5 shrink-0" />
-                    <span>{discipline}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Column 4: Regional Footprint & Direct Contacts (Col-span 3) */}
-            <div data-reveal data-reveal-delay="0.2" className="lg:col-span-3 flex flex-col gap-3 sm:gap-4">
-              <p className="text-[10px] uppercase tracking-[0.15em] sm:tracking-[0.25em] text-accent font-medium pb-2 border-b border-border">
-                Active Territories
-              </p>
-              <ul className="grid grid-cols-2 sm:flex sm:flex-col gap-2 sm:gap-2.5 text-sm text-foreground/70 font-light">
-                {SERVICE_REGIONS.map((region) => (
-                  <li key={region} className="flex items-center gap-2">
-                    <span className="h-1 w-1 rounded-full bg-accent shrink-0" />
-                    <span>{region}</span>
-                  </li>
-                ))}
-              </ul>
-
-              {/* Direct Touchpoints Box */}
-              <div className="mt-2 sm:mt-4 pt-3 sm:pt-4 border-t border-border flex flex-col gap-2 sm:gap-2.5">
-                <a
-                  href="tel:+639772873075"
-                  className="p-2.5 sm:p-3 bg-surface border border-border hover:border-accent text-xs flex items-center justify-between gap-3 transition-colors group shadow-sm"
-                >
-                  <span className="flex items-center gap-2 text-muted group-hover:text-foreground shrink-0">
-                    <Phone size={13} className="text-accent shrink-0" />
-                    <span className="whitespace-nowrap">Direct Hotline</span>
-                  </span>
-                  <span className="text-accent font-mono font-medium text-xs whitespace-nowrap">0977 287 3075</span>
-                </a>
-
-                <a
-                  href="mailto:rbcbuilders70@gmail.com"
-                  className="p-2.5 sm:p-3 bg-surface border border-border hover:border-accent text-xs flex items-center justify-between gap-3 transition-colors group shadow-sm"
-                >
-                  <span className="flex items-center gap-2 text-muted group-hover:text-foreground shrink-0">
-                    <Mail size={13} className="text-accent shrink-0" />
-                    <span className="whitespace-nowrap">Email</span>
-                  </span>
-                  <span className="text-accent font-mono text-[11px] whitespace-nowrap truncate" title="rbcbuilders70@gmail.com">
-                    rbcbuilders70@gmail.com
-                  </span>
-                </a>
-
-                <a
-                  href="https://www.facebook.com/profile.php?id=100088879215614"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-2.5 sm:p-3 bg-surface border border-border hover:border-accent text-xs flex items-center justify-between gap-3 transition-colors group shadow-sm"
-                >
-                  <span className="flex items-center gap-2 text-muted group-hover:text-foreground shrink-0">
-                    <svg className="w-3.5 h-3.5 fill-accent group-hover:fill-[#1877F2] transition-colors shrink-0" viewBox="0 0 24 24">
-                      <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
-                    </svg>
-                    <span className="whitespace-nowrap">Facebook</span>
-                  </span>
-                  <span className="text-accent group-hover:text-accent-dim text-xs font-mono flex items-center gap-1.5 transition-colors whitespace-nowrap">
-                    <span>Follow Page</span>
-                    <span className="group-hover:translate-x-0.5 transition-transform">&rarr;</span>
-                  </span>
-                </a>
-              </div>
+              <a href="mailto:rbcbuilders70@gmail.com" className="inline-flex items-center gap-2 text-foreground/75 hover:text-accent font-light transition-colors">
+                <Mail size={14} className="text-accent shrink-0" />
+                <span>rbcbuilders70@gmail.com</span>
+              </a>
+              <a
+                href="https://www.facebook.com/profile.php?id=100088879215614"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-foreground/75 hover:text-accent font-light transition-colors"
+              >
+                <svg className="w-3.5 h-3.5 fill-accent shrink-0" viewBox="0 0 24 24">
+                  <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+                </svg>
+                <span>Facebook</span>
+              </a>
             </div>
           </div>
         </div>
