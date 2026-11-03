@@ -30,28 +30,12 @@ export default function ChatBot() {
   const [input, setInput] = useState("");
   const [typing, setTyping] = useState(false);
   const [chips, setChips] = useState(STARTER_CHIPS);
-  const [overFooter, setOverFooter] = useState(false);
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const idRef = useRef(1);
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
   }, [messages, typing]);
-
-  // The footer already repeats phone/email/Facebook, and it's the one
-  // section with content pinned to the bottom-right where this fixed
-  // launcher lives — collapse the extra icons to just the chat button
-  // while the footer is in view so nothing gets covered.
-  useEffect(() => {
-    const footerEl = document.getElementById("footer");
-    if (!footerEl) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => setOverFooter(entry.isIntersecting),
-      { rootMargin: "0px 0px -40% 0px" }
-    );
-    observer.observe(footerEl);
-    return () => observer.disconnect();
-  }, []);
 
   const send = (raw: string) => {
     const text = raw.trim();
@@ -79,34 +63,11 @@ export default function ChatBot() {
 
   return (
     <>
-      {/* Floating Action Elements (Pill on left + Vertical Button Stack on right) */}
-      <div id="chatbot-launcher" className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 flex items-end gap-3">
-        {/* RBC Architectural Concierge Teaser Pill — icon-only on mobile to
-            keep the fixed footprint small (it was overlapping in-page
-            controls lower on some sections) */}
-        {!open && !overFooter && (
-          <button
-            type="button"
-            onClick={() => setOpen(true)}
-            aria-label="Open architectural advisory chat"
-            className="flex items-center gap-2 p-2.5 sm:px-4 sm:py-2.5 rounded-full bg-white/95 hover:bg-white border border-accent/50 hover:border-accent text-foreground shadow-xl backdrop-blur-md transition-all duration-300 hover:scale-105 group cursor-pointer mb-0.5"
-          >
-            <span className="relative flex h-2 w-2 shrink-0">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-accent" />
-            </span>
-            <span className="hidden sm:inline text-xs font-normal tracking-tight text-foreground group-hover:text-accent transition-colors whitespace-nowrap">
-              RBC Concierge &middot; <strong className="font-medium text-accent">Ask Us Anything</strong>
-            </span>
-          </button>
-        )}
-
-        {/* Dedicated Vertical Column for Circular Buttons, stacked directly above the chat
-            FAB on every screen size (smaller on mobile to keep the fixed footprint modest).
-            Collapsed while the footer is in view — it already repeats these same three
-            contacts, and this is the one section pinned to the same bottom-right corner. */}
-        <div className="flex flex-col items-center gap-2 sm:gap-2.5">
-          {!open && !overFooter && (
+      {/* Floating Action Column: email / phone / Facebook / pill, all stacked
+          directly above the chat button in one single vertical column — always
+          visible, never collapses. */}
+      <div id="chatbot-launcher" className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 flex flex-col items-end gap-2 sm:gap-2.5">
+        {!open && (
             <>
               {/* Email Button (top) */}
               <a
@@ -156,12 +117,26 @@ export default function ChatBot() {
                   Facebook Page
                 </span>
               </a>
+
+              {/* RBC Architectural Concierge Teaser Pill (directly above the chat button) */}
+              <button
+                type="button"
+                onClick={() => setOpen(true)}
+                aria-label="Open architectural advisory chat"
+                className="flex items-center gap-2 p-2.5 sm:px-4 sm:py-2.5 rounded-full bg-white/95 hover:bg-white border border-accent/50 hover:border-accent text-foreground shadow-xl backdrop-blur-md transition-all duration-300 hover:scale-105 group cursor-pointer"
+              >
+                <span className="relative flex h-2 w-2 shrink-0">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-accent" />
+                </span>
+                <span className="hidden sm:inline text-xs font-normal tracking-tight text-foreground group-hover:text-accent transition-colors whitespace-nowrap">
+                  RBC Concierge &middot; <strong className="font-medium text-accent">Ask Us Anything</strong>
+                </span>
+              </button>
             </>
           )}
-        </div>
 
-        {/* Chatbot Trigger Button (bottom anchor) — always visible, independent
-            of the desktop-only contact shortcuts above */}
+        {/* Chatbot Trigger Button (bottom anchor) — always visible */}
         <button
           onClick={() => setOpen((v) => !v)}
           aria-label="Toggle RBC Architectural Concierge"
